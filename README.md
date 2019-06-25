@@ -6,7 +6,25 @@
 * 修改请push到个人仓库的dev分支，创建pull request到本仓库的dev分支
 * 请勿直接push到本仓库！请勿直接创建pull request到master分支！
 
+### 运行
+
+#### macOS
+
+```
+docker-compose up -d
+mvn spring-boot:run
+```
+
+#### Windows
+
+建议使用Windows 10的Subsystem for Linux安装并运行docker，其他跟macOS应该是一样的。
+
+
 ### 相关参考资料
+
+#### Git
+
+请一定先阅读并学习[git相关知识](https://www.liaoxuefeng.com/wiki/896043488029600)
 
 #### 项目使用Maven管理构建
 
