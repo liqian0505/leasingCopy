@@ -14,6 +14,11 @@
 docker-compose up -d
 mvn spring-boot:run
 ```
+然后可以直接用curl或postman工具访问后端服务，例如：
+
+```
+curl http://localhost:8080/api/contracts
+```
 
 #### Windows
 
