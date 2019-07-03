@@ -8,7 +8,12 @@ import com.cvicse.leasing.service.ContractService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,5 +32,28 @@ public class ContractController {
         return contractService.getAllContract();
     }
 
+    @GetMapping("/{id}")
+    public Contract getContract(@PathVariable String id) {
+        logger.info("Get contract with contract.id " + id);
+        return this.contractService.getContract(id);
+    }
+
+    @PostMapping
+    public Contract createContract(@RequestBody Contract newContract) {
+        logger.info("Create contract");
+        return this.contractService.createContract(newContract);
+    }
+
+    @PutMapping("/{id}")
+    public Contract updaContract(@RequestBody Contract newContract, @PathVariable String id) {
+        logger.info("UpdateContract with contract.id " + id);
+        return this.contractService.updateContract(newContract, id);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteContract(@PathVariable String id) {
+        logger.info("Delete contract with contract.id " + id);
+        this.contractService.deleteContract(id);
+    }
 
 }
