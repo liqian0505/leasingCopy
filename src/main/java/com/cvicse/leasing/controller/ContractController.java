@@ -45,7 +45,7 @@ public class ContractController {
     }
 
     @PutMapping("/{id}")
-    public Contract updaContract(@RequestBody Contract newContract, @PathVariable String id) {
+    public Contract updateContract(@RequestBody Contract newContract, @PathVariable String id) {
         logger.info("UpdateContract with contract.id " + id);
         return this.contractService.updateContract(newContract, id);
     }
