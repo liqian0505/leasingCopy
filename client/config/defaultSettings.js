@@ -10,7 +10,7 @@ export default {
   menu: {
     locale: true,
   },
-  title: 'Ant Design Pro',
+  title: '租赁合同编辑系统',
   pwa: false,
   iconfontUrl: '',
 };
