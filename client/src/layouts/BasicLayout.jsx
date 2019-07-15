@@ -104,6 +104,7 @@ const BasicLayout = props => {
           <span>{route.breadcrumbName}</span>
         );
       }}
+      menuRender={false}
       footerRender={footerRender}
       menuDataRender={menuDataRender}
       formatMessage={formatMessage}
