@@ -24,4 +24,7 @@ public class Contract {
         return String.format("Contract[id=%s, name='%s']", id, name);
     }
 
+    public String getName() {
+        return name;
+    }
 }

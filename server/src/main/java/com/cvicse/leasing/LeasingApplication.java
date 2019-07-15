@@ -17,45 +17,48 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class LeasingApplication implements CommandLineRunner {
-
-	@Autowired
-	private ContractRepository repository;
-
-	@Autowired
-	private Javers javers;
-
-	private static final Logger logger = LoggerFactory.getLogger(LeasingApplication.class);
-
-
+public class LeasingApplication /*implements CommandLineRunner*/ {
 	public static void main(String[] args) {
 		SpringApplication.run(LeasingApplication.class, args);
 	}
 
-	@Override
-	public void run(String... args) throws Exception {
-
-		repository.deleteAll();
-
-		repository.save(new Contract("Contract 1"));
-		repository.save(new Contract("Contract 2"));
-
-		Contract c = repository.findByName("Contract 1");
-		c.name = "ABC";
-		repository.save(c);
-		c.name = "DEF";
-
-		repository.save(c);
-
-		QueryBuilder queryBuilder = QueryBuilder.byInstance(c).withSnapshotType(SnapshotType.INITIAL);
-
-		List<CdoSnapshot> changes = javers.findSnapshots(queryBuilder.build());
-
-		logger.info("Found the initial version: ");
-		for (CdoSnapshot change : changes) {
-			logger.info("Contract snapshot: {}", change);
-		}
-
-	}
+//	@Autowired
+//	private ContractRepository repository;
+//
+//	@Autowired
+//	private Javers javers;
+//
+//	private static final Logger logger = LoggerFactory.getLogger(LeasingApplication.class);
+//
+//
+//	public static void main(String[] args) {
+//		SpringApplication.run(LeasingApplication.class, args);
+//	}
+//
+//	@Override
+//	public void run(String... args) throws Exception {
+//
+//		repository.deleteAll();
+//
+//		repository.save(new Contract("Contract 1"));
+//		repository.save(new Contract("Contract 2"));
+//
+//		Contract c = repository.findByName("Contract 1");
+//		c.name = "ABC";
+//		repository.save(c);
+//		c.name = "DEF";
+//
+//		repository.save(c);
+//
+//		QueryBuilder queryBuilder = QueryBuilder.byInstance(c).withSnapshotType(SnapshotType.INITIAL);
+//
+//		List<CdoSnapshot> changes = javers.findSnapshots(queryBuilder.build());
+//
+//		logger.info("Found the initial version: ");
+//		for (CdoSnapshot change : changes) {
+//			logger.info("Contract snapshot: {}", change);
+//		}
+//
+//	}
 
 }
