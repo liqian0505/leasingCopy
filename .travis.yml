@@ -1,0 +1,5 @@
+language: java
+# Test & Build SpringBoot app
+script:
+  - mvn test
+  - mvn clean package
