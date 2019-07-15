@@ -14,36 +14,36 @@ import org.springframework.stereotype.Service;
 public class ContractService {
 
     @Autowired
-    private ContractRepository contractRepository;
+    private ContractRepository templateRepository;
 
     private static final Logger logger = LoggerFactory.getLogger(ContractService.class);
 
     public List<Contract> getAllContract() {
-        List<Contract> contracts = contractRepository.findAll();
+        List<Contract> contracts = templateRepository.findAll();
         logger.info("contracts returned");
         return contracts;
     }
 
     public Contract getContract(String id) {
-        return this.contractRepository.findById(id).get();
+        return this.templateRepository.findById(id).get();
     }
 
     public Contract createContract(Contract newContract) {
         logger.info("contract saved");
-        return contractRepository.save(newContract);
+        return templateRepository.save(newContract);
     }
 
     public Contract updateContract(Contract newContract, String id) {
-        this.contractRepository.findById(id).ifPresent(contract -> {
+        this.templateRepository.findById(id).ifPresent(contract -> {
             contract.name = newContract.name;
-            this.contractRepository.save(contract);
+            this.templateRepository.save(contract);
         });
         return newContract;
     }
 
     public void deleteContract(String id) {
         logger.info("contract deleted");
-        this.contractRepository.deleteById(id);
+        this.templateRepository.deleteById(id);
     }
 
 }
