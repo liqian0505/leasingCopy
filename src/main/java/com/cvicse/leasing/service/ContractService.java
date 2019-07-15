@@ -24,9 +24,26 @@ public class ContractService {
         return contracts;
     }
 
-    public Contract createContract(Contract contract) {
+    public Contract getContract(String id) {
+        return this.contractRepository.findById(id).get();
+    }
+
+    public Contract createContract(Contract newContract) {
         logger.info("contract saved");
-        return contractRepository.save(contract);
+        return contractRepository.save(newContract);
+    }
+
+    public Contract updateContract(Contract newContract, String id) {
+        this.contractRepository.findById(id).ifPresent(contract -> {
+            contract.name = newContract.name;
+            this.contractRepository.save(contract);
+        });
+        return newContract;
+    }
+
+    public void deleteContract(String id) {
+        logger.info("contract deleted");
+        this.contractRepository.deleteById(id);
     }
 
 }

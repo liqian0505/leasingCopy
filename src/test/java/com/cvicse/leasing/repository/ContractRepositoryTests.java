@@ -39,7 +39,7 @@ public class ContractRepositoryTests {
     }
 
     @Test
-    public void findsByLastName() {
+    public void findsByName() {
 
         Contract result = repository.findByName("C1");
 
