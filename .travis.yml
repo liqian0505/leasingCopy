@@ -1,0 +1,18 @@
+language: java
+# Test & Build SpringBoot app
+script:
+  - mvn clean package
+
+# safelist
+branches:
+  only:
+    - master
+
+
+deploy:
+  provider: heroku
+  # api_key:
+    # secure: <your-api-key>
+  app: cvise
+  on:
+    repo: CaribouW/leasing
