@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <version>1.0.0</version>
+    <modules>
+        <module>client</module>
+        <module>server</module>
+    </modules>
+    <groupId>cvise.main</groupId>
+    <!--作为父maven, 帮助将子模块进行打包-->
+    <artifactId>cvise-parent</artifactId>
+    <packaging>pom</packaging>
+    <name>cvise-parent</name>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.0.1.RELEASE</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+    <properties>
+        <frontendSrcDir>${project.basedir}/client</frontendSrcDir>
+        <targetDir>${project.basedir}/server/target</targetDir>
+        <node.version>v9.2.0</node.version>
+        <yarn.version>v1.7.0</yarn.version>
+        <frontend-maven-plugin.version>1.6</frontend-maven-plugin.version>
+    </properties>
+    <build>
+        <finalName>cvise</finalName>
+        <plugins>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <id>position-react-build</id>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <phase>prepare-package</phase>
+                        <configuration>
+                            <outputDirectory>${targetDir}/classes/public</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <!--静态资源源目录-->
+                                    <directory>${frontendSrcDir}/dist</directory>
+                                    <filtering>false</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+    </build>
+
+</project>
