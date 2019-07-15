@@ -7,8 +7,8 @@
 		<artifactId>cvise-parent</artifactId>
 		<version>1.0.0</version>
 	</parent>
-	<groupId>com.cvicse</groupId>
-	<artifactId>leasing</artifactId>
+	<groupId>cvise.server</groupId>
+	<artifactId>cvise</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>cvise-server</name>
 	<description>Leasing @CVICSE</description>
@@ -49,6 +49,7 @@
 	</dependencies>
 
 	<build>
+		<finalName>cvise</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
