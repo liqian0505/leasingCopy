@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'dva';
 import { Table, Button, Icon, Divider } from 'antd';
-import BasicLayout from '@/layouts/BasicLayout';
+// import BasicLayout from '@/layouts/BasicLayout';
 
 import styles from './index.css';
 import CustomDiv from '@/components/Perish/CustomDiv';
@@ -62,9 +62,7 @@ const ContractList = props => {
   const source = contractList !== null ? contractList : [];
 
   return (
-    <BasicLayout>
       <Table columns={columns} dataSource={source} rowKey="id" />
-    </BasicLayout>
   );
 };
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Col, Drawer, Row } from 'antd';
 import BraftEditor from 'braft-editor';
 import Form from 'react-jsonschema-form';
-import BasicLayout from '@/layouts/BasicLayout';
+// import BasicLayout from '@/layouts/BasicLayout';
 import 'bootstrap/dist/css/bootstrap.css';
 import styles from './index.css';
 import jp from 'jsonpath';
@@ -65,7 +65,6 @@ export default class ContractEditor extends React.Component {
   render() {
     const controls = [];
     return (
-      <BasicLayout>
         <div className={styles.editorContainer}>
           <Row>
             <BraftEditor
@@ -109,7 +108,6 @@ export default class ContractEditor extends React.Component {
             </Col>
           </Row>
         </div>
-      </BasicLayout>
     );
   }
 }

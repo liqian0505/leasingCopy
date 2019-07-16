@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'dva';
 import { Table, Button, Icon, Divider } from 'antd';
-import BasicLayout from '@/layouts/BasicLayout';
+// import BasicLayout from '@/layouts/BasicLayout';
 import router from 'umi/router'
 
 import styles from './index.css';
@@ -64,9 +64,7 @@ const TemplateList = props => {
   const source = templateList !== null ? templateList : [];
 
   return (
-    <BasicLayout>
       <Table columns={columns} dataSource={source} rowKey="id" />
-    </BasicLayout>
   );
 };
 
