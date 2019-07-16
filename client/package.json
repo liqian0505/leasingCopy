@@ -46,6 +46,7 @@
   "dependencies": {
     "@ant-design/pro-layout": "^4.5.9",
     "@antv/data-set": "^0.10.2",
+    "@typescript-eslint/parser": "^1.12.0",
     "antd": "^3.20.0",
     "braft-editor": "^2.3.7",
     "classnames": "^2.2.6",
