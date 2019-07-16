@@ -2,18 +2,19 @@ import request from '../utils/request';
 
 export default {
   namespace: 'templateList',
-  state: ['good'],
+  state: null,
   reducers: {
-    updateTemplateList(state, { newList, extra }) {},
+    updateTemplateList(state, { newList }) {
+      return newList;
+    },
   },
   effects: {
     *getTemplateList(_, { call, put }) {
-      const response = yield call(request, 'a url');
+      const response = yield call(request, '/template/all');
 
       yield put({
         type: 'updateTemplateList',
-        newList: [],
-        extra: null,
+        newList: response,
       });
     },
   },
