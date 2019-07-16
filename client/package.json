@@ -24,9 +24,11 @@
     "test:all": "node ./tests/run-tests.js",
     "test:component": "umi test ./src/components"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint-staged"
+  "//": {
+    "husky": {
+      "hooks": {
+        "pre-commit": "npm run lint-staged"
+      }
     }
   },
   "lint-staged": {
@@ -48,9 +50,13 @@
     "@antv/data-set": "^0.10.2",
     "@typescript-eslint/parser": "^1.12.0",
     "antd": "^3.20.0",
+    "bootstrap": "^4.3.1",
     "braft-editor": "^2.3.7",
+    "braft-extensions": "^0.0.18",
     "classnames": "^2.2.6",
     "dva": "^2.4.1",
+    "json-schema-editor-visual": "^1.0.22",
+    "jsonpath": "^1.0.2",
     "lodash": "^4.17.11",
     "lodash-decorators": "^6.0.1",
     "memoize-one": "^5.0.4",
@@ -64,6 +70,7 @@
     "react-copy-to-clipboard": "^5.0.1",
     "react-document-title": "^2.0.3",
     "react-dom": "^16.8.6",
+    "react-jsonschema-form": "^1.7.0",
     "react-media": "^1.9.2",
     "react-media-hook2": "^1.0.5",
     "redux": "^4.0.1",
