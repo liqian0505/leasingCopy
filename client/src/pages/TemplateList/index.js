@@ -35,7 +35,7 @@ const TemplateList = props => {
             onClick={id => {
               dispatch({
                 type: "template/getTemplate",
-                id: id
+                targetID: id
               })
             }}
           >
@@ -58,8 +58,6 @@ const TemplateList = props => {
       ),
     },
   ];
-
-  console.log(templateList)
 
   const source = templateList !== null ? templateList : [];
 

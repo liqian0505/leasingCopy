@@ -57,14 +57,10 @@ const templateData = [
 ];
 
 export default {
-<<<<<<< HEAD
   'GET /template/all': templateData.map(data => { return { id: data.id, name: data.name, style: data.style } }),
   'GET /template': (req, res) => {
     const { query } = req
     res.send(templateData.find(data => data.id === query.id))
   },
-=======
-  'GET /template/all': templateData,
->>>>>>> 95ac5d6422e049e73389b17943f12d079dda59ab
   'POST /template': (req, res) => { },
 };

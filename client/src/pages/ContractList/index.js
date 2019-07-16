@@ -9,9 +9,9 @@ import CustomDiv from '@/components/Perish/CustomDiv';
 const ContractList = props => {
   const { contractList, dispatch } = props;
 
-  if (ContractList === null) {
+  if (contractList === null) {
     dispatch({
-      type: 'ContractList/getContractList',
+      type: 'contractList/getContractList',
     });
   }
 
@@ -33,7 +33,10 @@ const ContractList = props => {
           <CustomDiv
             id={record.id}
             onClick={id => {
-              console.log(id);
+              dispatch({
+                type: "contract/getContract",
+                targetID: id
+              })
             }}
           >
             <a>

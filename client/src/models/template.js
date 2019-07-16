@@ -13,22 +13,17 @@ export default {
     },
   },
   effects: {
-    *getTemplate({ id }, { call, put }) {
-
-      const response = yield call(request, "/template", { params: { id: id } })
+    *getTemplate({ targetID }, { call, put }) {
+      const { editorState, schema, id } = yield call(request, "/template", { params: { id: targetID } })
 
       yield put({
         type: "updateEditorState",
-        newState:{
-          editorState: response
+        newState: {
+          editorState,
+          schema,
+          id
         }
       })
-      // const response = yield call(request, );
-
-      // yield put({
-      //   type: 'updateEditorState',
-      //   newState: null
-      // });
     },
   },
 };
