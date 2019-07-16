@@ -1,3 +1,19 @@
+matrix:
+  include:
+    - language: node_js
+      node_js: 7
+      before_script:
+        - cd client
+      script:
+        - npm install
+        - npm run build
+
+    - language: java
+      jdk: oraclejdk8
+      before_script:
+        - cd server
+      script:
+        - mvn clean package
 
 
 # safelist
