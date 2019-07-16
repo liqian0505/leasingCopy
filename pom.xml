@@ -52,12 +52,13 @@
                     </execution>
                 </executions>
             </plugin>
-<plugin>
+        <plugin>
       <groupId>com.heroku.sdk</groupId>
       <artifactId>heroku-maven-plugin</artifactId>
       <configuration>
+        <appName>${heroku.appName}</appName>
         <processTypes>
-          <web>java $JAVA_OPTS -cp target/classes:target/dependency/* Main</web>
+          <web>java $JAVA_OPTS -cp server/target/classes:server/target/dependency/* Main</web>
         </processTypes>
       </configuration>
     </plugin>
