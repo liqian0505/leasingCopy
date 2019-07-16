@@ -23,11 +23,7 @@ class TemplateEditor extends React.Component {
     editorState: BraftEditor.createEditorState(this.props.template.editorState),
     visible: false,
     // 后续转移到models中
-    schema: {
-      type: 'object',
-      title: 'empty object',
-      properties: {},
-    },
+    schema: this.props.template.schema,
   };
 
   componentDidMount() { }
