@@ -17,10 +17,10 @@ import styles from './index.css';
 const option = {};
 const SchemaEditor = schemaEditor(option);
 
-export default class TemplateEditor extends React.Component {
+class TemplateEditor extends React.Component {
   state = {
     // 创建一个空的editorState作为初始值
-    editorState: BraftEditor.createEditorState(null),
+    editorState: BraftEditor.createEditorState(this.props.template.editorState),
     visible: false,
     // 后续转移到models中
     schema: {
@@ -30,7 +30,7 @@ export default class TemplateEditor extends React.Component {
     },
   };
 
-  componentDidMount() {}
+  componentDidMount() { }
 
   showDrawer = () => {
     this.setState({
@@ -51,6 +51,12 @@ export default class TemplateEditor extends React.Component {
     const stringContent = this.state.editorState.toRAW();
     const jsonContent = this.state.editorState.toRAW(true);
     console.log(htmlContent, stringContent, jsonContent);
+
+    this.props.dispatch({
+      type: "template/updateTemplate",
+      targetID: this.props.template.id,
+      jsonContent: jsonContent
+    })
   };
 
   handleEditorChange = editorState => {
@@ -79,9 +85,9 @@ export default class TemplateEditor extends React.Component {
             >
               <SchemaEditor
                 data={JSON.stringify(this.state.schema)}
-                // onChange={schema => {
-                //   dispatch({ type: 'bucciarati/updateSchema', payload: JSON.parse(schema) });
-                // }}
+              // onChange={schema => {
+              //   dispatch({ type: 'bucciarati/updateSchema', payload: JSON.parse(schema) });
+              // }}
               />
             </Drawer>
           </Row>
@@ -118,3 +124,5 @@ export default class TemplateEditor extends React.Component {
     );
   }
 }
+
+export default connect(({ template }) => ({ template }))(TemplateEditor)

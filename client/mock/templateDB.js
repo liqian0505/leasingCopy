@@ -33,7 +33,7 @@ const templateData = [
     },
   },
   {
-    id: 3,
+    id: "3",
     name: '模板三',
     style: '样式三',
     editorState: {

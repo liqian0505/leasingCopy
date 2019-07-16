@@ -15,7 +15,6 @@ export default {
   effects: {
     *getTemplate({ targetID }, { call, put }) {
       const { editorState, schema, id } = yield call(request, "/template", { params: { id: targetID } })
-
       yield put({
         type: "updateEditorState",
         newState: {
@@ -25,5 +24,8 @@ export default {
         }
       })
     },
+    *updateTemplate({ targetID, jsonContent }, { call }) {
+      console.log(targetID, jsonContent)
+    }
   },
 };
