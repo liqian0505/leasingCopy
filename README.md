@@ -56,10 +56,8 @@ Windows平台建议使用Windows 10的Subsystem for Linux安装并运行docker�
 ### 部署架构
 
 ### 编码实践
-统一的编码实践，比如异常处理原则、分页封装等；
 
 ### FAQ
-开发过程中常见问题的解答。
 
 
 ### 注意事项
