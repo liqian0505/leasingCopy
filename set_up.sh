@@ -1,6 +1,4 @@
 # docker 
-
-
 mvn clean
 cd server
 docker-compose up -d

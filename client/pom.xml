@@ -23,7 +23,7 @@
           <workingDirectory>${project.basedir}</workingDirectory>
           <installDirectory>${project.basedir}</installDirectory>
         </configuration>
-        <executions>
+        <!-- <executions>
           <execution>
             <phase>prepare-package</phase>
             <id>install node and npm</id>
@@ -54,7 +54,7 @@
               <arguments>run build</arguments>
             </configuration>
           </execution>
-        </executions>
+        </executions> -->
       </plugin>
     </plugins>
   </build>
