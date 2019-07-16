@@ -2,17 +2,16 @@ import React from 'react';
 import { connect } from 'dva';
 import { Table, Button, Icon, Divider } from 'antd';
 import BasicLayout from '@/layouts/BasicLayout';
-import router from 'umi/router'
 
 import styles from './index.css';
 import CustomDiv from '@/components/Perish/CustomDiv';
 
-const TemplateList = props => {
-  const { templateList, dispatch } = props;
+const ContractList = props => {
+  const { contractList, dispatch } = props;
 
-  if (templateList === null) {
+  if (contractList === null) {
     dispatch({
-      type: 'templateList/getTemplateList',
+      type: 'contractList/getContractList',
     });
   }
 
@@ -35,10 +34,9 @@ const TemplateList = props => {
             id={record.id}
             onClick={id => {
               dispatch({
-                type: "template/getTemplate",
+                type: "contract/getContract",
                 targetID: id
               })
-              router.push("/TemplateContent")
             }}
           >
             <a>
@@ -61,7 +59,7 @@ const TemplateList = props => {
     },
   ];
 
-  const source = templateList !== null ? templateList : [];
+  const source = contractList !== null ? contractList : [];
 
   return (
     <BasicLayout>
@@ -70,6 +68,6 @@ const TemplateList = props => {
   );
 };
 
-export default connect(({ templateList }) => ({
-  templateList,
-}))(TemplateList);
+export default connect(({ contractList }) => ({
+  contractList,
+}))(ContractList);

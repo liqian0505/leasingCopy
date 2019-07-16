@@ -11,6 +11,7 @@ import { formatMessage } from 'umi-plugin-react/locale';
 import Authorized from '@/utils/Authorized';
 import RightContent from '@/components/GlobalHeader/RightContent';
 import { isAntDesignPro } from '@/utils/utils';
+import { Card } from 'antd';
 import logo from '../assets/logo.svg';
 
 /**
@@ -112,7 +113,7 @@ const BasicLayout = props => {
       {...props}
       {...settings}
     >
-      {children}
+      <Card>{children}</Card>
     </ProLayout>
   );
 };
