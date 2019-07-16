@@ -75,9 +75,9 @@ public class ContractServiceTests {
         assertThat(contract.name.equals("C3")).isTrue();
     }
 
-    @Test
-    public void deleteContract(){
-        contractService.deleteContract(repository.findByName("C1").id);
-        assertThat(repository.findByName("C1")).isNull();
-    }
+    // @Test
+    // public void deleteContract(){
+    //     contractService.deleteContract(repository.findByName("C1").id);
+    //     assertThat(repository.findByName("C1")).isNull();
+    // }
 }
