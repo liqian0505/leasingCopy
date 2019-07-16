@@ -1,7 +1,10 @@
 package com.cvicse.leasing.model;
 
+import lombok.Data;
 import org.springframework.data.annotation.Id;
 
+
+@Data
 public class Contract {
 
     @Id
@@ -21,4 +24,15 @@ public class Contract {
         return String.format("Contract[id=%s, name='%s']", id, name);
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getId() {
+        return id;
+    }
 }
