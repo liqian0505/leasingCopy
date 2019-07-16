@@ -77,4 +77,5 @@ public class ContractServiceTests {
 //        contractService.deleteContract(repository.findByName("C1").id);
 //        assertThat(repository.findByName("C1")).isNull();
 //    }
+
 }

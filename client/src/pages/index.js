@@ -1,14 +1,20 @@
 import React from 'react';
+import Link from 'umi/Link';
 import BasicLayout from '@/layouts/BasicLayout';
 import styles from './index.css';
-import Link from 'umi/Link';
 
 class App extends React.PureComponent {
   render() {
     return (
       <BasicLayout>
         <div className={styles.welcome}>
-          <Link to="/TemplateList">Welcome</Link>
+          <div>Welcome</div>
+          <div>
+            <Link to="/TemplateList">TemplateList</Link>
+          </div>
+          <div>
+            <Link to="/TemplateContent">TemplateContent</Link>
+          </div>
         </div>
       </BasicLayout>
     );

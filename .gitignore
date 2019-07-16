@@ -2,3 +2,10 @@
 client/target/
 client/node/
 .iml
+
+.project
+.settings
+.classpath
+client/.project
+client/.settings
+client/.project
