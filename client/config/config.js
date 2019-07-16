@@ -80,28 +80,39 @@ export default {
   },
   devtool: isAntDesignProPreview ? 'source-map' : false,
   // umi routes: https://umijs.org/zh/guide/router.html
-  // routes: [
-  //   {
-  //     path: '/',
-  //     component: '../layouts/BasicLayout',
-  //     Routes: ['src/pages/Authorized'],
-  //     authority: ['admin', 'user'],
-  //     routes: [
-  //       {
-  //         path: '/',
-  //         name: 'welcome',
-  //         icon: 'smile',
-  //         component: './Welcome',
-  //       },
-  //       {
-  //         component: './404',
-  //       },
-  //     ],
-  //   },
-  //   {
-  //     component: './404',
-  //   },
-  // ],
+  routes: [
+    {
+      path: '/',
+      component: '../layouts/BasicLayout',
+      // Routes: ['src/pages/Authorized'],
+      // authority: ['admin', 'user'],
+      routes: [
+        {
+          path: '/',
+          component: './index',
+        },
+        {
+          path: '/ContractContent',
+          component: './ContractContent',
+        },
+        {
+          path: '/ContractList',
+          component: './ContractList',
+        },
+        {
+          path: '/TemplateContent',
+          component: './TemplateContent',
+        },
+        {
+          path: '/TemplateList',
+          component: './TemplateList',
+        },
+      ],
+    },
+    {
+      component: './404',
+    },
+  ],
   // Theme for antd: https://ant.design/docs/react/customize-theme-cn
   theme: {
     'primary-color': primaryColor,
