@@ -12,7 +12,8 @@ script:
 branches:
   only:
     - master
-
+# set up cache
+cache: npm
 deploy:
   provider: heroku
   api_key:

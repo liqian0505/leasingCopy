@@ -6,4 +6,3 @@ cd ../client
 npm install && npm run build
 cd ..
 mvn package
-java -jar server/target/cvise.jar
