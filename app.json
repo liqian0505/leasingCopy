@@ -1,0 +1,26 @@
+{
+  "addons": [
+    "mongolab",
+    "heroku-postgresql"
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/java"
+    }
+  ],
+  "env": {
+    "MONGODB_URI": {
+      "required": true
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1
+    }
+  },
+  "name": "leasing",
+  "scripts": {
+    "postdeploy": "docker-compose up -d"
+  },
+  "stack": "heroku-18"
+}
