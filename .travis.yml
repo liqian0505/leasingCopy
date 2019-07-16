@@ -3,14 +3,30 @@ language: java
 jdk:
   - openjdk8
 # Test & Build SpringBoot app
-before-install:
+services:
+  - docker
+
+env:
+  - DOCKER_COMPOSE_VERSION=1.4.2
+
+before_install:
   - sudo apt-get update
-  - sudo apt-get install docker.io
-  - sudo apt-get install docker-compose
   - sudo apt-get install node
-install: true
-script:
+  # Docker Compose Install
+  - curl -L https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+  # Download and install Docker libs
+  - curl -L https://github.com/Ortus-Solutions/docker-buildfiles/archive/master.zip > docker.zip
+  - unzip docker.zip -d workbench
+  - mv workbench/docker-buildfiles-master workbench/docker
+
+install:
+  # Docker CFML Server Tests
   - bash ./set_up.sh
+
+script:
+  - mvn clean package
 # safelist
 branches:
   only:

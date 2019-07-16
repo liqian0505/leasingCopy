@@ -5,4 +5,3 @@ docker-compose up -d
 cd ../client
 npm install && npm run build
 cd ..
-mvn package
