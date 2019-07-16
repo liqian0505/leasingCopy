@@ -1,13 +1,12 @@
 language: java
 # Test & Build SpringBoot app
+install: false
 script:
-  - mvn clean package
+  - bash ./set_up.sh
 # safelist
 branches:
   only:
     - master
-before_script:
-  - bash ./set_up.sh
 
 deploy:
   provider: heroku
