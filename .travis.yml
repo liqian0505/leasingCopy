@@ -1,13 +1,9 @@
-language: java
-# Test & Build SpringBoot app
-script:
-  - mvn clean package
+
 
 # safelist
 branches:
   only:
     - master
-
 
 deploy:
   provider: heroku
