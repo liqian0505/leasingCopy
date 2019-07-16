@@ -2,8 +2,6 @@ import React from 'react';
 import { connect } from 'dva';
 import { Table, Button, Icon, Divider } from 'antd';
 import BasicLayout from '@/layouts/BasicLayout';
-import router from 'umi/router'
-
 import styles from './index.css';
 import CustomDiv from '@/components/Perish/CustomDiv';
 
@@ -38,7 +36,7 @@ const TemplateList = props => {
                 type: "template/getTemplate",
                 targetID: id
               })
-              router.push("/TemplateContent")
+              // router.push("/TemplateContent")
             }}
           >
             <a>
@@ -54,6 +52,24 @@ const TemplateList = props => {
           >
             <a>
               <Icon type="delete" />
+            </a>
+          </CustomDiv>
+          <Divider type="vertical" style={{ opacity: 0 }} />
+          <CustomDiv
+            id={record.id}
+            onClick={id => {
+              dispatch({
+                type: "template/getTemplate",
+                targetID: id
+              })
+              dispatch({
+                type: "contractList/getContractList",
+                targetID: id
+              })
+            }}
+          >
+            <a>
+              <Icon type="bars" />
             </a>
           </CustomDiv>
         </div>

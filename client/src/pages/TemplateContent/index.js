@@ -16,17 +16,31 @@ import styles from './index.css';
 
 const option = {};
 const SchemaEditor = schemaEditor(option);
+// 初始化表格扩展
+BraftEditor.use([
+  Table({
+    defaultColumns: 4, // 默认列数
+    defaultRows: 4, // 默认行数
+    withDropdown: true, // 插入表格前是否弹出下拉菜单
+    // includeEditors: ['editor-id-1'], // 指定该模块对哪些BraftEditor生效，不传此属性则对所有BraftEditor有效
+    // excludeEditors: ['editor-id-2'], // 指定该模块对哪些BraftEditor无效
+  }),
+]);
 
 class TemplateEditor extends React.Component {
   state = {
     // 创建一个空的editorState作为初始值
-    editorState: BraftEditor.createEditorState(this.props.template.editorState),
+    editorState: BraftEditor.createEditorState(null),
     visible: false,
-    // 后续转移到models中
     schema: this.props.template.schema,
   };
 
-  componentDidMount() {}
+
+  componentDidMount() {
+    this.setState({
+      editorState: BraftEditor.createEditorState(this.props.template.editorState),
+    })
+  }
 
   showDrawer = () => {
     this.setState({
@@ -75,9 +89,9 @@ class TemplateEditor extends React.Component {
             >
               <SchemaEditor
                 data={JSON.stringify(this.state.schema)}
-                // onChange={schema => {
-                //   dispatch({ type: 'bucciarati/updateSchema', payload: JSON.parse(schema) });
-                // }}
+              // onChange={schema => {
+              //   dispatch({ type: 'bucciarati/updateSchema', payload: JSON.parse(schema) });
+              // }}
               />
             </Drawer>
           </Row>

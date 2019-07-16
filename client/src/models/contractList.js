@@ -1,4 +1,5 @@
 import request from '../utils/request';
+import router from 'umi/router'
 
 export default {
   namespace: 'contractList',
@@ -9,13 +10,15 @@ export default {
     },
   },
   effects: {
-    *getContractList(_, { call, put }) {
-      const response = yield call(request, '/contract/all');
+    *getContractList({ templateID }, { call, put }) {
+      const response = yield call(request, '/contract/all', { params: { id: templateID } });
 
       yield put({
         type: 'updateContractList',
         newList: response,
-      });
+      })
+
+      router.push("/ContractList")
     },
   },
 };

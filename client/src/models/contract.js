@@ -1,4 +1,5 @@
 import request from '../utils/request';
+import router from 'umi/router'
 
 export default {
   namespace: 'contract',
@@ -23,6 +24,7 @@ export default {
           id
         }
       })
+      router.push("/ContractContent")
     },
   },
 };

@@ -1,4 +1,5 @@
 import request from '../utils/request';
+import router from 'umi/router'
 
 export default {
   namespace: 'template',
@@ -24,6 +25,7 @@ export default {
           id
         }
       })
+      router.push("/TemplateContent")
     },
   },
 };

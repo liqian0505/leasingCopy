@@ -6,6 +6,7 @@ import BasicLayout from '@/layouts/BasicLayout';
 import 'bootstrap/dist/css/bootstrap.css';
 import styles from './index.css';
 import jp from 'jsonpath';
+import { connect } from 'dva';
 
 const getDefaultData = schema => {
   const data = {};
@@ -38,17 +39,26 @@ const getDefaultData = schema => {
   return data;
 };
 
-export default class ContractEditor extends React.Component {
+class ContractEditor extends React.Component {
   state = {
-    editorState: BraftEditor.createEditorState(null),
+    editorState: BraftEditor.createEditorState('<p>empty</p>'),
     visible: false,
-    // 后续转移到models中
     schema: {
       type: 'object',
       title: 'empty object',
       properties: {},
     },
+    formData: null,
   };
+
+  // componentDidMount() {
+  //   console.log(this.props.template)
+  //   this.setState({
+  //     editorState: BraftEditor.createEditorState(this.props.template.editorState),
+  //     schema: this.props.template.schema,
+  //     formData: this.props.formData,
+  //   })
+  // }
 
   showDrawer = () => {
     this.setState({
@@ -64,12 +74,13 @@ export default class ContractEditor extends React.Component {
 
   render() {
     const controls = [];
+    const { editorState, schema, formData } = this.state
     return (
       <BasicLayout>
         <div className={styles.editorContainer}>
           <Row>
             <BraftEditor
-              value={this.state.editorState}
+              value={editorState}
               readOnly
               controls={controls}
               style={{ height: '500px' }}
@@ -83,8 +94,8 @@ export default class ContractEditor extends React.Component {
               width="50%"
             >
               <Form
-                schema={this.state.schema}
-                formData={getDefaultData(this.state.schema)}
+                schema={schema}
+                formData={formData}//{getDefaultData(schema)}
                 // onChange={e => { return }}
                 // onSubmit={e => dispatch({ type: 'bucciarati/updateData', payload: e.formData })}
                 onError={e => console.log(e)}
@@ -113,3 +124,8 @@ export default class ContractEditor extends React.Component {
     );
   }
 }
+
+export default connect(({ template, contract }) => ({
+  template: template.template, 
+  formData: contract.formData,
+}))(ContractEditor);

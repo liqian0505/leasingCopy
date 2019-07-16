@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'dva';
 import { Table, Button, Icon, Divider } from 'antd';
 import BasicLayout from '@/layouts/BasicLayout';
-
 import styles from './index.css';
 import CustomDiv from '@/components/Perish/CustomDiv';
 
@@ -17,12 +16,12 @@ const ContractList = props => {
 
   const columns = [
     {
-      title: '模版名称',
+      title: '合同名称',
       dataIndex: 'name',
       key: 'name',
     },
     {
-      title: '模板样式',
+      title: '合同模板',
       dataIndex: 'style',
       key: 'style',
     },
