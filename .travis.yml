@@ -1,18 +1,14 @@
 language: java
-# Test & Build SpringBoot app
 script:
-  - mvn clean package
-
-# safelist
+- mvn clean package
 branches:
   only:
-    - master
-
-
+  - master
 deploy:
   provider: heroku
-  # api_key:
-    # secure: <your-api-key>
-  app: cvise
+  api_key:
+    secure: vjsu4q7Q176zMXZMvt52F5BmFL2dDlOyhzNwAfxHJDZ6o37r+F5QoatTo/rHAXIE0wDe/hJmK4Q1DZLrM4PNcIcjf/aPo3+oey3Vpyb1/W7TbDpCOqUGPYV4BDP6P76KvN9eSctgq79VKX3gpLKjBfTBLsgZ9+fR4FPKe0IRFZUv9akhHc8IEJfq4l4cGeIdqEYcfRjqXRMRVYFSoOc69rolgcoQL4ovhOMjQ7A7OLIYgE9A5yTa+evDFciI3fm+4dFwe+cXrbbc1rYbJ/Ef0EA9+MF298K5jnodx//3klOyLftYirAclprU83+bADvBNXYzYTxjup6b3Ti+U9dmnOQ7Ox6p1VQOXvlI1Vg+kSQQqRb9nK+UXrZR5gk3np4qAoN0Q26RuiHBIOWvUA6g+TNFawpt7dJfriZsNNGEl/CcePVqtpVl7xL6PG17XyuapeYBuFe6aEAqhaxrjTjpP1+wT2es7DIRMF97+CtKVSzauawePDS5NRCmy4pwBoSX8uhkdMRTrpILQeUWInWoaCD93/erG/GJ3a6u5rEOSCDqqV/b2PmdhpVZQt2JCMOn+bnQ2GZqTObsIookraJgwN3KuSwtFXtgNCK+TBc6Bo+N9juTLndp5VUPS8Z/Vy0IVTFwN4GxXSCIwSs/WWLVwiq+Pdnm0NWBm8KtcRgaTw8=
+  app: leasing
   on:
     repo: CaribouW/leasing
+    branch: dev
