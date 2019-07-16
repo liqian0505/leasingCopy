@@ -1,25 +1,13 @@
-matrix:
-  include:
-    - language: node_js
-      node_js: 7
-      before_script:
-        - cd client
-      script:
-        - npm install
-        - npm run build
-
-    - language: java
-      jdk: oraclejdk8
-      before_script:
-        - cd server
-      script:
-        - mvn clean package
-
-
+language: java
+# Test & Build SpringBoot app
+script:
+  - mvn clean package
 # safelist
 branches:
   only:
     - master
+before_script:
+  - bash ./set_up.sh
 
 deploy:
   provider: heroku
@@ -28,3 +16,4 @@ deploy:
   app: cvise
   on:
     repo: CaribouW/leasing
+sudo: true
