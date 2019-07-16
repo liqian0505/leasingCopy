@@ -2,22 +2,19 @@ import request from '../utils/request';
 
 export default {
   namespace: 'contractList',
-  state: [],
+  state: null,
   reducers: {
-    updateContractList(state, { newList, extra }) {
-      return {
-        ...state,
-      };
+    updateContractList(state, { newList }) {
+      return newList;
     },
   },
   effects: {
     *getContractList(_, { call, put }) {
-      const response = yield call(request, 'a url');
+      const response = yield call(request, '/contract/all');
 
       yield put({
         type: 'updateContractList',
-        newList: [],
-        extra: null,
+        newList: response,
       });
     },
   },

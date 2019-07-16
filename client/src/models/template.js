@@ -2,23 +2,33 @@ import request from '../utils/request';
 
 export default {
   namespace: 'template',
-  state: {},
+  state: {
+    editorState: null,
+    schema: null,
+    id: null
+  },
   reducers: {
-    updateEditorState(state, { newList, extra }) {
-      return {
-        ...state,
-      };
+    updateEditorState(state, { newState }) {
+      return newState
     },
   },
   effects: {
-    *getTemplate(_, { call, put }) {
-      const response = yield call(request, 'a url');
+    *getTemplate({ id }, { call, put }) {
+
+      const response = yield call(request, "/template", { params: { id: id } })
 
       yield put({
-        type: 'updateTemplateList',
-        newList: [],
-        extra: null,
-      });
+        type: "updateEditorState",
+        newState:{
+          editorState: response
+        }
+      })
+      // const response = yield call(request, );
+
+      // yield put({
+      //   type: 'updateEditorState',
+      //   newState: null
+      // });
     },
   },
 };

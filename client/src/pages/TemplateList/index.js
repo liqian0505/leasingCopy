@@ -33,7 +33,10 @@ const TemplateList = props => {
           <CustomDiv
             id={record.id}
             onClick={id => {
-              console.log(id);
+              dispatch({
+                type: "template/getTemplate",
+                id: id
+              })
             }}
           >
             <a>
@@ -55,6 +58,8 @@ const TemplateList = props => {
       ),
     },
   ];
+
+  console.log(templateList)
 
   const source = templateList !== null ? templateList : [];
 

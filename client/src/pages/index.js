@@ -15,10 +15,10 @@ class App extends React.PureComponent {
             <Link to="/TemplateContent">TemplateContent</Link>
           </div>
           <div>
-            <Link to="/ContractList">TemplateContent</Link>
+            <Link to="/ContractList">ContractList</Link>
           </div>
           <div>
-            <Link to="/ContractContent">TemplateContent</Link>
+            <Link to="/ContractContent">ContractContent</Link>
           </div>
         </div>
       </BasicLayout>
