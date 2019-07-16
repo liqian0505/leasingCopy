@@ -1,6 +1,11 @@
 language: java
 # Test & Build SpringBoot app
-install: false
+before-install:
+  - sudo apt-get update
+  - sudo apt-get install docker 
+  - sudo apt-get install docker-compose
+  - sudo apt-get install node
+install: true
 script:
   - bash ./set_up.sh
 # safelist
