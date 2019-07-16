@@ -49,6 +49,7 @@ public class LeasingApplication /*implements CommandLineRunner*/ {
 //		c.name = "DEF";
 //
 //		repository.save(c);
+//		//System.out.println(repository.findByName("DEF").id);
 //
 //		QueryBuilder queryBuilder = QueryBuilder.byInstance(c).withSnapshotType(SnapshotType.INITIAL);
 //

@@ -8,8 +8,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 @JaversSpringDataAuditable
 public interface ContractRepository extends MongoRepository<Contract, String> {
 
-    public Contract findByName(String name);
-
-
+    Contract findByName(String name);
 
 }
