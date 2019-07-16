@@ -1,4 +1,6 @@
 language: java
+jdk:
+  - openjdk8
 # Test & Build SpringBoot app
 before-install:
   - sudo apt-get update
