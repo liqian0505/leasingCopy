@@ -14,6 +14,12 @@ class App extends React.PureComponent {
           <div>
             <Link to="/TemplateContent">TemplateContent</Link>
           </div>
+          <div>
+            <Link to="/ContractList">TemplateContent</Link>
+          </div>
+          <div>
+            <Link to="/ContractContent">TemplateContent</Link>
+          </div>
         </div>
       </BasicLayout>
     );
