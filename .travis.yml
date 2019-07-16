@@ -21,7 +21,6 @@ before_install:
   - curl -L https://github.com/Ortus-Solutions/docker-buildfiles/archive/master.zip > docker.zip
   - unzip docker.zip -d workbench
   - mv workbench/docker-buildfiles-master workbench/docker
-  - docker ps -a
 
 install:
   # Docker CFML Server Tests
@@ -35,6 +34,7 @@ branches:
     - master
 # set up cache
 cache: npm
+
 deploy:
   provider: heroku
   api_key:
