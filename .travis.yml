@@ -1,14 +1,28 @@
 language: java
+
+jdk:
+  - openjdk8
+# Test & Build SpringBoot app
+before-install:
+  - sudo apt-get update
+  - sudo apt-get install docker.io
+  - sudo apt-get install docker-compose
+  - sudo apt-get install node
+install: true
 script:
-- mvn clean package
+  - bash ./set_up.sh
+# safelist
 branches:
   only:
-  - master
+    - master
+# set up cache
+cache: npm
 deploy:
   provider: heroku
   api_key:
-    secure: vjsu4q7Q176zMXZMvt52F5BmFL2dDlOyhzNwAfxHJDZ6o37r+F5QoatTo/rHAXIE0wDe/hJmK4Q1DZLrM4PNcIcjf/aPo3+oey3Vpyb1/W7TbDpCOqUGPYV4BDP6P76KvN9eSctgq79VKX3gpLKjBfTBLsgZ9+fR4FPKe0IRFZUv9akhHc8IEJfq4l4cGeIdqEYcfRjqXRMRVYFSoOc69rolgcoQL4ovhOMjQ7A7OLIYgE9A5yTa+evDFciI3fm+4dFwe+cXrbbc1rYbJ/Ef0EA9+MF298K5jnodx//3klOyLftYirAclprU83+bADvBNXYzYTxjup6b3Ti+U9dmnOQ7Ox6p1VQOXvlI1Vg+kSQQqRb9nK+UXrZR5gk3np4qAoN0Q26RuiHBIOWvUA6g+TNFawpt7dJfriZsNNGEl/CcePVqtpVl7xL6PG17XyuapeYBuFe6aEAqhaxrjTjpP1+wT2es7DIRMF97+CtKVSzauawePDS5NRCmy4pwBoSX8uhkdMRTrpILQeUWInWoaCD93/erG/GJ3a6u5rEOSCDqqV/b2PmdhpVZQt2JCMOn+bnQ2GZqTObsIookraJgwN3KuSwtFXtgNCK+TBc6Bo+N9juTLndp5VUPS8Z/Vy0IVTFwN4GxXSCIwSs/WWLVwiq+Pdnm0NWBm8KtcRgaTw8=
-  app: leasing
+    secure: Ise82QmFoMwy7k3IIPRKCvq4bMkOtOIbMELCPujlyAfftFKI1Yk4oPZyZc+OhlG/H0FtdtfIiF+mMI87ImMEbIS8ldmME9D9VyPKaTPm5xYw3jVJK9syNjMKOGL6btL9YcMzDDNCU7YjNE6zqmFhKFOH5jHwdUnBuUeJ6psjoTbYJsm3XygP7J0ygUti60U4ym8uE+PfiHJU4vOgB50uTR69hiLVdPHP1NVU63lS6fSWqBeL819C/kGYxuMzO3vG3Ww5buM4w0cy6sq0QeYRie3pxl9RTUSkc+8CQKyP45QClbrzyrylEQcPhVvHNyKEkI0PFoLreqOsnIAHvOzROEU4wsl5gIoEeZdpMZVOFOC6q2n0GXExR5FJFX+7ck5EHXVCG9EXYrAL24/KrdyjvoyXAQ9settMaA/0HjtkrEZ2YifnSOpL81+GzCoWOkcx3rqb85ukIb+1CWxcVCVY3tHIxIPeMYpdQtDLZhCB1mbjZZgzBHfm+K8caTmEgNurhx4RcRiXm/HQcQbBiLVDS62G+amvHVIi0A6TpOV3Fw9yJEw2HNT/VI/gi64PhTTSEhAZa9JoAcNp2u2/j7hGiPQW9OWjO5mZGRJ+6pE64J+P/M49DLQoCg84qadPPwSZxctqryZ42bv30izEQ8nbBWsH+ccG2DDrfxFvANuuUAw=
+  app: cvise
   on:
     repo: CaribouW/leasing
-    branch: dev
+sudo: true
+
