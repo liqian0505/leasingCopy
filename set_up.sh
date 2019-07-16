@@ -11,6 +11,3 @@ cd ../client
 npm install && npm run build
 cd ..
 mvn package
-cd server/target/
-java -jar stc.jar
-cd ../../
