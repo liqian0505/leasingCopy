@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'dva';
 import { Table, Button, Icon, Divider } from 'antd';
 import BasicLayout from '@/layouts/BasicLayout';
+import router from 'umi/router'
 
 import styles from './index.css';
 import CustomDiv from '@/components/Perish/CustomDiv';
@@ -37,6 +38,7 @@ const TemplateList = props => {
                 type: "template/getTemplate",
                 targetID: id
               })
+              router.push("/TemplateContent")
             }}
           >
             <a>

@@ -17,17 +17,13 @@ import styles from './index.css';
 const option = {};
 const SchemaEditor = schemaEditor(option);
 
-export default class TemplateEditor extends React.Component {
+class TemplateEditor extends React.Component {
   state = {
     // 创建一个空的editorState作为初始值
-    editorState: BraftEditor.createEditorState(null),
+    editorState: BraftEditor.createEditorState(this.props.template.editorState),
     visible: false,
     // 后续转移到models中
-    schema: {
-      type: 'object',
-      title: 'empty object',
-      properties: {},
-    },
+    schema: this.props.template.schema,
   };
 
   componentDidMount() {}
@@ -118,3 +114,7 @@ export default class TemplateEditor extends React.Component {
     );
   }
 }
+
+export default connect(({ template }) => ({
+  template,
+}))(TemplateEditor);
