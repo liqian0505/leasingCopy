@@ -22,7 +22,18 @@ public class Template {
 
     @Override
     public String toString() {
-        return String.format("Contract[id=%s, content='%s']", id, content);
+        return String.format("Template[id=%s, content='%s']", id, content);
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getContent() {
+        return content;
+    }
 }

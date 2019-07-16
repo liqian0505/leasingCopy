@@ -6,14 +6,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Bean;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Arrays;
@@ -21,8 +16,11 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.*;
 
+
+/**
+* @authored by TC.
+*/
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class ContractServiceTests {
@@ -65,7 +63,6 @@ public class ContractServiceTests {
     @Test
     public void createNewContract_thenReturnTheContract(){
         Contract contract = contractService.createContract(new Contract("C2"));
-        System.out.println(contract.id);
         assertThat(contract).extracting("name").contains("C2");
     }
 
@@ -75,9 +72,9 @@ public class ContractServiceTests {
         assertThat(contract.name.equals("C3")).isTrue();
     }
 
-    @Test
-    public void deleteContract(){
-        contractService.deleteContract(repository.findByName("C1").id);
-        assertThat(repository.findByName("C1")).isNull();
-    }
+//    @Test
+//    public void deleteContract(){
+//        contractService.deleteContract(repository.findByName("C1").id);
+//        assertThat(repository.findByName("C1")).isNull();
+//    }
 }
