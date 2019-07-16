@@ -3,3 +3,4 @@ spring:
   data:
     mongodb:
       uri: mongodb://my_user:password123@localhost:27017/my_database
+
