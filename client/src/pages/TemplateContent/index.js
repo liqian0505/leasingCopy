@@ -35,7 +35,6 @@ class TemplateEditor extends React.Component {
     schema: this.props.template.schema,
   };
 
-
   componentDidMount() {
     this.setState({
       editorState: BraftEditor.createEditorState(this.props.template.editorState),
@@ -61,6 +60,12 @@ class TemplateEditor extends React.Component {
     const stringContent = this.state.editorState.toRAW();
     const jsonContent = this.state.editorState.toRAW(true);
     console.log(htmlContent, stringContent, jsonContent);
+
+    this.props.dispatch({
+      type: "template/updateTemplate",
+      targetID: this.props.template.id,
+      jsonContent: jsonContent
+    })
   };
 
   handleEditorChange = editorState => {
@@ -129,6 +134,4 @@ class TemplateEditor extends React.Component {
   }
 }
 
-export default connect(({ template }) => ({
-  template,
-}))(TemplateEditor);
+export default connect(({ template }) => ({ template }))(TemplateEditor)
