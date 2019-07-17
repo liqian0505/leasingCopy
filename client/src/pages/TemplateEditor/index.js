@@ -16,17 +16,32 @@ import styles from './index.css';
 
 const option = {};
 const SchemaEditor = schemaEditor(option);
+// 初始化表格扩展
+BraftEditor.use([
+  Table({
+    defaultColumns: 4, // 默认列数
+    defaultRows: 4, // 默认行数
+    withDropdown: true, // 插入表格前是否弹出下拉菜单
+    // includeEditors: ['editor-id-1'], // 指定该模块对哪些BraftEditor生效，不传此属性则对所有BraftEditor有效
+    // excludeEditors: ['editor-id-2'], // 指定该模块对哪些BraftEditor无效
+  }),
+]);
 
 class TemplateEditor extends React.Component {
   state = {
-    // 创建一个空的editorState作为初始值
-    editorState: BraftEditor.createEditorState(this.props.template.editorState),
     visible: false,
-    // 后续转移到models中
-    schema: this.props.template.schema,
   };
 
-  componentDidMount() { }
+  componentDidMount() {
+    var query = this.getCurrentHerfQuery()
+
+    if (query.id !== undefined) {
+      this.props.dispatch({
+        type: "template/getTemplate",
+        targetID: query.id
+      })
+    }
+  }
 
   showDrawer = () => {
     this.setState({
@@ -48,6 +63,8 @@ class TemplateEditor extends React.Component {
     const jsonContent = this.state.editorState.toRAW(true);
     console.log(htmlContent, stringContent, jsonContent);
 
+    const schemaContent = null
+
     this.props.dispatch({
       type: "template/updateTemplate",
       targetID: this.props.template.id,
@@ -59,14 +76,29 @@ class TemplateEditor extends React.Component {
     this.setState({ editorState });
   };
 
+  getCurrentHerfQuery = () => {
+    var regex = /[^&=?]+=[^&]*/g;
+    var parsedQuery = window.location.href.match(regex);
+
+    var query = {}
+
+    if (parsedQuery !== null) {
+      parsedQuery.forEach((pairText) => {
+        var pair = pairText.split("=")
+        query[pair[0]] = pair[1]
+      })
+    }
+
+    return query
+  }
+
   render() {
-    const { dispatch } = this.props;
-    const { editorState } = this.state;
+    const { dispatch, template } = this.props;
     return (
         <div className={styles.editorContainer}>
           <Row>
             <BraftEditor
-              value={editorState}
+              value={template.editorState}//{editorState}
               onChange={this.handleEditorChange}
               onSave={this.submitContent}
             />
@@ -79,7 +111,7 @@ class TemplateEditor extends React.Component {
               width="50%"
             >
               <SchemaEditor
-                data={JSON.stringify(this.state.schema)}
+                data={JSON.stringify(template.schema)}
               // onChange={schema => {
               //   dispatch({ type: 'bucciarati/updateSchema', payload: JSON.parse(schema) });
               // }}
