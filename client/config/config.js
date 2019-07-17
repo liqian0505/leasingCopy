@@ -84,17 +84,28 @@ export default {
     {
       path: '/',
       component: '../layouts/BasicLayout',
-      Routes: ['src/pages/Authorized'],
-      authority: ['admin', 'user'],
+      // Routes: ['src/pages/Authorized'],
+      // authority: ['admin', 'user'],
       routes: [
         {
           path: '/',
-          name: 'welcome',
-          icon: 'smile',
-          component: './Welcome',
+          component: './index',
         },
         {
-          component: './404',
+          path: '/ContractContent',
+          component: './ContractContent',
+        },
+        {
+          path: '/ContractList',
+          component: './ContractList',
+        },
+        {
+          path: '/TemplateContent',
+          component: './TemplateContent',
+        },
+        {
+          path: '/TemplateList',
+          component: './TemplateList',
         },
       ],
     },

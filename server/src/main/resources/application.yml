@@ -1,5 +1,5 @@
 spring:
-  profiles: dev
   data:
     mongodb:
-      uri: localhost:27017/my_database
+      uri: mongodb://heroku_jzgcbjbx:4pjc5oe815md328o5vj49kmeqk@ds221435.mlab.com:21435/heroku_jzgcbjbx
+
