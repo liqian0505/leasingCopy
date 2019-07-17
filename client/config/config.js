@@ -73,11 +73,11 @@ export default {
   exportStatic: {
     htmlSuffix: true,
   },
+  treeShaking: true,
   plugins,
   block: {
     defaultGitUrl: 'https://github.com/ant-design/pro-blocks',
   },
-  hash: true,
   targets: {
     ie: 11,
   },
