@@ -28,7 +28,7 @@ class ContractList extends React.Component {
       {
         title: '合同名称', key: 'id', render: record => {
           return (
-            <CustomInput placeholder="未命名合同"/>
+            <CustomInput id={record.id} placeholder="未命名合同" onChange={(id, name) => console.log(id, name)} />
           )
         }
       },

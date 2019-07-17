@@ -1,9 +1,18 @@
 import React from 'react'
-import { Icon } from 'antd'
+import { Input } from 'antd'
 import styles from './CustomInput.css'
 
-const CustomInput = props => (
-  <input className={styles.className} placeholder={props.placeholder} />
-);
-
+class CustomInput extends React.Component {
+  render() {
+    return (
+      <Input
+        className={styles.container}
+        placeholder={this.props.placeholder}
+        onPressEnter={e => {
+          document.activeElement.blur()
+          this.props.onChange(this.props.id, e.target.value)
+        }} />
+    )
+  }
+}
 export default CustomInput;
