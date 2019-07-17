@@ -22,28 +22,32 @@
         <configuration>
           <workingDirectory>${project.basedir}</workingDirectory>
           <installDirectory>${project.basedir}</installDirectory>
+            <nodeVersion>v8.9.4</nodeVersion>
+            <npmVersion>5.6.0</npmVersion>
         </configuration>
-        <!-- <executions>
+         <executions>
           <execution>
             <phase>prepare-package</phase>
             <id>install node and npm</id>
             <goals>
               <goal>install-node-and-npm</goal>
             </goals>
-            <configuration>
-              <nodeVersion>v8.9.4</nodeVersion>
-              <npmVersion>5.6.0</npmVersion>
-            </configuration>
           </execution>
-          <execution>
-            <id>npm install</id>
-            <goals>
-              <goal>npm</goal>
-            </goals>
-            <configuration>
-              <arguments>install</arguments>
-            </configuration>
-          </execution>
+           <execution>
+             <id>npm install</id>
+             <goals>
+               <goal>npm</goal>
+             </goals>
+             <!-- optional: default phase is "generate-resources" -->
+             <phase>prepare-package</phase>
+             <configuration>
+               <!-- optional: The default argument is actually
+               "install", so unless you need to run some other npm command,
+               you can remove this whole <configuration> section.
+               -->
+               <arguments>install</arguments>
+             </configuration>
+           </execution>
           <execution>
             <id>npm run build</id>
             <phase>prepare-package</phase>
@@ -54,7 +58,7 @@
               <arguments>run build</arguments>
             </configuration>
           </execution>
-        </executions> -->
+        </executions>
       </plugin>
     </plugins>
   </build>

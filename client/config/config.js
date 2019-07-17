@@ -70,6 +70,9 @@ if (isAntDesignProPreview) {
 }
 
 export default {
+  exportStatic: {
+    htmlSuffix: true,
+  },
   plugins,
   block: {
     defaultGitUrl: 'https://github.com/ant-design/pro-blocks',
@@ -151,6 +154,8 @@ export default {
       return localName;
     },
   },
+  base: '/',
+  publicPath: '/',
   manifest: {
     basePath: '/',
   },
