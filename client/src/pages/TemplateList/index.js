@@ -10,8 +10,8 @@ class TemplateList extends React.Component {
   render() {
     return (
       <BasicLayout>
-        <Row style={{padding: '10px'}}>
-         <Button type="primary" icon="plus" onClick={this.newTemplate}>New Template</Button>
+        <Row style={{ padding: '10px' }}>
+          <Button type="primary" icon="plus" onClick={this.newTemplate}>New Template</Button>
         </Row>
         <Row><Table columns={this.columns} dataSource={this.props.templateList} rowKey="id" /></Row>
       </BasicLayout>
@@ -25,13 +25,19 @@ class TemplateList extends React.Component {
       { title: '模版名称', dataIndex: 'name', key: 'name' },
       { title: '模板样式', dataIndex: 'style', key: 'style' },
       {
-        title: '选项', render: record => (
-          <div>
-            <CustomIcon id={record.id} type="edit" onClick={this.editHandler} />
-            <CustomIcon id={record.id} type="delete" onClick={this.deleteHandler} />
-            <CustomIcon id={record.id} type="bars" onClick={this.filterHandler} />
-          </div>
-        )
+        title: '选项', render: record => {
+          const parameters = {
+            id: record.id
+          }
+
+          return (
+            <div>
+              <CustomIcon parameters={parameters} type="edit" onClick={parameters => this.editHandler(parameters)} />
+              <CustomIcon parameters={parameters} type="delete" onClick={parameters => this.deleteHandler(parameters)} />
+              <CustomIcon parameters={parameters} type="bars" onClick={parameters => this.filterHandler(parameters)} />
+            </div>
+          )
+        }
       }
     ]
   }
@@ -48,23 +54,24 @@ class TemplateList extends React.Component {
     })
   }
 
-  editHandler = id => {
+  editHandler = parameters => {
     this.props.dispatch({
       type: "template/getTemplate",
-      targetID: id
+      targetID: parameters.id
     })
   }
 
-  deleteHandler = id => {
+  deleteHandler = parameters => {
     this.props.dispatch({
       type: "templateList/deleteTemplate",
-      targetID: id
+      targetID: parameters.id
     })
   }
 
-  filterHandler = id => {
+  filterHandler = parameters => {
     this.props.dispatch({
-      type: "contractList/filterContract"
+      type: "contractList/filterContract",
+      targetID: parameters.id
     })
   }
 }
