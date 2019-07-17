@@ -7,9 +7,6 @@ export default {
     updateTemplateList(state, { newList }) {
       return newList;
     },
-    deleteTemplate(state, { id }) {
-      return state.filter(template => template !== id)
-    },
   },
   effects: {
     *getTemplateList(_, { call, put }) {
@@ -20,13 +17,11 @@ export default {
       });
     },
     *deleteTemplate({ targetID }, { call, put }) {
-      const response = yield call(request.delete, '/api/templates/', { params: { id: targetID } })
-      console.log(response)
-      if (response === 'OK') {
+      const response = yield call(request.delete, `/api/templates/${targetID}`)
+      if (response === `delete ${targetID} succeed`) {
         yield put({
-          type: 'deleteTemplate',
-          id: targetID,
-        })
+          type: 'getTemplateList',
+        });
       }
     },
   },

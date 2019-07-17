@@ -1,17 +1,18 @@
 import React from 'react';
 import { connect } from 'dva';
-import { Table, Button, Icon, Divider, Row, Col } from 'antd';
+import { Table, Button, Icon, Divider, Row, Col, } from 'antd';
 import BasicLayout from '@/layouts/BasicLayout';
 
 import styles from './index.css';
 import CustomIcon from '@/components/Perish/CustomIcon';
+import CustomInput from '@/components/Perish/CustomInput';
 
 class TemplateList extends React.Component {
   render() {
     return (
       <BasicLayout>
-        <Row style={{ padding: '10px' }}>
-          <Button type="primary" icon="plus" onClick={this.newTemplate}>New Template</Button>
+        <Row className={styles.createButton}>
+          <Button type="primary" icon="plus" onClick={this.createHandler}>New Template</Button>
         </Row>
         <Row><Table columns={this.columns} dataSource={this.props.templateList} rowKey="id" /></Row>
       </BasicLayout>
@@ -20,14 +21,19 @@ class TemplateList extends React.Component {
 
   constructor(props) {
     super(props)
-
     this.columns = [
-      { title: '模版名称', dataIndex: 'name', key: 'name' },
-      { title: '模板样式', dataIndex: 'style', key: 'style' },
       {
-        title: '选项', render: record => {
+        title: '模版名称', dataIndex: 'name', key: 'name', render: record => {
+          return (
+            <CustomInput id={record.id} placeholder="未命名合同" onChange={(id, name) => console.log(id, name)} />
+          )
+        },
+      },
+      {
+        title: '选项',
+        render: record => {
           const parameters = {
-            id: record.id
+            id: record.id,
           }
 
           return (
@@ -37,8 +43,8 @@ class TemplateList extends React.Component {
               <CustomIcon parameters={parameters} type="bars" onClick={parameters => this.filterHandler(parameters)} />
             </div>
           )
-        }
-      }
+        },
+      },
     ]
   }
 
@@ -48,7 +54,7 @@ class TemplateList extends React.Component {
     });
   }
 
-  newTemplate = () => {
+  createHandler = () => {
     this.props.dispatch({
       type: 'template/createTemplate',
     })
@@ -56,22 +62,22 @@ class TemplateList extends React.Component {
 
   editHandler = parameters => {
     this.props.dispatch({
-      type: "template/getTemplate",
-      targetID: parameters.id
+      type: 'template/getTemplate',
+      targetID: parameters.id,
     })
   }
 
   deleteHandler = parameters => {
     this.props.dispatch({
-      type: "templateList/deleteTemplate",
-      targetID: parameters.id
+      type: 'templateList/deleteTemplate',
+      targetID: parameters.id,
     })
   }
 
   filterHandler = parameters => {
     this.props.dispatch({
-      type: "contractList/filterContract",
-      targetID: parameters.id
+      type: 'contractList/filterContract',
+      targetID: parameters.id,
     })
   }
 }

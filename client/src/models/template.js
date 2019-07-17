@@ -8,11 +8,7 @@ export default {
   state: {
     editorContent: null,
     editorState: null,
-    schema: {
-      type: 'object',
-      title: 'empty object',
-      properties: {},
-    },
+    schema: null,
     id: null,
   },
   reducers: {
@@ -23,7 +19,6 @@ export default {
   effects: {
     *getTemplate({ targetID }, { call, put }) {
       const { editorContent, schemaContent, id } = yield call(request.get, '/api/template', { params: { id: targetID } })
-
       yield put({
         type: 'updateEditorState',
         newState: {
@@ -40,10 +35,12 @@ export default {
     },
     *createTemplate(_, { call, put }) {
       const response = yield call(request.post, '/api/templates');
-      console.log(response)
       yield put({
         type: 'updateTemplate',
         newState: { ...response.id },
+      });
+      yield put({
+        type: 'templateList/getTemplateList',
       });
     },
   },
