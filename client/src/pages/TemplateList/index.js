@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'dva';
 import { Table, Button, Icon, Divider, Row, Col } from 'antd';
 import BasicLayout from '@/layouts/BasicLayout';
+
 import styles from './index.css';
 import CustomIcon from '@/components/Perish/CustomIcon';
 
@@ -61,7 +62,7 @@ class TemplateList extends React.Component {
     })
   }
 
-  filterHandler = id =>{
+  filterHandler = id => {
     this.props.dispatch({
       type: "contractList/filterContract"
     })

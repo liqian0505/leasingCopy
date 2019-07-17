@@ -3,11 +3,14 @@ import router from 'umi/router'
 
 export default {
   namespace: 'contractList',
-  state: null,
+  state: [],
   reducers: {
     updateContractList(state, { newList }) {
-      return newList;
+      return newList
     },
+    deleteContract(state, { targetID }) {
+      return state.filter(contract => contract !== targetID)
+    }
   },
   effects: {
     *getContractList({ templateID }, { call, put }) {
@@ -20,5 +23,15 @@ export default {
 
       router.push("/ContractList")
     },
+    *deleteContact({ templateID }, { call, put }) {
+      const response = yield call(request.delete, '/api/contract', { params: { id: templateID } })
+
+      if (response.status === "OK") {
+        yield put({
+          type: 'deleteContract',
+          targetID: templateID
+        })
+      }
+    }
   },
 };
