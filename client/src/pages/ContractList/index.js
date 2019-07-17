@@ -5,12 +5,18 @@ import BasicLayout from '@/layouts/BasicLayout';
 
 import styles from './index.css';
 import CustomIcon from '@/components/Perish/CustomIcon';
+import CustomInput from '@/components/Perish/CustomInput';
 
 class ContractList extends React.Component {
   render() {
+
+    const table = <Table columns={this.columns} dataSource={this.props.contractList} rowKey="id" />
+    const createButton = <div className={styles.createButton} onClick={e => this.createHandler()} />
+
     return (
       <BasicLayout>
-        <Table columns={this.columns} dataSource={this.props.contractList} rowKey="id" />
+        {table}
+        {createButton}
       </BasicLayout>
     )
   }
@@ -19,20 +25,20 @@ class ContractList extends React.Component {
     super(props)
 
     this.columns = [
-      { title: '合同名称', dataIndex: 'name', key: 'name' },
-      { title: '合同样式', dataIndex: 'style', key: 'style' },
+      {
+        title: '合同名称', key: 'id', render: record => {
+          return (
+            <CustomInput placeholder="未命名合同"/>
+          )
+        }
+      },
       {
         title: '选项', render: record => {
-
-          const parameters = { 
-            id: record.id, 
-            templateID: record.templateID 
-          }
-
+          const parameters = { id: record.id, templateID: record.templateID }
           return (
             <div>
               <CustomIcon type="edit" onClick={this.editHandler} parameters={parameters} />
-              <CustomIcon type="delete" onClick={this.deleteHandler} parameters={parameters}/>
+              <CustomIcon type="delete" onClick={this.deleteHandler} parameters={parameters} />
             </div>
           )
         }
@@ -53,6 +59,12 @@ class ContractList extends React.Component {
     this.props.dispatch({
       type: "contractList/deleteContract",
       targetID: parameters.id
+    })
+  }
+
+  createHandler = () => {
+    this.props.dispatch({
+      type: "contractList/createContract"
     })
   }
 }

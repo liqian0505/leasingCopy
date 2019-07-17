@@ -7,10 +7,11 @@
   right: 1vmin;
   bottom: 1vmin;
 
-  width: 3vmin;
-  height: 3vmin;
+  width: 2.5vmin;
+  height: 2.5vmin;
 
-  background-color: aqua;
+  background-size: 100% 100%;
+  background-image: url(../../assets/form.png);
 }
 
 .commitSwitch{
@@ -18,8 +19,9 @@
   right: 5vmin;
   bottom: 1vmin;
 
-  width: 3vmin;
-  height: 3vmin;
+  width: 2.5vmin;
+  height: 2.5vmin;
 
-  background-color: blueviolet;
+  background-size: 100% 100%;
+  background-image: url(../../assets/save.png);
 }

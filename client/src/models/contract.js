@@ -33,6 +33,6 @@ export default {
       })
 
       router.push("/ContractEditor?id=" + id)
-    },
+    }
   },
 };

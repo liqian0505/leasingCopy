@@ -100,7 +100,6 @@ class ContractEditor extends React.Component {
   getCurrentHerfQuery = () => {
     var regex = /[^&=?]+=[^&]*/g;
     var parsedQuery = window.location.href.match(regex);
-
     var query = {}
 
     if (parsedQuery !== null) {
@@ -112,81 +111,6 @@ class ContractEditor extends React.Component {
 
     return query
   }
-
-  // state = {
-  //   editorState: BraftEditor.createEditorState('<p>empty</p>'),
-  //   visible: false,
-  // schema: {
-  //   type: 'object',
-  //   title: 'empty object',
-  //   properties: {},
-  // },
-  //   formData: null,
-  // };
-
-  // showDrawer = () => {
-  //   this.setState({
-  //     visible: true,
-  //   });
-  // };
-
-  // onClose = () => {
-  //   this.setState({
-  //     visible: false,
-  //   });
-  // };
-
-  // render() {
-  //   const controls = [];
-  //   const { editorState, schema, formData } = this.state
-  //   return (
-  //     <BasicLayout>
-  //       <div className={styles.editorContainer}>
-  //         <Row>
-  // <BraftEditor
-  //   value={editorState}
-  //   readOnly
-  //   controls={controls}
-  //   style={{ height: '500px' }}
-  // />
-  // <Drawer
-  //   title="Form Editor"
-  //   placement="right"
-  //   closable={false}
-  //   onClose={this.onClose}
-  //   visible={this.state.visible}
-  //   width="50%"
-  // >
-  //   <Form
-  //     schema={schema}
-  //     formData={formData}//{getDefaultData(schema)}
-  //     // onChange={e => { return }}
-  //     // onSubmit={e => dispatch({ type: 'bucciarati/updateData', payload: e.formData })}
-  //     onError={e => console.log(e)}
-  //   />
-  // </Drawer>
-  //         </Row>
-  //         <Row>
-  //           <Col span={20}></Col>
-  //           <Col span={2}>
-  //             <div className={styles.buttonContainer}>
-  // <Button type="primary" block onClick={this.showDrawer}>
-  //   Drawer
-  // </Button>
-  //             </div>
-  //           </Col>
-  //           <Col span={2}>
-  // <div className={styles.buttonContainer}>
-  //   <Button type="primary" block onClick={this.submitContent}>
-  //     Save
-  //   </Button>
-  // </div>
-  //           </Col>
-  //         </Row>
-  //       </div>
-  //     </BasicLayout>
-  //   );
-  // }
 }
 
 export default connect(({ contract, template }) => ({ contract, template }))(ContractEditor);

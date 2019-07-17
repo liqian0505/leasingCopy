@@ -5,33 +5,43 @@ export default {
   namespace: 'contractList',
   state: [],
   reducers: {
-    updateContractList(state, { newList }) {
+    updateContractList(_, { newList }) {
       return newList
     },
-    deleteContract(state, { targetID }) {
-      return state.filter(contract => contract !== targetID)
+    deleteContractInList(state, { targetID }) {
+      return state.filter(contract => contract.id !== targetID)
+    },
+    createContractInList(state, { newID }) {
+      return state.concat({
+        id: newID,
+        name: "未定名合同",
+        schema: {
+          type: 'object',
+          title: 'empty object',
+          properties: {},
+          formData: null,
+          editorState: null
+        }
+      })
     }
   },
   effects: {
     *getContractList({ templateID }, { call, put }) {
-      const response = yield call(request, '/contract/all', { params: { id: templateID } });
+      const response = yield call(request, '/api/contracts', { id: templateID });
 
-      yield put({
-        type: 'updateContractList',
-        newList: response,
-      })
+      yield put({ type: 'updateContractList', newList: response })
 
       router.push("/ContractList")
     },
-    *deleteContact({ templateID }, { call, put }) {
-      const response = yield call(request.delete, '/api/contract', { params: { id: templateID } })
+    *deleteContract({ targetID }, { call, put }) {
+      const response = yield call(request.delete, `/api/contracts/${targetID}`)
 
-      if (response.status === "OK") {
-        yield put({
-          type: 'deleteContract',
-          targetID: templateID
-        })
-      }
+      yield put({ type: 'deleteContractInList', targetID: targetID })
+    },
+    *createContract(_, { call, put }) {
+      const { id } = yield call(request.post, "/api/contracts")
+      console.log(id)
+      yield put({ type: 'createContractInList', newID: id })
     }
   },
 };
