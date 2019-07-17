@@ -6,6 +6,12 @@ const contractData = [
     formData: {
 
     },
+    schema: {
+      type: 'object',
+      title: 'empty object',
+      properties: {},
+    },
+    templateID: "1"
   },
   {
     id: "2",
@@ -14,6 +20,12 @@ const contractData = [
     formData: {
 
     },
+    schema: {
+      type: 'object',
+      title: 'empty object',
+      properties: {},
+    },
+    templateID: "2"
   },
   {
     id: "3",
@@ -22,11 +34,24 @@ const contractData = [
     formData: {
 
     },
+    schema: {
+      type: 'object',
+      title: 'empty object',
+      properties: {},
+    },
+    templateID: "3"
   },
 ];
 
 export default {
-  'GET /contract/all': contractData.map(data => { return { id: data.id, name: data.name, style: data.style } }),
+  'GET /contract/all': contractData.map(data => {
+    return {
+      id: data.id,
+      name: data.name,
+      style: data.style,
+      templateID: data.templateID
+    }
+  }),
   'GET /contract': (req, res) => {
     const { query } = req
     res.send(contractData.find(data => data.id === query.id))
