@@ -1,0 +1,25 @@
+.editor{
+  height: 900px;
+}
+
+.drawerSwitch{
+  position: absolute;
+  right: 1vmin;
+  bottom: 1vmin;
+
+  width: 3vmin;
+  height: 3vmin;
+
+  background-color: aqua;
+}
+
+.commitSwitch{
+  position: absolute;
+  right: 5vmin;
+  bottom: 1vmin;
+
+  width: 3vmin;
+  height: 3vmin;
+
+  background-color: blueviolet;
+}

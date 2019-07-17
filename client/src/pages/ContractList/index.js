@@ -1,51 +1,60 @@
 import React from 'react';
 import { connect } from 'dva';
-import { Table, Button, Icon, Divider } from 'antd';
+import { Table } from 'antd';
 import BasicLayout from '@/layouts/BasicLayout';
+
 import styles from './index.css';
 import CustomIcon from '@/components/Perish/CustomIcon';
 
-const ContractList = props => {
-  const { contractList, dispatch } = props;
-
-  if (contractList === null) {
-    dispatch({
-      type: 'contractList/getContractList',
-    });
+class ContractList extends React.Component {
+  render() {
+    return (
+      <BasicLayout>
+        <Table columns={this.columns} dataSource={this.props.contractList} rowKey="id" />
+      </BasicLayout>
+    )
   }
 
-  const columns = [
-    {
-      title: '合同名称',
-      dataIndex: 'name',
-      key: 'name',
-    },
-    {
-      title: '合同模板',
-      dataIndex: 'style',
-      key: 'style',
-    },
-    {
-      title: '选项',
-      render: record => (
-        <div>
-          <CustomIcon id={record.id} type="edit" onClick={id => { dispatch({ type: "contract/getContract", targetID: id }) }}/>
-          <Divider type="vertical" style={{ opacity: 0 }} />
-          <CustomIcon id={record.id} type="delete" onClick={id => { dispatch({ type: "contract/getContract", targetID: id }) }}/>
-        </div>
-      ),
-    },
-  ];
+  constructor(props) {
+    super(props)
 
-  const source = contractList !== null ? contractList : [];
+    this.columns = [
+      { title: '合同名称', dataIndex: 'name', key: 'name' },
+      { title: '合同样式', dataIndex: 'style', key: 'style' },
+      {
+        title: '选项', render: record => {
 
-  return (
-    <BasicLayout>
-      <Table columns={columns} dataSource={source} rowKey="id" />
-    </BasicLayout>
-  );
-};
+          const parameters = { 
+            id: record.id, 
+            templateID: record.templateID 
+          }
 
-export default connect(({ contractList }) => ({
-  contractList,
-}))(ContractList);
+          return (
+            <div>
+              <CustomIcon type="edit" onClick={this.editHandler} parameters={parameters} />
+              <CustomIcon type="delete" onClick={this.deleteHandler} parameters={parameters}/>
+            </div>
+          )
+        }
+      }
+    ]
+  }
+
+  componentDidMount() { this.props.dispatch({ type: 'contractList/getContractList' }) }
+
+  editHandler = parameters => {
+    this.props.dispatch({
+      type: "contract/getContract",
+      targetID: parameters.id
+    })
+  }
+
+  deleteHandler = parameters => {
+    this.props.dispatch({
+      type: "contractList/deleteContract",
+      targetID: parameters.id
+    })
+  }
+}
+
+export default connect(({ contractList }) => ({ contractList }))(ContractList);
