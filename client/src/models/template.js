@@ -1,9 +1,12 @@
 import request from '../utils/request';
 import router from 'umi/router'
 
+import BraftEditor from 'braft-editor';
+
 export default {
   namespace: 'template',
   state: {
+    editorContent: null,
     editorState: null,
     schema: null,
     id: null
@@ -15,14 +18,15 @@ export default {
   },
   effects: {
     *getTemplate({ targetID }, { call, put }) {
-      const { editorState, schema, id } = yield call(request, "/template", { params: { id: targetID } })
-      
+      const { editorContent, schemaContent, id } = yield call(request, "/template", { params: { id: targetID } })
+
       yield put({
         type: "updateEditorState",
         newState: {
-          editorState,
-          schema,
-          id
+          editorContent,
+          schemaContent,
+          id,
+          editorState: BraftEditor.createEditorState(editorContent)
         }
       })
       router.push("/TemplateContent?id=" + id)

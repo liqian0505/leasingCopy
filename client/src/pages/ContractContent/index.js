@@ -51,15 +51,6 @@ class ContractEditor extends React.Component {
     formData: null,
   };
 
-  // componentDidMount() {
-  //   console.log(this.props.template)
-  //   this.setState({
-  //     editorState: BraftEditor.createEditorState(this.props.template.editorState),
-  //     schema: this.props.template.schema,
-  //     formData: this.props.formData,
-  //   })
-  // }
-
   showDrawer = () => {
     this.setState({
       visible: true,

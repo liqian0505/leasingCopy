@@ -3,88 +3,60 @@ import { connect } from 'dva';
 import { Table, Button, Icon, Divider } from 'antd';
 import BasicLayout from '@/layouts/BasicLayout';
 import styles from './index.css';
-import CustomDiv from '@/components/Perish/CustomDiv';
+import CustomIcon from '@/components/Perish/CustomIcon';
 
-const TemplateList = props => {
-  const { templateList, dispatch } = props;
+class TemplateList extends React.Component {
+  render() {
+    return (
+      <BasicLayout>
+        <Table columns={this.columns} dataSource={this.props.templateList} rowKey="id" />
+      </BasicLayout>
+    )
+  }
 
-  if (templateList === null) {
-    dispatch({
+  constructor(props) {
+    super(props)
+
+    this.columns = [
+      { title: '模版名称', dataIndex: 'name', key: 'name' },
+      { title: '模板样式', dataIndex: 'style', key: 'style' },
+      {
+        title: '选项', render: record => (
+          <div>
+            <CustomIcon id={record.id} type="edit" onClick={this.editHandler} />
+            <CustomIcon id={record.id} type="delete" onClick={this.deleteHandler} />
+            <CustomIcon id={record.id} type="bars" onClick={this.filterHandler} />
+          </div>
+        )
+      }
+    ]
+  }
+
+  componentDidMount() {
+    this.props.dispatch({
       type: 'templateList/getTemplateList',
     });
   }
 
-  const columns = [
-    {
-      title: '模版名称',
-      dataIndex: 'name',
-      key: 'name',
-    },
-    {
-      title: '模板样式',
-      dataIndex: 'style',
-      key: 'style',
-    },
-    {
-      title: '选项',
-      render: record => (
-        <div>
-          <CustomDiv
-            id={record.id}
-            onClick={id => {
-              dispatch({
-                type: "template/getTemplate",
-                targetID: id
-              })
-            }}
-          >
-            <a>
-              <Icon type="edit" />
-            </a>
-          </CustomDiv>
-          <Divider type="vertical" style={{ opacity: 0 }} />
-          <CustomDiv
-            id={record.id}
-            onClick={id => {
-              console.log(id);
-            }}
-          >
-            <a>
-              <Icon type="delete" />
-            </a>
-          </CustomDiv>
-          <Divider type="vertical" style={{ opacity: 0 }} />
-          <CustomDiv
-            id={record.id}
-            onClick={id => {
-              dispatch({
-                type: "template/getTemplate",
-                targetID: id
-              })
-              dispatch({
-                type: "contractList/getContractList",
-                targetID: id
-              })
-            }}
-          >
-            <a>
-              <Icon type="bars" />
-            </a>
-          </CustomDiv>
-        </div>
-      ),
-    },
-  ];
+  editHandler = id => {
+    this.props.dispatch({
+      type: "template/getTemplate",
+      targetID: id
+    })
+  }
 
-  const source = templateList !== null ? templateList : [];
+  deleteHandler = id => {
+    this.props.dispatch({
+      type: "templateList/deleteTemplate",
+      targetID: id
+    })
+  }
 
-  return (
-    <BasicLayout>
-      <Table columns={columns} dataSource={source} rowKey="id" />
-    </BasicLayout>
-  );
-};
+  filterHandler = id =>{
+    this.props.dispatch({
+      type: "contractList/filterContract"
+    })
+  }
+}
 
-export default connect(({ templateList }) => ({
-  templateList,
-}))(TemplateList);
+export default connect(({ templateList }) => ({ templateList }))(TemplateList);

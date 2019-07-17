@@ -29,14 +29,10 @@ BraftEditor.use([
 
 class TemplateEditor extends React.Component {
   state = {
-    // 创建一个空的editorState作为初始值
-    editorState: BraftEditor.createEditorState(null),
     visible: false,
-    schema: this.props.template.schema,
   };
 
   componentDidMount() {
-
     var query = this.getCurrentHerfQuery()
 
     if (query.id !== undefined) {
@@ -45,10 +41,6 @@ class TemplateEditor extends React.Component {
         targetID: query.id
       })
     }
-
-    this.setState({
-      editorState: BraftEditor.createEditorState(this.props.template.editorState),
-    })
   }
 
   showDrawer = () => {
@@ -70,6 +62,8 @@ class TemplateEditor extends React.Component {
     const stringContent = this.state.editorState.toRAW();
     const jsonContent = this.state.editorState.toRAW(true);
     console.log(htmlContent, stringContent, jsonContent);
+
+    const schemaContent = null
 
     this.props.dispatch({
       type: "template/updateTemplate",
@@ -99,14 +93,13 @@ class TemplateEditor extends React.Component {
   }
 
   render() {
-    const { dispatch } = this.props;
-    const { editorState } = this.state;
+    const { dispatch, template } = this.props;
     return (
       <BasicLayout>
         <div className={styles.editorContainer}>
           <Row>
             <BraftEditor
-              value={editorState}
+              value={template.editorState}//{editorState}
               onChange={this.handleEditorChange}
               onSave={this.submitContent}
             />
@@ -119,7 +112,7 @@ class TemplateEditor extends React.Component {
               width="50%"
             >
               <SchemaEditor
-                data={JSON.stringify(this.state.schema)}
+                data={JSON.stringify(template.schema)}
               // onChange={schema => {
               //   dispatch({ type: 'bucciarati/updateSchema', payload: JSON.parse(schema) });
               // }}

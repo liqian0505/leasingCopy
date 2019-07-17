@@ -2,7 +2,7 @@ import request from '../utils/request';
 
 export default {
   namespace: 'templateList',
-  state: null,
+  state: [],
   reducers: {
     updateTemplateList(state, { newList }) {
       return newList;

@@ -3,7 +3,7 @@ import { connect } from 'dva';
 import { Table, Button, Icon, Divider } from 'antd';
 import BasicLayout from '@/layouts/BasicLayout';
 import styles from './index.css';
-import CustomDiv from '@/components/Perish/CustomDiv';
+import CustomIcon from '@/components/Perish/CustomIcon';
 
 const ContractList = props => {
   const { contractList, dispatch } = props;
@@ -29,30 +29,9 @@ const ContractList = props => {
       title: '选项',
       render: record => (
         <div>
-          <CustomDiv
-            id={record.id}
-            onClick={id => {
-              dispatch({
-                type: "contract/getContract",
-                targetID: id
-              })
-            }}
-          >
-            <a>
-              <Icon type="edit" />
-            </a>
-          </CustomDiv>
+          <CustomIcon id={record.id} type="edit" onClick={id => { dispatch({ type: "contract/getContract", targetID: id }) }}/>
           <Divider type="vertical" style={{ opacity: 0 }} />
-          <CustomDiv
-            id={record.id}
-            onClick={id => {
-              console.log(id);
-            }}
-          >
-            <a>
-              <Icon type="delete" />
-            </a>
-          </CustomDiv>
+          <CustomIcon id={record.id} type="delete" onClick={id => { dispatch({ type: "contract/getContract", targetID: id }) }}/>
         </div>
       ),
     },
