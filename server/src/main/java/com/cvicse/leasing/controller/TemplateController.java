@@ -1,15 +1,19 @@
 package com.cvicse.leasing.controller;
 
 
+import com.cvicse.leasing.exception.TemplateNotFoundException;
 import com.cvicse.leasing.model.Template;
 import com.cvicse.leasing.service.TemplateService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/templates")
 public class TemplateController {
@@ -20,14 +24,22 @@ public class TemplateController {
 
     @GetMapping
     public List<Template> getTemplates() {
+        try{
         logger.info("All Templates requested");
         return templateService.getAllTemplate();
+        }catch(TemplateNotFoundException e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Template Not Found.",e);
+        }
     }
 
     @GetMapping("/{id}")
     public Template getTemplate(@PathVariable String id) {
-        logger.info("Get Template with Template.id " + id);
+        try{
+            logger.info("Get Template with Template.id " + id);
         return this.templateService.getTemplate(id);
+        }catch (TemplateNotFoundException e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Template Not Found",e);
+        }
     }
 
     @PostMapping
@@ -44,8 +56,12 @@ public class TemplateController {
 
     @DeleteMapping("/{id}")
     public void deleteTemplate(@PathVariable String id) {
+        try{
         logger.info("Delete Template with Template.id " + id);
         this.templateService.deleteTemplate(id);
+        }catch(TemplateNotFoundException e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Template Not Found.",e);
+        }
     }
 
 }
