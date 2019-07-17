@@ -36,6 +36,16 @@ class TemplateEditor extends React.Component {
   };
 
   componentDidMount() {
+
+    var query = this.getCurrentHerfQuery()
+
+    if (query.id !== undefined) {
+      this.props.dispatch({
+        type: "template/getTemplate",
+        targetID: query.id
+      })
+    }
+
     this.setState({
       editorState: BraftEditor.createEditorState(this.props.template.editorState),
     })
@@ -71,6 +81,22 @@ class TemplateEditor extends React.Component {
   handleEditorChange = editorState => {
     this.setState({ editorState });
   };
+
+  getCurrentHerfQuery = () => {
+    var regex = /[^&=?]+=[^&]*/g;
+    var parsedQuery = window.location.href.match(regex);
+
+    var query = {}
+
+    if (parsedQuery !== null) {
+      parsedQuery.forEach((pairText) => {
+        var pair = pairText.split("=")
+        query[pair[0]] = pair[1]
+      })
+    }
+
+    return query
+  }
 
   render() {
     const { dispatch } = this.props;

@@ -36,7 +36,6 @@ const TemplateList = props => {
                 type: "template/getTemplate",
                 targetID: id
               })
-              // router.push("/TemplateContent")
             }}
           >
             <a>

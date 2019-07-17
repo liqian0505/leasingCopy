@@ -16,6 +16,7 @@ export default {
   effects: {
     *getTemplate({ targetID }, { call, put }) {
       const { editorState, schema, id } = yield call(request, "/template", { params: { id: targetID } })
+      
       yield put({
         type: "updateEditorState",
         newState: {
@@ -24,7 +25,7 @@ export default {
           id
         }
       })
-      router.push("/TemplateContent")
+      router.push("/TemplateContent?id=" + id)
     },
     *updateTemplate({ targetID, jsonContent }, { call }) {
       console.log(targetID, jsonContent)
