@@ -1,11 +1,11 @@
 package com.cvicse.leasing.repository;
 
 import com.cvicse.leasing.model.Template;
-//import org.javers.spring.annotation.JaversSpringDataAuditable;
+import org.javers.spring.annotation.JaversSpringDataAuditable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-//@JaversSpringDataAuditable
+@JaversSpringDataAuditable
 public interface TemplateRepository extends MongoRepository<Template, String> {
 
-    Template findByContent(String content);
+    Template findByName(String name);
 }

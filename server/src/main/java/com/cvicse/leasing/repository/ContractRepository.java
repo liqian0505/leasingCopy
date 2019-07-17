@@ -2,12 +2,12 @@ package com.cvicse.leasing.repository;
 
 import com.cvicse.leasing.model.Contract;
 
-//import org.javers.spring.annotation.JaversSpringDataAuditable;
+import org.javers.spring.annotation.JaversSpringDataAuditable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-//@JaversSpringDataAuditable
+@JaversSpringDataAuditable
 public interface ContractRepository extends MongoRepository<Contract, String> {
 
-    Contract findByName(String name);
+    Contract findByContent(String content);
 
 }

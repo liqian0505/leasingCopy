@@ -25,12 +25,8 @@ public class ContractController {
 
     @GetMapping
     public List<Contract> getContracts() {
-        try{
         logger.info("All contracts requested.");
         return contractService.getAllContract();
-        }catch(ContractNotFoundException e){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Contract Not Found",e);
-        }
     }
 
     @GetMapping("/{id}")
@@ -45,8 +41,9 @@ public class ContractController {
     }
 
     @PostMapping
-    public Contract createContract(@RequestBody Contract newContract) {
+    public Contract createContract(@RequestBody String content) {
         logger.info("Create contract");
+        Contract newContract = new Contract(content);
         return this.contractService.createContract(newContract);
     }
 
@@ -57,9 +54,11 @@ public class ContractController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteContract(@PathVariable String id) {
+    public String deleteContract(@PathVariable String id) {
        try{ logger.info("Delete contract with contract.id " + id);
         this.contractService.deleteContract(id);
+        String s="delete "+ id+" success";
+        return s;
        }catch (ContractNotFoundException e) {
            logger.info(e.getMessage());
            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Contract Not Found");
