@@ -7,5 +7,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 @JaversSpringDataAuditable
 public interface TemplateRepository extends MongoRepository<Template, String> {
 
-    Template findByContent(String content);
+    Template findByName(String name);
 }

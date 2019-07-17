@@ -1,5 +1,6 @@
 package com.cvicse.leasing.service;
 
+import com.cvicse.leasing.exception.TemplateNotFoundException;
 import com.cvicse.leasing.model.Template;
 import com.cvicse.leasing.repository.TemplateRepository;
 import org.junit.Before;
@@ -43,15 +44,15 @@ public class TemplateServiceTests {
     }
 
     @Test
-    public void given2Templates_when_getAllTemplates_thenReturn2Records() {
+    public void given2Templates_when_getAllTemplates_thenReturn2Records() throws TemplateNotFoundException{
         Template Template1=new Template("T1");
         Template Template2 = new Template("T2");
         List<Template> TemplateList= templateService.getAllTemplate();
-        assertThat(TemplateList).hasSize(2).extracting(Template::getContent).contains(Template1.getContent(),Template2.getContent());
+        assertThat(TemplateList).hasSize(2).extracting(Template::getName).contains(Template1.getName(),Template2.getName());
     }
 
     @Test
-    public void givenRightTemplateId_thenReturnTemplate(){
+    public void givenRightTemplateId_thenReturnTemplate() throws TemplateNotFoundException {
         Template template =templateService.getTemplate("1");
         assertThat(template).extracting("content").contains("T1");
     }
@@ -65,7 +66,7 @@ public class TemplateServiceTests {
     @Test
     public void updateExistedTemplate_withExistedId_andNewName_thenReturnTheTemplate(){
         Template template =templateService.updateTemplate(new Template("T3"),"1");
-        assertThat(template.content.equals("T3")).isTrue();
+        assertThat(template.name.equals("T3")).isTrue();
     }
 
 //    @Test

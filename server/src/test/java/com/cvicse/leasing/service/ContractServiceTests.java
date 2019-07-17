@@ -1,5 +1,6 @@
 package com.cvicse.leasing.service;
 
+import com.cvicse.leasing.exception.ContractNotFoundException;
 import com.cvicse.leasing.model.Contract;
 import com.cvicse.leasing.repository.ContractRepository;
 import org.junit.Before;
@@ -47,15 +48,15 @@ public class ContractServiceTests {
     }
 
     @Test
-    public void given2Contracts_when_getAllContracts_thenReturn2Records() {
+    public void given2Contracts_when_getAllContracts_thenReturn2Records() throws ContractNotFoundException{
         Contract contract1=new Contract("C1");
         Contract contract2 = new Contract("C2");
         List<Contract> contractList= contractService.getAllContract();
-        assertThat(contractList).hasSize(2).extracting(Contract::getName).contains(contract1.getName(),contract2.getName());
+        assertThat(contractList).hasSize(2).extracting(Contract::getContent).contains(contract1.getContent(),contract2.getContent());
     }
 
     @Test
-    public void givenRightContractId_thenReturnContract(){
+    public void givenRightContractId_thenReturnContract() throws ContractNotFoundException {
         Contract contract =contractService.getContract("1");
         assertThat(contract).extracting("name").contains("C1");
     }
@@ -69,7 +70,7 @@ public class ContractServiceTests {
     @Test
     public void updateExistedContract_withExistedId_andNewName_thenReturnTheContract(){
         Contract contract =contractService.updateContract(new Contract("C3"),"1");
-        assertThat(contract.name.equals("C3")).isTrue();
+        assertThat(contract.content.equals("C3")).isTrue();
     }
 
 //    @Test
