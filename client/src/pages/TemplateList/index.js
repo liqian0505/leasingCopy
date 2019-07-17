@@ -9,6 +9,7 @@ import CustomInput from '@/components/Perish/CustomInput';
 
 class TemplateList extends React.Component {
   render() {
+    console.log(this.props.templateList)
     return (
       <BasicLayout>
         <Row className={styles.createButton}>
@@ -25,7 +26,7 @@ class TemplateList extends React.Component {
       {
         title: '模版名称', dataIndex: 'name', key: 'name', render: record => {
           return (
-            <CustomInput id={record.id} placeholder="未命名合同" onChange={(id, name) => console.log(id, name)} />
+            <CustomInput id={record} placeholder="未命名合同" onChange={(name,value) => console.log(name,value)} />
           )
         },
       },

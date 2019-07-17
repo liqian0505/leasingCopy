@@ -18,7 +18,7 @@ export default {
   },
   effects: {
     *getTemplate({ targetID }, { call, put }) {
-      const { editorContent, schemaContent, id } = yield call(request.get, '/api/template', { params: { id: targetID } })
+      const { editorContent, schemaContent, id } = yield call(request.get, `/api/templates/${targetID}`)
       yield put({
         type: 'updateEditorState',
         newState: {
@@ -28,7 +28,7 @@ export default {
           editorState: BraftEditor.createEditorState(editorContent),
         },
       })
-      router.push(`/TemplateContent?id=${id}`)
+      router.push(`/TemplateEditor?id=${targetID}`)
     },
     *updateTemplate({ targetID, jsonContent }, { call }) {
       console.log(targetID, jsonContent)

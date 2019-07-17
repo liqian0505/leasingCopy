@@ -33,6 +33,7 @@ class TemplateEditor extends React.Component {
   };
 
   componentDidMount() {
+    debugger
     var query = this.getCurrentHerfQuery()
 
     if (query.id !== undefined) {
