@@ -34,13 +34,13 @@ public class TemplateRepositoryTests {
     @Test
     public void setsIdOnSave() {
         Template t1 = templateRepository.save(new Template("T1"));
-        assertThat(t1.id).isNotNull();
+        assertThat(t1.getId()).isNotNull();
     }
 
     @Test
     public void findByContent(){
-        Template template = templateRepository.findByContent("T1");
-        assertThat(template.id).isNotNull();
+        Template template = templateRepository.findByName("T1");
+        assertThat(template.getId()).isNotNull();
     }
 
 

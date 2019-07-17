@@ -48,7 +48,7 @@ public class TemplateServiceTests {
         Template Template1=new Template("T1");
         Template Template2 = new Template("T2");
         List<Template> TemplateList= templateService.getAllTemplate();
-        assertThat(TemplateList).hasSize(2).extracting(Template::getContent).contains(Template1.getContent(),Template2.getContent());
+        assertThat(TemplateList).hasSize(2).extracting(Template::getName).contains(Template1.getName(),Template2.getName());
     }
 
     @Test
@@ -66,7 +66,7 @@ public class TemplateServiceTests {
     @Test
     public void updateExistedTemplate_withExistedId_andNewName_thenReturnTheTemplate(){
         Template template =templateService.updateTemplate(new Template("T3"),"1");
-        assertThat(template.content.equals("T3")).isTrue();
+        assertThat(template.name.equals("T3")).isTrue();
     }
 
 //    @Test
