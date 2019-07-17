@@ -144,13 +144,10 @@ export default {
     basePath: '/',
   },
   chainWebpack: webpackPlugin,
-  /*
   proxy: {
-    '/server/api/': {
-      target: 'https://preview.pro.ant.design/',
+    '/api': {
+      target: 'http://192.168.1.105:8000',
       changeOrigin: true,
-      pathRewrite: { '^/server': '' },
     },
-  },
-  */
+  }
 };

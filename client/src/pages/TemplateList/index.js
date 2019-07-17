@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'dva';
-import { Table, Button, Icon, Divider } from 'antd';
+import { Table, Button, Icon, Divider, Row, Col } from 'antd';
 import BasicLayout from '@/layouts/BasicLayout';
 import styles from './index.css';
 import CustomIcon from '@/components/Perish/CustomIcon';
@@ -9,7 +9,10 @@ class TemplateList extends React.Component {
   render() {
     return (
       <BasicLayout>
-        <Table columns={this.columns} dataSource={this.props.templateList} rowKey="id" />
+        <Row style={{padding: '10px'}}>
+         <Button type="primary" icon="plus" onClick={this.newTemplate}>New Template</Button>
+        </Row>
+        <Row><Table columns={this.columns} dataSource={this.props.templateList} rowKey="id" /></Row>
       </BasicLayout>
     )
   }
@@ -36,6 +39,12 @@ class TemplateList extends React.Component {
     this.props.dispatch({
       type: 'templateList/getTemplateList',
     });
+  }
+
+  newTemplate = () => {
+    this.props.dispatch({
+      type: 'template/createTemplate',
+    })
   }
 
   editHandler = id => {
