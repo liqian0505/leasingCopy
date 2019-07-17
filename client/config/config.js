@@ -30,11 +30,11 @@ const plugins = [
       },
       pwa: pwa
         ? {
-            workboxPluginMode: 'InjectManifest',
-            workboxOptions: {
-              importWorkboxFrom: 'local',
-            },
-          }
+          workboxPluginMode: 'InjectManifest',
+          workboxOptions: {
+            importWorkboxFrom: 'local',
+          },
+        }
         : false, // default close dll, because issue https://github.com/ant-design/ant-design-pro/issues/4665
       // dll features https://webpack.js.org/plugins/dll-plugin/
       // dll: {
@@ -86,31 +86,23 @@ export default {
   routes: [
     {
       path: '/',
-      component: '../layouts/BasicLayout',
-      // Routes: ['src/pages/Authorized'],
-      // authority: ['admin', 'user'],
-      routes: [
-        {
-          path: '/',
-          component: './index',
-        },
-        {
-          path: '/ContractContent',
-          component: './ContractContent',
-        },
-        {
-          path: '/ContractList',
-          component: './ContractList',
-        },
-        {
-          path: '/TemplateContent',
-          component: './TemplateContent',
-        },
-        {
-          path: '/TemplateList',
-          component: './TemplateList',
-        },
-      ],
+      component: './index',
+    },
+    {
+      path: '/ContractList',
+      component: './ContractList',
+    },
+    {
+      path: '/ContractEditor',
+      component: './ContractEditor',
+    },
+    {
+      path: '/TemplateEditor',
+      component: './TemplateEditor',
+    },
+    {
+      path: '/TemplateList',
+      component: './TemplateList',
     },
     {
       component: './404',
@@ -160,13 +152,10 @@ export default {
     basePath: '/',
   },
   chainWebpack: webpackPlugin,
-  /*
   proxy: {
-    '/server/api/': {
-      target: 'https://preview.pro.ant.design/',
+    '/api': {
+      target: 'http://192.168.1.105:8000',
       changeOrigin: true,
-      pathRewrite: { '^/server': '' },
     },
-  },
-  */
+  }
 };

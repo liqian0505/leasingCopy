@@ -3,7 +3,7 @@ const templateData = [
     id: "1",
     name: '模板一',
     style: '样式一',
-    editorState: {
+    editorContent: {
       blocks: [{
         key: '3b1pq',
         text: 'empty',
@@ -15,7 +15,7 @@ const templateData = [
       }],
       entityMap: {}
     },
-    schema: {
+    schemaContent: {
       type: 'object',
       title: 'empty object',
       properties: {},
@@ -25,8 +25,8 @@ const templateData = [
     id: "2",
     name: '模板二',
     style: '样式二',
-    editorState: { blocks: [{ key: '3b1pq', text: 'empty', type: 'unstyled', depth: 0, inlineStyleRanges: [], entityRanges: [], data: {} }], entityMap: {} },
-    schema: {
+    editorContent: { blocks: [{ key: '3b1pq', text: 'empty', type: 'unstyled', depth: 0, inlineStyleRanges: [], entityRanges: [], data: {} }], entityMap: {} },
+    schemaContent: {
       type: 'object',
       title: 'empty object',
       properties: {},
@@ -36,7 +36,7 @@ const templateData = [
     id: "3",
     name: '模板三',
     style: '样式三',
-    editorState: {
+    editorContent: {
       blocks: [{
         key: '3b1pq',
         text: 'example text',
@@ -48,7 +48,7 @@ const templateData = [
       }],
       entityMap: {},
     },
-    schema: {
+    schemaContent: {
       type: 'object',
       title: 'empty object',
       properties: {},
