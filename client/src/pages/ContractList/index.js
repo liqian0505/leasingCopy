@@ -14,10 +14,10 @@ class ContractList extends React.Component {
     const createButton = <div className={styles.createButton} onClick={e => this.createHandler()} />
 
     return (
-      <BasicLayout>
+      <div>
         {table}
         {createButton}
-      </BasicLayout>
+      </div>
     )
   }
 
@@ -26,8 +26,8 @@ class ContractList extends React.Component {
 
     this.columns = [
       {
-        title: '合同名称', key: 'id', render: record => {
-          return <CustomInput id={record.id} placeholder="未命名合同" onChange={(id, name) => console.log(id, name)} />
+        title: '合同名称', key: 'id', render: (id, record) => {
+          return <CustomInput id={id} defaultValue={record.name} onChange={(id, name) => console.log(id, name)} />
         }
       },
       {
@@ -36,7 +36,7 @@ class ContractList extends React.Component {
           return (
             <div>
               <CustomIcon type="edit" onClick={parameters => this.editHandler(parameters.id)} parameters={parameters} />
-              <CustomIcon type="delete" onClick={parameters => this.deleteHandler(parameters.id)} parameters={parameters} />
+              <CustomIcon type="delete" onClick={parameters => this.deleteHandler(parameters)} parameters={parameters} />
             </div>
           )
         }
@@ -50,16 +50,19 @@ class ContractList extends React.Component {
   }
 
   editHandler = id => {
+    console.log(id)
+
     this.props.dispatch({
       type: "contract/getContract",
       targetID: id
     })
   }
 
-  deleteHandler = id => {
+  deleteHandler = parameters => {
     this.props.dispatch({
       type: "contractList/deleteContract",
-      targetID: id
+      targetID: parameters.id,
+      templateID: parameters.templateID
     })
   }
 
