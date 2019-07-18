@@ -290,3 +290,5 @@ typings/
 .dynamodb/
 
 # End of https://www.gitignore.io/api/node,code,macos,maven,eclipse,intellij
+
+.vscode/
