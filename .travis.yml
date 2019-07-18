@@ -10,7 +10,7 @@ before-install:
 install: true
 script:
   - bash ./set_up.sh
-  - mvn package
+  - mvn package -Dmaven.test.skip=true 
 # safelist
 branches:
   only:
