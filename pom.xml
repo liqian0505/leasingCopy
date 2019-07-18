@@ -23,7 +23,7 @@
         <frontend-maven-plugin.version>1.6</frontend-maven-plugin.version>
     </properties>
     <build>
-        <finalName>cvise</finalName>
+        <finalName>cvicse</finalName>
         <plugins>
             <plugin>
                 <groupId>org.commonjava.maven.plugins</groupId>

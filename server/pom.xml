@@ -63,7 +63,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>cvise</finalName>
+		<finalName>cvicse</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
