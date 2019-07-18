@@ -148,24 +148,18 @@ export default {
             return localName;
         },
     },
+
     base: '/',
     publicPath: '/',
     manifest: {
         basePath: '/',
     },
+    chainWebpack: webpackPlugin,
+    proxy: {
+        '/api': {
+            target: 'http://192.168.1.105:8000',
+            changeOrigin: true,
+        },
+    }
 
-  },
-  base: '/',
-  publicPath: '/',
-  manifest: {
-    basePath: '/',
-  },
-  chainWebpack: webpackPlugin,
-  proxy: {
-    '/api': {
-      target: 'http://192.168.1.105:8000',
-      changeOrigin: true,
-    },
-  }
-
-};
+}
