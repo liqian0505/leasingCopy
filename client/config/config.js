@@ -150,7 +150,7 @@ export default {
         },
     },
     base: '/',
-    publicPath: 'https://cvise.herokuapp.com/',
+    publicPath: 'https://leasing-34512-e.herokuapp.com/',
     manifest: {
         basePath: '/',
     },
