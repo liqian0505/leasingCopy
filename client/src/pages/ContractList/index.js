@@ -63,7 +63,8 @@ class ContractList extends React.Component {
   editHandler = id => {
     this.props.dispatch({
       type: "contract/getContract",
-      targetID: id
+      targetID: id,
+      jump: true
     })
   }
 
