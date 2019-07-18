@@ -2,6 +2,8 @@ package com.cvicse.leasing;
 
 import java.util.List;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.cvicse.leasing.model.Contract;
 import com.cvicse.leasing.model.Template;
 import com.cvicse.leasing.repository.ContractRepository;
@@ -24,48 +26,62 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class LeasingApplication implements CommandLineRunner {
-//	public static void main(String[] args) {
-//		SpringApplication.run(LeasingApplication.class, args);
-//	}
-
-	@Autowired
-	private TemplateRepository repository;
-
-	@Autowired
-	private ContractRepository contractRepository;
-
-	@Autowired
-	private Javers javers;
-
-	private static final Logger logger = LoggerFactory.getLogger(LeasingApplication.class);
-
-
+public class LeasingApplication /*implements CommandLineRunner*/ {
 	public static void main(String[] args) {
 		SpringApplication.run(LeasingApplication.class, args);
 	}
 
-	@Override
-	public void run(String... args) throws Exception {
-
-		repository.deleteAll();
-
-		repository.save(new Template("Template 1"));
-		repository.save(new Template("Template 2"));
-
-		contractRepository.deleteAll();
-		contractRepository.save(new Contract("Contract 1"));
-		contractRepository.save(new Contract("Contract 2"));
-		Contract c = contractRepository.findByContent("Contract 1");
-		c.content = "ABC";
-		contractRepository.save(c);
-		c.content = "DEF";
-
-		contractRepository.save(c);
-		System.out.println(contractRepository.findByContent("DEF").id);
-		JqlQuery jqlQuery=QueryBuilder.byInstance(c).build();
-		Changes changes = javers.findChanges(jqlQuery);
-		System.out.println(changes.prettyPrint());
+//	@Autowired
+//	private TemplateRepository repository;
+//
+//	@Autowired
+//	private ContractRepository contractRepository;
+//
+//	@Autowired
+//	private Javers javers;
+//
+//	private static final Logger logger = LoggerFactory.getLogger(LeasingApplication.class);
+//
+//
+//	public static void main(String[] args) {
+//		SpringApplication.run(LeasingApplication.class, args);
+//	}
+//
+//	@Override
+//	public void run(String... args) throws Exception {
+//
+//		repository.deleteAll();
+//
+//		JSONObject content = new JSONObject();
+//		content.put("content","Template 1");
+//		JSONObject content1 = new JSONObject();
+//		content1.put("content","Template 2");
+//		repository.save(new Template(content));
+//		repository.save(new Template(content1));
+//
+//		contractRepository.deleteAll();
+//
+//		JSONObject contractContent = new JSONObject();
+//		contractContent.put("content","Contract 1");
+//		JSONObject contractContent1 = new JSONObject();
+//		contractContent.put("content","Contract 2");
+//		contractRepository.save(new Contract(contractContent));
+//		contractRepository.save(new Contract(contractContent1));
+//		Contract c = contractRepository.findByContent(contractContent);
+//		JSONObject c1= new JSONObject();
+//		 c1.put("content","ABC");
+//		 c.content = c1;
+//		contractRepository.save(c);
+//		JSONObject c2= new JSONObject();
+//		c2.put("content","DEF");
+//		c.content = c2;
+//		contractRepository.save(c);
+//
+//
+//		System.out.println(contractRepository.findByContent(c2).id);
+//		JqlQuery jqlQuery=QueryBuilder.byInstance(c).build();
+//		Changes changes = javers.findChanges(jqlQuery);
+//		System.out.println(changes.prettyPrint());
 //		QueryBuilder queryBuilder = QueryBuilder.byInstance(c).withSnapshotType(SnapshotType.INITIAL);
 //
 //		List<CdoSnapshot> changes = javers.findSnapshots(queryBuilder.build());
@@ -73,6 +89,6 @@ public class LeasingApplication implements CommandLineRunner {
 //		logger.info("Found the initial version: ");
 //		for (CdoSnapshot change : changes) {
 //			logger.info("Contract snapshot: {}", change);
-		}
+//		}
 
 }
