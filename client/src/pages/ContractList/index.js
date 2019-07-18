@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'dva';
-import { Table } from 'antd';
+import { Table, Dropdown, Menu } from 'antd';
 import BasicLayout from '@/layouts/BasicLayout';
 
 import styles from './index.css';
@@ -11,12 +11,22 @@ class ContractList extends React.Component {
   render() {
 
     const table = <Table columns={this.columns} dataSource={this.props.contractList} rowKey="id" />
-    const createButton = <div className={styles.createButton} onClick={e => this.createHandler()} />
+    const menu = (
+      <Menu onClick={({ key }) => this.createHandler(key)}>
+        {this.props.templateList.map(template => (<Menu.Item key={template.id} >{template.name}</Menu.Item>))}
+      </Menu>
+    )
+
+    const dropdown = (
+      <Dropdown overlay={menu} trigger={['click']}>
+        <div className={styles.createButton} />
+      </Dropdown>
+    )
 
     return (
       <div>
         {table}
-        {createButton}
+        {dropdown}
       </div>
     )
   }
@@ -27,7 +37,7 @@ class ContractList extends React.Component {
     this.columns = [
       {
         title: '合同名称', key: 'id', render: (id, record) => {
-          return <CustomInput id={id} defaultValue={record.name} onChange={(id, name) => console.log(id, name)} />
+          return <CustomInput record={record} defaultValue={record.name} onChange={(id, record) => this.updateHandler(id, record)} />
         }
       },
       {
@@ -47,11 +57,10 @@ class ContractList extends React.Component {
   componentDidMount() {
     this.query = this.getCurrentHerfQuery()
     this.props.dispatch({ type: 'contractList/getContractList', templateID: this.query.templateID })
+    this.props.dispatch({ type: 'templateList/getTemplateList' })
   }
 
   editHandler = id => {
-    console.log(id)
-
     this.props.dispatch({
       type: "contract/getContract",
       targetID: id
@@ -66,9 +75,18 @@ class ContractList extends React.Component {
     })
   }
 
-  createHandler = () => {
+  createHandler = id => {
     this.props.dispatch({
-      type: "contractList/createContract"
+      type: "contractList/createContract",
+      templateID: id
+    })
+  }
+
+  updateHandler = (id, record) => {
+    this.props.dispatch({
+      type: "contract/updateContract",
+      targetID: id,
+      content: record
     })
   }
 
@@ -88,4 +106,4 @@ class ContractList extends React.Component {
   }
 }
 
-export default connect(({ contractList }) => ({ contractList }))(ContractList);
+export default connect(({ contractList, templateList }) => ({ contractList, templateList }))(ContractList);
