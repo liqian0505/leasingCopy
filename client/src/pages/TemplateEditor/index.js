@@ -63,7 +63,7 @@ class TemplateEditor extends React.Component {
     // const stringContent = this.state.editorState.toRAW();
     console.log(this.props.template.editorState)
     const jsonContent = this.props.template.editorState.toRAW(true);
-    console.log(this.props.template.schema);
+    console.log(JSON.stringify(this.props.template.schema));
 
     this.props.dispatch({
       type: 'template/updateTemplate',

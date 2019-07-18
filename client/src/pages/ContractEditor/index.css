@@ -14,7 +14,7 @@
   background-image: url(../../assets/form.png);
 }
 
-.commitSwitch{
+.submitSwitch{
   position: absolute;
   right: 5vmin;
   top: 1vmin;
