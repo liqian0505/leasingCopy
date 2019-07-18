@@ -33,7 +33,7 @@ class TemplateEditor extends React.Component {
   };
 
   componentDidMount() {
-    debugger
+    // debugger
     let query = this.getCurrentHerfQuery()
 
     if (query.id !== undefined) {
@@ -61,21 +61,24 @@ class TemplateEditor extends React.Component {
     // 编辑器内容可直接调用editorState.toHTML()来获取HTML格式的内容
     // const htmlContent = this.state.editorState.toHTML();
     // const stringContent = this.state.editorState.toRAW();
+    console.log(this.props.template.editorState)
     const jsonContent = this.props.template.editorState.toRAW(true);
-    console.log( jsonContent);
-
-    const schemaContent = null
+    console.log(this.props.template.schema);
 
     this.props.dispatch({
       type: 'template/updateTemplate',
       targetID: this.props.template.id,
-      jsonContent,
+      content: {
+        name: this.props.template.name,
+        editorContent: jsonContent,
+        schema: this.props.template.schema,
+      },
     })
   };
 
-  handleEditorChange = editorState => {
-    this.setState({ editorState });
-  };
+  // handleEditorChange = editorState => {
+  //   this.setState({ editorState });
+  // };
 
   getCurrentHerfQuery = () => {
     let regex = /[^&=?]+=[^&]*/g;
@@ -99,8 +102,10 @@ class TemplateEditor extends React.Component {
         <div className={styles.editorContainer}>
           <Row>
             <BraftEditor
-              value={template.editorState}//{editorState}
-              onChange={this.handleEditorChange}
+              value={template.editorState}
+              onChange={editorState => {
+                dispatch({ type: 'template/updateEditorState', payload: editorState })
+              }}
               onSave={this.submitContent}
             />
             <Drawer
