@@ -27,9 +27,7 @@ class ContractList extends React.Component {
     this.columns = [
       {
         title: '合同名称', key: 'id', render: record => {
-          return (
-            <CustomInput id={record.id} placeholder="未命名合同" onChange={(id, name) => console.log(id, name)} />
-          )
+          return <CustomInput id={record.id} placeholder="未命名合同" onChange={(id, name) => console.log(id, name)} />
         }
       },
       {
@@ -37,8 +35,8 @@ class ContractList extends React.Component {
           const parameters = { id: record.id, templateID: record.templateID }
           return (
             <div>
-              <CustomIcon type="edit" onClick={this.editHandler} parameters={parameters} />
-              <CustomIcon type="delete" onClick={this.deleteHandler} parameters={parameters} />
+              <CustomIcon type="edit" onClick={parameters => this.editHandler(parameters.id)} parameters={parameters} />
+              <CustomIcon type="delete" onClick={parameters => this.deleteHandler(parameters.id)} parameters={parameters} />
             </div>
           )
         }
@@ -46,19 +44,22 @@ class ContractList extends React.Component {
     ]
   }
 
-  componentDidMount() { this.props.dispatch({ type: 'contractList/getContractList' }) }
+  componentDidMount() {
+    this.query = this.getCurrentHerfQuery()
+    this.props.dispatch({ type: 'contractList/getContractList', templateID: this.query.templateID })
+  }
 
-  editHandler = parameters => {
+  editHandler = id => {
     this.props.dispatch({
       type: "contract/getContract",
-      targetID: parameters.id
+      targetID: id
     })
   }
 
-  deleteHandler = parameters => {
+  deleteHandler = id => {
     this.props.dispatch({
       type: "contractList/deleteContract",
-      targetID: parameters.id
+      targetID: id
     })
   }
 
@@ -66,6 +67,21 @@ class ContractList extends React.Component {
     this.props.dispatch({
       type: "contractList/createContract"
     })
+  }
+
+  getCurrentHerfQuery = () => {
+    var regex = /[^&=?]+=[^&]*/g;
+    var parsedQuery = window.location.href.match(regex);
+    var query = {}
+
+    if (parsedQuery !== null) {
+      parsedQuery.forEach((pairText) => {
+        var pair = pairText.split("=")
+        query[pair[0]] = pair[1]
+      })
+    }
+
+    return query
   }
 }
 

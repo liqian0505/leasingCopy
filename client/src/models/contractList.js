@@ -5,43 +5,36 @@ export default {
   namespace: 'contractList',
   state: [],
   reducers: {
-    updateContractList(_, { newList }) {
-      return newList
+    updateContractList(_, { newList }) { return newList }
+  },
+  effects: {
+    *getContractList({ templateID }, { call, put }) {
+      const response = templateID === undefined ? yield call(request, "/api/contracts") : yield call(request, `/api/contracts/${templateID}`);
+      yield put({ type: 'updateContractList', newList: response })
+      templateID === undefined ? router.push("/ContractList") : router.push(`/ContractList/${templateID}`)
     },
-    deleteContractInList(state, { targetID }) {
-      return state.filter(contract => contract.id !== targetID)
+    *deleteContract({ targetID, templateID }, { call, put }) {
+      const response = yield call(request.delete, `/api/contracts/${targetID}`)
+      yield put({ type: 'updateContractList', newList: response })
+      templateID === undefined ? router.push("/ContractList") : router.push(`/ContractList/${templateID}`)
     },
-    createContractInList(state, { newID }) {
-      return state.concat({
-        id: newID,
-        name: "未定名合同",
+    *createContract({ templateID }, { call, put }) {
+      const content = {
+        name: '未命名合同',
+        formData: {
+
+        },
         schema: {
           type: 'object',
           title: 'empty object',
           properties: {},
-          formData: null,
-          editorState: null
-        }
-      })
-    }
-  },
-  effects: {
-    *getContractList({ templateID }, { call, put }) {
-      const response = yield call(request, '/api/contracts', { id: templateID });
+        },
+        templateID: "1"
+      }
 
+      const { id } = yield call(request.post, `/api/contracts/${templateID}`, { data: { content } })
       yield put({ type: 'updateContractList', newList: response })
-
       router.push("/ContractList")
-    },
-    *deleteContract({ targetID }, { call, put }) {
-      const response = yield call(request.delete, `/api/contracts/${targetID}`)
-
-      yield put({ type: 'deleteContractInList', targetID: targetID })
-    },
-    *createContract(_, { call, put }) {
-      const { id } = yield call(request.post, "/api/contracts")
-      console.log(id)
-      yield put({ type: 'createContractInList', newID: id })
     }
   },
 };

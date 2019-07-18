@@ -19,8 +19,8 @@ export default {
   },
   effects: {
     *getContract({ targetID }, { call, put }) {
-      const { id, formData, schema, templateID } = yield call(request, "/contract", { params: { id: targetID } })
-      const { editorContent } = yield call(request, "/template", { params: { id: templateID } })
+      const { id, formData, schema, templateID } = yield call(request, `/contract/${targetID}`)
+      const { editorContent } = yield call(request, `/template/${templateID}`)
 
       yield put({
         type: "setContractState",
