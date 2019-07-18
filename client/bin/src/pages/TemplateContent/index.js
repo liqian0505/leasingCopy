@@ -11,7 +11,7 @@ import schemaEditor from 'json-schema-editor-visual/dist/main.js';
 import 'antd/dist/antd.css';
 import 'json-schema-editor-visual/dist/main.css';
 import { connect } from 'dva';
-import BasicLayout from '@/layouts/BasicLayout';
+// import BasicLayout from '@/layouts/BasicLayout';
 import styles from './index.css';
 
 const option = {};
@@ -63,7 +63,6 @@ class TemplateEditor extends React.Component {
     const { dispatch } = this.props;
     const { editorState } = this.state;
     return (
-      <BasicLayout>
         <div className={styles.editorContainer}>
           <Row>
             <BraftEditor
@@ -116,7 +115,6 @@ class TemplateEditor extends React.Component {
             </Col>
           </Row> */}
         </div>
-      </BasicLayout>
     );
   }
 }
