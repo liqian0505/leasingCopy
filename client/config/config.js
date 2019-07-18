@@ -68,9 +68,7 @@ if (isAntDesignProPreview) {
 }
 
 export default {
-    exportStatic: {
-        htmlSuffix: true,
-    },
+    history: 'hash',
     plugins,
     block: {
         defaultGitUrl: 'https://github.com/ant-design/pro-blocks',
@@ -150,7 +148,7 @@ export default {
         },
     },
     base: '/',
-    publicPath: 'https://leasing-34512-e.herokuapp.com/',
+    publicPath: '/',
     manifest: {
         basePath: '/',
     },
