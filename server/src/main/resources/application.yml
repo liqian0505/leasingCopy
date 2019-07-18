@@ -4,6 +4,3 @@ spring:
   data:
     mongodb:
       uri: mongodb://heroku_slbzv3xd:ojcahf31amsquhb9chfg0kbrhg@ds151817.mlab.com:51817/heroku_slbzv3xd
-#      uri: mongodb://my_user:password123@localhost:27017/my_database
-#      uri: mongodb://heroku_jzgcbjbx:4pjc5oe815md328o5vj49kmeqk@ds221435.mlab.com:21435/heroku_jzgcbjbx
-
