@@ -88,18 +88,18 @@ export default {
                     path: '/',
                     component: './index',
                 },
-                {
-                    path: '/ContractContent',
-                    component: './ContractContent',
-                },
+                // {
+                //     path: '/ContractContent',
+                //     component: './ContractContent',
+                // },
                 {
                     path: '/ContractList',
                     component: './ContractList',
                 },
-                {
-                    path: '/TemplateContent',
-                    component: './TemplateContent',
-                },
+                // {
+                //     path: '/TemplateContent',
+                //     component: './TemplateContent',
+                // },
                 {
                     path: '/TemplateList',
                     component: './TemplateList',
