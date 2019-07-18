@@ -1,5 +1,7 @@
 package com.cvicse.leasing.repository;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.cvicse.leasing.model.Contract;
 import com.cvicse.leasing.model.Template;
 import org.junit.Before;
@@ -27,19 +29,27 @@ public class TemplateRepositoryTests {
 
         templateRepository.deleteAll();
 
-        t1 = templateRepository.save(new Template("T1"));
-        t2 = templateRepository.save(new Template("T2"));
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("content","T1");
+        JSONObject jsonObject1 = new JSONObject();
+        jsonObject1.put("content","T2");
+        t1 = templateRepository.save(new Template(jsonObject));
+        t2 = templateRepository.save(new Template(jsonObject1));
     }
 
     @Test
     public void setsIdOnSave() {
-        Template t1 = templateRepository.save(new Template("T1"));
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("content","T1");
+        Template t1 = templateRepository.save(new Template(jsonObject));
         assertThat(t1.getId()).isNotNull();
     }
 
     @Test
     public void findByContent(){
-        Template template = templateRepository.findByName("T1");
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("content","T1");
+        Template template = templateRepository.findByContent(jsonObject);
         assertThat(template.getId()).isNotNull();
     }
 
