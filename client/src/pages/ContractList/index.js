@@ -14,10 +14,10 @@ class ContractList extends React.Component {
     const createButton = <div className={styles.createButton} onClick={e => this.createHandler()} />
 
     return (
-      <BasicLayout>
+      <div>
         {table}
         {createButton}
-      </BasicLayout>
+      </div>
     )
   }
 
@@ -36,7 +36,7 @@ class ContractList extends React.Component {
           return (
             <div>
               <CustomIcon type="edit" onClick={parameters => this.editHandler(parameters.id)} parameters={parameters} />
-              <CustomIcon type="delete" onClick={parameters => this.deleteHandler(parameters.id)} parameters={parameters} />
+              <CustomIcon type="delete" onClick={parameters => this.deleteHandler(parameters)} parameters={parameters} />
             </div>
           )
         }
@@ -58,10 +58,11 @@ class ContractList extends React.Component {
     })
   }
 
-  deleteHandler = id => {
+  deleteHandler = parameters => {
     this.props.dispatch({
       type: "contractList/deleteContract",
-      targetID: id
+      targetID: parameters.id,
+      templateID: parameters.templateID
     })
   }
 
