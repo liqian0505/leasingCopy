@@ -1,5 +1,6 @@
 package com.cvicse.leasing.service;
 
+import com.cvicse.leasing.exception.TemplateNotFoundException;
 import com.cvicse.leasing.model.Template;
 import com.cvicse.leasing.repository.TemplateRepository;
 import org.junit.Before;
@@ -43,7 +44,7 @@ public class TemplateServiceTests {
     }
 
     @Test
-    public void given2Templates_when_getAllTemplates_thenReturn2Records() {
+    public void given2Templates_when_getAllTemplates_thenReturn2Records() throws TemplateNotFoundException{
         Template Template1=new Template("T1");
         Template Template2 = new Template("T2");
         List<Template> TemplateList= templateService.getAllTemplate();
@@ -51,7 +52,7 @@ public class TemplateServiceTests {
     }
 
     @Test
-    public void givenRightTemplateId_thenReturnTemplate(){
+    public void givenRightTemplateId_thenReturnTemplate() throws TemplateNotFoundException {
         Template template =templateService.getTemplate("1");
         assertThat(template).extracting("content").contains("T1");
     }

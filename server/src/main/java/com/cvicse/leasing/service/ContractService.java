@@ -2,6 +2,7 @@ package com.cvicse.leasing.service;
 
 import java.util.List;
 
+import com.cvicse.leasing.exception.ContractNotFoundException;
 import com.cvicse.leasing.model.Contract;
 import com.cvicse.leasing.repository.ContractRepository;
 
@@ -18,13 +19,17 @@ public class ContractService {
 
     private static final Logger logger = LoggerFactory.getLogger(ContractService.class);
 
-    public List<Contract> getAllContract() {
+    public List<Contract> getAllContract() throws ContractNotFoundException{
+        if(this.contractRepository.findAll().isEmpty())
+            throw new ContractNotFoundException("Contract Not Found in contractRepository.");
         List<Contract> contracts = contractRepository.findAll();
         logger.info("contracts returned");
         return contracts;
     }
 
-    public Contract getContract(String id) {
+    public Contract getContract(String id) throws ContractNotFoundException {
+        if(!this.contractRepository.findById(id).isPresent())
+            throw new ContractNotFoundException("Contract Not Found in contractRepository.");
         return this.contractRepository.findById(id).get();
     }
 
@@ -41,7 +46,9 @@ public class ContractService {
         return newContract;
     }
 
-    public void deleteContract(String id) {
+    public void deleteContract(String id) throws ContractNotFoundException {
+        if(!this.contractRepository.findById(id).isPresent())
+            throw new ContractNotFoundException("Contract Not Found in contractRepository.");
         logger.info("contract deleted");
         this.contractRepository.deleteById(id);
     }

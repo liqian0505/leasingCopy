@@ -1,5 +1,6 @@
 package com.cvicse.leasing.service;
 
+import com.cvicse.leasing.exception.TemplateNotFoundException;
 import com.cvicse.leasing.model.Template;
 import com.cvicse.leasing.repository.TemplateRepository;
 import org.slf4j.LoggerFactory;
@@ -18,13 +19,20 @@ public class TemplateService {
 
     private static final Logger logger = LoggerFactory.getLogger(TemplateService.class);
 
-    public List<Template> getAllTemplate() {
+    public List<Template> getAllTemplate() throws TemplateNotFoundException{
+        if(this.templateRepository.findAll().isEmpty())
+            throw new TemplateNotFoundException("Template Not Found in templateRepository.");
+
         List<Template> templateList = templateRepository.findAll();
         logger.info("Templates returned");
         return templateList;
     }
 
-    public Template getTemplate(String id) {
+    public Template getTemplate(String id) throws TemplateNotFoundException {
+        if(!this.templateRepository.findById(id).isPresent())
+            throw new TemplateNotFoundException("Template Not Found in templateRepository.");
+
+        logger.info("Template "+id+" returned");
         return this.templateRepository.findById(id).get();
     }
 
@@ -41,7 +49,9 @@ public class TemplateService {
         return newTemplate;
     }
 
-    public void deleteTemplate(String id) {
+    public void deleteTemplate(String id) throws TemplateNotFoundException {
+        if(!this.templateRepository.findById(id).isPresent())
+            throw new TemplateNotFoundException("Template Not Found in templateRepository.");
         logger.info("Template deleted");
         this.templateRepository.deleteById(id);
     }
