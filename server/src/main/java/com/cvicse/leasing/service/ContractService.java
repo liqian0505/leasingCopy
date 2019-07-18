@@ -19,9 +19,7 @@ public class ContractService {
 
     private static final Logger logger = LoggerFactory.getLogger(ContractService.class);
 
-    public List<Contract> getAllContract() throws ContractNotFoundException{
-        if(this.contractRepository.findAll().isEmpty())
-            throw new ContractNotFoundException("Contract Not Found in contractRepository.");
+    public List<Contract> getAllContract() {
         List<Contract> contracts = contractRepository.findAll();
         logger.info("contracts returned");
         return contracts;
@@ -40,7 +38,7 @@ public class ContractService {
 
     public Contract updateContract(Contract newContract, String id) {
         this.contractRepository.findById(id).ifPresent(contract -> {
-            contract.name = newContract.name;
+            contract.content = newContract.content;
             this.contractRepository.save(contract);
         });
         return newContract;

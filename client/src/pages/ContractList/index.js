@@ -1,71 +1,88 @@
 import React from 'react';
 import { connect } from 'dva';
-import { Table, Button, Icon, Divider } from 'antd';
-// import BasicLayout from '@/layouts/BasicLayout';
+import { Table } from 'antd';
+import BasicLayout from '@/layouts/BasicLayout';
 
 import styles from './index.css';
-import CustomDiv from '@/components/Perish/CustomDiv';
+import CustomIcon from '@/components/Perish/CustomIcon';
+import CustomInput from '@/components/Perish/CustomInput';
 
-const ContractList = props => {
-  const { contractList, dispatch } = props;
+class ContractList extends React.Component {
+  render() {
 
-  if (contractList === null) {
-    dispatch({
-      type: 'contractList/getContractList',
-    });
+    const table = <Table columns={this.columns} dataSource={this.props.contractList} rowKey="id" />
+    const createButton = <div className={styles.createButton} onClick={e => this.createHandler()} />
+
+    return (
+      <BasicLayout>
+        {table}
+        {createButton}
+      </BasicLayout>
+    )
   }
 
-  const columns = [
-    {
-      title: '模版名称',
-      dataIndex: 'name',
-      key: 'name',
-    },
-    {
-      title: '模板样式',
-      dataIndex: 'style',
-      key: 'style',
-    },
-    {
-      title: '选项',
-      render: record => (
-        <div>
-          <CustomDiv
-            id={record.id}
-            onClick={id => {
-              dispatch({
-                type: "contract/getContract",
-                targetID: id
-              })
-            }}
-          >
-            <a>
-              <Icon type="edit" />
-            </a>
-          </CustomDiv>
-          <Divider type="vertical" style={{ opacity: 0 }} />
-          <CustomDiv
-            id={record.id}
-            onClick={id => {
-              console.log(id);
-            }}
-          >
-            <a>
-              <Icon type="delete" />
-            </a>
-          </CustomDiv>
-        </div>
-      ),
-    },
-  ];
+  constructor(props) {
+    super(props)
 
-  const source = contractList !== null ? contractList : [];
+    this.columns = [
+      {
+        title: '合同名称', key: 'id', render: record => {
+          return <CustomInput id={record.id} placeholder="未命名合同" onChange={(id, name) => console.log(id, name)} />
+        }
+      },
+      {
+        title: '选项', render: record => {
+          const parameters = { id: record.id, templateID: record.templateID }
+          return (
+            <div>
+              <CustomIcon type="edit" onClick={parameters => this.editHandler(parameters.id)} parameters={parameters} />
+              <CustomIcon type="delete" onClick={parameters => this.deleteHandler(parameters.id)} parameters={parameters} />
+            </div>
+          )
+        }
+      }
+    ]
+  }
 
-  return (
-      <Table columns={columns} dataSource={source} rowKey="id" />
-  );
-};
+  componentDidMount() {
+    this.query = this.getCurrentHerfQuery()
+    this.props.dispatch({ type: 'contractList/getContractList', templateID: this.query.templateID })
+  }
 
-export default connect(({ contractList }) => ({
-  contractList,
-}))(ContractList);
+  editHandler = id => {
+    this.props.dispatch({
+      type: "contract/getContract",
+      targetID: id
+    })
+  }
+
+  deleteHandler = id => {
+    this.props.dispatch({
+      type: "contractList/deleteContract",
+      targetID: id
+    })
+  }
+
+  createHandler = () => {
+    this.props.dispatch({
+      type: "contractList/createContract"
+    })
+  }
+
+  getCurrentHerfQuery = () => {
+    var regex = /[^&=?]+=[^&]*/g;
+    var parsedQuery = window.location.href.match(regex);
+    var query = {}
+
+    if (parsedQuery !== null) {
+      parsedQuery.forEach((pairText) => {
+        var pair = pairText.split("=")
+        query[pair[0]] = pair[1]
+      })
+    }
+
+    return query
+  }
+}
+
+export default connect(({ contractList }) => ({ contractList }))(ContractList);

@@ -41,7 +41,7 @@ public class ContractRepositoryTests {
     @Test
     public void findsByName() {
 
-        Contract result = repository.findByName("C1");
+        Contract result = repository.findByContent("C1");
 
         assertThat(result).extracting("name").contains("C1");
     }

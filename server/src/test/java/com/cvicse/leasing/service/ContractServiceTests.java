@@ -52,7 +52,7 @@ public class ContractServiceTests {
         Contract contract1=new Contract("C1");
         Contract contract2 = new Contract("C2");
         List<Contract> contractList= contractService.getAllContract();
-        assertThat(contractList).hasSize(2).extracting(Contract::getName).contains(contract1.getName(),contract2.getName());
+        assertThat(contractList).hasSize(2).extracting(Contract::getContent).contains(contract1.getContent(),contract2.getContent());
     }
 
     @Test
@@ -70,7 +70,7 @@ public class ContractServiceTests {
     @Test
     public void updateExistedContract_withExistedId_andNewName_thenReturnTheContract(){
         Contract contract =contractService.updateContract(new Contract("C3"),"1");
-        assertThat(contract.name.equals("C3")).isTrue();
+        assertThat(contract.content.equals("C3")).isTrue();
     }
 
 //    @Test

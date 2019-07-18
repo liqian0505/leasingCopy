@@ -50,11 +50,11 @@
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.javers/javers-spring-boot-starter-mongo -->
-<!--		<dependency>-->
-<!--			<groupId>org.javers</groupId>-->
-<!--			<artifactId>javers-spring-boot-starter-mongo</artifactId>-->
-<!--			<version>5.6.0</version>-->
-<!--		</dependency>-->
+		<dependency>
+			<groupId>org.javers</groupId>
+			<artifactId>javers-spring-boot-starter-mongo</artifactId>
+			<version>5.6.0</version>
+		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>

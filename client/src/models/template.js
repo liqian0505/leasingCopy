@@ -1,11 +1,15 @@
+import router from 'umi/router'
+
+import BraftEditor from 'braft-editor';
 import request from '../utils/request';
 
 export default {
   namespace: 'template',
   state: {
+    editorContent: null,
     editorState: null,
     schema: null,
-    id: null
+    id: null,
   },
   reducers: {
     updateEditorState(state, { newState }) {
@@ -14,18 +18,27 @@ export default {
   },
   effects: {
     *getTemplate({ targetID }, { call, put }) {
-      const { editorState, schema, id } = yield call(request, "/template", { params: { id: targetID } })
+      const { editorContent, schemaContent, id } = yield call(request.get, `/api/templates/${targetID}`)
       yield put({
-        type: "updateEditorState",
+        type: 'updateEditorState',
         newState: {
-          editorState,
-          schema,
-          id
-        }
+          editorContent,
+          schemaContent,
+          id,
+          editorState: BraftEditor.createEditorState(editorContent),
+        },
       })
+      router.push(`/TemplateEditor/${targetID}`)
     },
     *updateTemplate({ targetID, jsonContent }, { call }) {
-      console.log(targetID, jsonContent)
-    }
+      const response = yield call(request.put, `/api/templates/${targetID}`, { body: jsonContent })
+    },
+    *createTemplate({ name, defaultContent }, { call, put }) {
+      const response = yield call(request.post, '/api/templates', { body: name, defaultContent });
+      yield put({
+        type: 'templateList/updateTemplateList',
+        newList: response,
+      });
+    },
   },
 };
