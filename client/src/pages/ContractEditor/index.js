@@ -44,8 +44,10 @@ class ContractEditor extends React.Component {
 
   render() {
     const { contract } = this.props
+    console.log(contract)
+    debugger
 
-    const form = <Form className={styles.form} schema={contract.schema} formData={contract.formData} onError={e => alert(e)} />
+    const form = <Form className={styles.form} schema={contract.schema} formData={contract.formData} onSubmit={this.submitHandler} onError={e => alert(e)} />
 
     const editorDrawer = (
       <Drawer title="合同填写" placement="right" width="50%" closable={false} visible={this.state.drawerVisible} onClose={e => this.setState({ drawerVisible: false })}>
@@ -54,21 +56,18 @@ class ContractEditor extends React.Component {
     )
 
     const drawerSwitch = <div className={styles.drawerSwitch} onClick={e => this.setState({ drawerVisible: true })} />
-    const submitSwitch = <div className={styles.submitSwitch} onClick={e => this.submitContent} />
 
     return (
       <div>
         {form}
         {editorDrawer}
         {drawerSwitch}
-        {submitSwitch}
       </div>
     )
   }
 
   constructor(props) {
     super(props)
-
     this.state = {
       drawerVisible: false
     }
@@ -76,10 +75,30 @@ class ContractEditor extends React.Component {
 
   componentDidMount() {
     this.query = this.getCurrentHerfQuery()
-
     this.props.dispatch({
       type: "contract/getContract",
       targetID: this.query.id
+    })
+  }
+
+  submitHandler = ({ formData }, e) => {
+    const { id, name, editorContent, templateID } = this.props.contract
+
+    var copyContent = JSON.parse(JSON.stringify(editorContent))
+
+    const data = formData
+    jp.apply(copyContent, '$..text', value => eval('`' + value + '`'))
+    // console.log(jp.query(copyContent,'$..text'))
+    // debugger
+    this.props.dispatch({
+      type: "contract/updateContract",
+      targetID: id,
+      content: {
+        name,
+        formData,
+        templateID
+      },
+      newEditorState: BraftEditor.createEditorState(copyContent)
     })
   }
 
