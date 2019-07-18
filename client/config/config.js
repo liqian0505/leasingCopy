@@ -96,10 +96,10 @@ export default {
                     path: '/ContractList',
                     component: './ContractList',
                 },
-                // {
-                //     path: '/TemplateContent',
-                //     component: './TemplateContent',
-                // },
+                {
+                    path: '/TemplateEditor',
+                    component: './TemplateEditor',
+                },
                 {
                     path: '/TemplateList',
                     component: './TemplateList',
