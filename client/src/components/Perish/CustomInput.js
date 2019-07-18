@@ -7,6 +7,7 @@ class CustomInput extends React.Component {
     return (
       <Input
         className={styles.container}
+        defaultValue={this.props.defaultValue}
         placeholder={this.props.placeholder}
         onPressEnter={e => {
           document.activeElement.blur()

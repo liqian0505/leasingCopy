@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'dva';
-import { Table, Button, Icon, Divider, Row, Col, } from 'antd';
+import { Table, Button, Icon, Divider, Row, Col } from 'antd';
 import BasicLayout from '@/layouts/BasicLayout';
 
 import styles from './index.css';
@@ -9,7 +9,6 @@ import CustomInput from '@/components/Perish/CustomInput';
 
 class TemplateList extends React.Component {
   render() {
-    console.log(this.props.templateList)
     return (
       <BasicLayout>
         <Row className={styles.createButton}>
@@ -24,11 +23,12 @@ class TemplateList extends React.Component {
     super(props)
     this.columns = [
       {
-        title: '模版名称', dataIndex: 'name', key: 'name', render: record => {
-          return (
-            <CustomInput id={record} placeholder="未命名合同" onChange={(name,value) => console.log(name,value)} />
-          )
-        },
+        title: '模版名称',
+        dataIndex: 'name',
+        key: 'name',
+        render: (name, record) => (
+          <CustomInput id={record.id} defaultValue={name} onChange={(id, value) => console.log(id, value)} />
+        ),
       },
       {
         title: '选项',
@@ -58,6 +58,15 @@ class TemplateList extends React.Component {
   createHandler = () => {
     this.props.dispatch({
       type: 'template/createTemplate',
+      name: '未命名模板',
+      defaultContent: {
+        editorContent: {},
+        schemaContent: {
+          type: 'object',
+          title: 'empty object',
+          properties: {},
+        },
+      },
     })
   }
 
@@ -77,8 +86,8 @@ class TemplateList extends React.Component {
 
   filterHandler = parameters => {
     this.props.dispatch({
-      type: 'contractList/filterContract',
-      targetID: parameters.id,
+      type: 'contractList/getContractList',
+      templateID: parameters.id,
     })
   }
 }

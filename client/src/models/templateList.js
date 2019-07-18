@@ -11,18 +11,19 @@ export default {
   effects: {
     *getTemplateList(_, { call, put }) {
       const response = yield call(request, '/api/templates');
+      console.log(response)
       yield put({
         type: 'updateTemplateList',
         newList: response,
       });
     },
     *deleteTemplate({ targetID }, { call, put }) {
-      const response = yield call(request.delete, `/api/templates/${targetID}`)
-      if (response === `delete ${targetID} succeed`) {
-        yield put({
-          type: 'getTemplateList',
-        });
-      }
+      const response = yield call(request.delete, `/api/templates/${targetID}`);
+      console.log(response)
+      yield put({
+        type: 'updateTemplateList',
+        newList: response,
+      });
     },
   },
 };

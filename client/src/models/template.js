@@ -28,19 +28,16 @@ export default {
           editorState: BraftEditor.createEditorState(editorContent),
         },
       })
-      router.push(`/TemplateEditor?id=${targetID}`)
+      router.push(`/TemplateEditor/${targetID}`)
     },
     *updateTemplate({ targetID, jsonContent }, { call }) {
-      console.log(targetID, jsonContent)
+      const response = yield call(request.put, `/api/templates/${targetID}`, { body: jsonContent })
     },
-    *createTemplate(_, { call, put }) {
-      const response = yield call(request.post, '/api/templates');
+    *createTemplate({ name, defaultContent }, { call, put }) {
+      const response = yield call(request.post, '/api/templates', { body: name, defaultContent });
       yield put({
-        type: 'updateTemplate',
-        newState: { ...response.id },
-      });
-      yield put({
-        type: 'templateList/getTemplateList',
+        type: 'templateList/updateTemplateList',
+        newList: response,
       });
     },
   },
