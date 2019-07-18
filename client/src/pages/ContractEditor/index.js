@@ -45,23 +45,11 @@ class ContractEditor extends React.Component {
   render() {
     const { contract } = this.props
 
-    const editor = (
-      <BraftEditor
-        className={styles.editor}
-        value={contract.editorState}
-        controls={[]}
-        readOnly />
-    )
+    const form = <Form className={styles.form} schema={contract.schema} formData={contract.formData} onError={e => alert(e)} />
 
-    const drawer = (
-      <Drawer
-        title="合同填写"
-        placement="right"
-        width="50%"
-        closable={false}
-        visible={this.state.drawerVisible}
-        onClose={e => this.setState({ drawerVisible: false })}>
-        <Form schema={contract.schema} formData={contract.formData} onError={e => alert(e)} />
+    const editorDrawer = (
+      <Drawer title="合同填写" placement="right" width="50%" closable={false} visible={this.state.drawerVisible} onClose={e => this.setState({ drawerVisible: false })}>
+        <BraftEditor className={styles.editor} value={contract.editorState} controls={[]} readOnly />
       </Drawer>
     )
 
@@ -69,12 +57,12 @@ class ContractEditor extends React.Component {
     const commitSwitch = <div className={styles.commitSwitch} onClick={e => this.submitContent} />
 
     return (
-      <BasicLayout>
-        {editor}
-        {drawer}
+      <div>
+        {form}
+        {editorDrawer}
         {drawerSwitch}
         {commitSwitch}
-      </BasicLayout>
+      </div>
     )
   }
 
@@ -87,14 +75,12 @@ class ContractEditor extends React.Component {
   }
 
   componentDidMount() {
-    var query = this.getCurrentHerfQuery()
+    this.query = this.getCurrentHerfQuery()
 
-    if (query.id !== undefined) {
-      this.props.dispatch({
-        type: "contract/getContract",
-        targetID: query.id
-      })
-    }
+    this.props.dispatch({
+      type: "contract/getContract",
+      targetID: this.query.id
+    })
   }
 
   getCurrentHerfQuery = () => {
@@ -113,4 +99,4 @@ class ContractEditor extends React.Component {
   }
 }
 
-export default connect(({ contract, template }) => ({ contract, template }))(ContractEditor);
+export default connect(({ contract }) => ({ contract }))(ContractEditor);

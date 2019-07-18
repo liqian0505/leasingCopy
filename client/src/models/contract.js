@@ -19,20 +19,52 @@ export default {
   },
   effects: {
     *getContract({ targetID }, { call, put }) {
-      const { id, formData, schema, templateID } = yield call(request, `/contract/${targetID}`)
-      const { editorContent } = yield call(request, `/template/${templateID}`)
+      // const { id, formData, schema, templateID } = yield call(request, `/contract/${targetID}`)
+      // const { editorContent } = yield call(request, `/template/${templateID}`)
+
+      // yield put({
+      //   type: "setContractState",
+      //   newState: {
+      //     id,
+      //     formData,
+      //     schema,
+      //     editorState: BraftEditor.createEditorState(editorContent)
+      //   }
+      // })
+
+      // router.push("/ContractEditor?id=" + id)
+
+      const editorContent = {
+        blocks: [{
+          key: '3b1pq',
+          text: 'empty',
+          type: 'unstyled',
+          depth: 0,
+          inlineStyleRanges: [],
+          entityRanges: [],
+          data: {}
+        }],
+        entityMap: {}
+      }
 
       yield put({
         type: "setContractState",
         newState: {
-          id,
-          formData,
-          schema,
+          id: '10',
+          formData: {
+            
+          },
+          schema: {
+            type: 'object',
+            title: 'empty object',
+            properties: {},
+          },
           editorState: BraftEditor.createEditorState(editorContent)
         }
       })
-
-      router.push("/ContractEditor?id=" + id)
+    },
+    *updateContract({ targetID, newContarct }, { call, put }) {
+      const response = yield call(request, `/contract/${targetID}`, { body: newContarct })
     }
   },
 };
