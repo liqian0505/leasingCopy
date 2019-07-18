@@ -1,5 +1,6 @@
 package com.cvicse.leasing.model;
 
+import com.alibaba.fastjson.JSONObject;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -12,12 +13,12 @@ public class Contract {
     @Id
     public String id;
 
-    public String content;
+    public JSONObject content;
 
     public Contract() {
     }
 
-    public Contract(String content) {
+    public Contract(JSONObject content) {
         this.content = content;
     }
 
@@ -26,7 +27,7 @@ public class Contract {
         return String.format("Contract[id=%s, content='%s']", id, content);
     }
 
-    public String getContent() {
+    public JSONObject getContent() {
         return content;
     }
 
