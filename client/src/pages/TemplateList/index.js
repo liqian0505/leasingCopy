@@ -88,6 +88,7 @@ class TemplateList extends React.Component {
     this.props.dispatch({
       type: 'contractList/getContractList',
       templateID: parameters.id,
+      jump: true
     })
   }
 

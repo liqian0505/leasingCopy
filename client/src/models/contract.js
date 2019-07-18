@@ -1,6 +1,7 @@
 import request from '../utils/request'
 import router from 'umi/router'
 import BraftEditor from 'braft-editor'
+import jp from 'jsonpath'
 
 export default {
   namespace: 'contract',
@@ -8,62 +9,60 @@ export default {
     id: null,
     schema: {
       type: 'object',
-      title: 'empty object',
+      title: '',
       properties: {},
     },
     templateID: null,
     formData: null,
-    editorState: null
+    editorState: null,
+    editorContent: null
   },
   reducers: {
-    setContractState(_, { newState }) { return newState }
+    setContractState(state, { newState }) {
+      const next = {
+        ...state,
+        ...newState
+      }
+      console.log(next)
+      debugger
+      return next
+    }
   },
   effects: {
-    *getContract({ targetID }, { call, put }) {
-      // const { id, formData, templateID } = yield call(request, `/contract/${targetID}`)
-      // const { editorContent, schema } = yield call(request, `/template/${templateID}`)
+    *getContract({ targetID, jump }, { call, put }) {
 
-      // yield put({
-      //   type: "setContractState",
-      //   newState: {
-      //     id,
-      //     formData,
-      //     schema,
-      //     templateID,
-      //     editorState: BraftEditor.createEditorState(editorContent)
-      //   }
-      // })
-
-      // router.push("/ContractEditor?id=" + id)
-
-      const editorContent = {
-        blocks: [{
-          key: '3b1pq',
-          text: 'empty${data.field_1}',
-          type: 'unstyled',
-          depth: 0,
-          inlineStyleRanges: [],
-          entityRanges: [],
-          data: {}
-        }],
-        entityMap: {}
-      }
+      const { id, content } = yield call(request, `/api/contracts/${targetID}`)
+      const { name, formData, templateID } = content
+      const template = yield call(request, `/api/templates/${templateID}`)
+      const { editorContent, schema } = template.content
 
       yield put({
         type: "setContractState",
         newState: {
-          id: '10',
-          formData: {
-
-          },
-          schema: { "type": "object", "title": "empty object", "properties": { "field_1": { "type": "string" }, "field_2": { "type": "string" } }, "required": ["field_1", "field_2"] },
+          id,
+          name,
+          formData,
+          schema,
+          templateID,
+          editorContent,
           editorState: BraftEditor.createEditorState(editorContent)
         }
       })
+
+      if (jump !== undefined) router.push("/ContractEditor?id=" + id)
     },
-    *updateContract({ targetID, content }, { call }) {
-      console.log(targetID, content)
-      const response = yield call(request.put, `/api/contracts/${targetID}`, { body: content })
+
+    *updateContract({ targetID, content, newEditorState }, { call, put }) {
+      // debugger
+      const response = yield call(request.put, `/api/contracts/${targetID}`, { data: content })
+      // debugger
+      yield put({
+        type: "setContractState",
+        newState: {
+          ...response.content,
+          editorState: newEditorState
+        }
+      })
     }
   },
 };
