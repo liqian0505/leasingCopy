@@ -54,14 +54,14 @@ class ContractEditor extends React.Component {
     )
 
     const drawerSwitch = <div className={styles.drawerSwitch} onClick={e => this.setState({ drawerVisible: true })} />
-    const commitSwitch = <div className={styles.commitSwitch} onClick={e => this.submitContent} />
+    const submitSwitch = <div className={styles.submitSwitch} onClick={e => this.submitContent} />
 
     return (
       <div>
         {form}
         {editorDrawer}
         {drawerSwitch}
-        {commitSwitch}
+        {submitSwitch}
       </div>
     )
   }

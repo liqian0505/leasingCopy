@@ -11,6 +11,7 @@ export default {
       title: 'empty object',
       properties: {},
     },
+    templateID: null,
     formData: null,
     editorState: null
   },
@@ -19,8 +20,8 @@ export default {
   },
   effects: {
     *getContract({ targetID }, { call, put }) {
-      // const { id, formData, schema, templateID } = yield call(request, `/contract/${targetID}`)
-      // const { editorContent } = yield call(request, `/template/${templateID}`)
+      // const { id, formData, templateID } = yield call(request, `/contract/${targetID}`)
+      // const { editorContent, schema } = yield call(request, `/template/${templateID}`)
 
       // yield put({
       //   type: "setContractState",
@@ -28,6 +29,7 @@ export default {
       //     id,
       //     formData,
       //     schema,
+      //     templateID,
       //     editorState: BraftEditor.createEditorState(editorContent)
       //   }
       // })
@@ -37,7 +39,7 @@ export default {
       const editorContent = {
         blocks: [{
           key: '3b1pq',
-          text: 'empty',
+          text: 'empty${data.field_1}',
           type: 'unstyled',
           depth: 0,
           inlineStyleRanges: [],
@@ -52,19 +54,16 @@ export default {
         newState: {
           id: '10',
           formData: {
-            
+
           },
-          schema: {
-            type: 'object',
-            title: 'empty object',
-            properties: {},
-          },
+          schema: { "type": "object", "title": "empty object", "properties": { "field_1": { "type": "string" }, "field_2": { "type": "string" } }, "required": ["field_1", "field_2"] },
           editorState: BraftEditor.createEditorState(editorContent)
         }
       })
     },
-    *updateContract({ targetID, newContarct }, { call, put }) {
-      const response = yield call(request, `/contract/${targetID}`, { body: newContarct })
+    *updateContract({ targetID, content }, { call }) {
+      console.log(targetID, content)
+      const response = yield call(request.put, `/api/contracts/${targetID}`, { body: content })
     }
   },
 };

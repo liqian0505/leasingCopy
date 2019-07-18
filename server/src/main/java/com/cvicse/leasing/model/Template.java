@@ -1,36 +1,36 @@
 package com.cvicse.leasing.model;
 
 
+import com.alibaba.fastjson.JSONObject;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
 
 
 @Data
+@Document(collection = "Template")
 public class Template {
 
     @Id
     private String id;
 
-    public String name;
+    public JSONObject content;
 
-    public String editorContent;
-
-    public String schemaContent;
 
     public ArrayList<String> contractIdList = new ArrayList<>();
 
     public Template() {
     }
 
-    public Template(String name) {
-        this.name = name;
+    public Template(JSONObject content) {
+        this.content = content;
     }
 
     @Override
     public String toString() {
-        return String.format("Template[id=%s, name='%s',editorContent='%s'，schemaContent='%s']", id, name,editorContent,schemaContent);
+        return String.format("Template[id=%s,content='%s']", id, content);
     }
 
     public String getId() {
@@ -41,16 +41,12 @@ public class Template {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public JSONObject getContent() {
+        return content;
     }
 
-    public void setEditorContent(String editorContent) {
-        this.editorContent = editorContent;
-    }
-
-    public void setSchemaContent(String schemaContent) {
-        this.schemaContent = schemaContent;
+    public void setContent(JSONObject content) {
+        this.content = content;
     }
 
     public ArrayList<String> getContractIdList() {
