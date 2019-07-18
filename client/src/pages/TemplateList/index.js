@@ -27,7 +27,7 @@ class TemplateList extends React.Component {
         dataIndex: 'name',
         key: 'name',
         render: (name, record) => (
-          <CustomInput id={record.id} defaultValue={name} onChange={(id, value) => console.log(id, value)} />
+          <CustomInput record={record} defaultValue={name} onChange={(id, content) => this.updateHandler(id, content)} />
         ),
       },
       {
@@ -88,6 +88,14 @@ class TemplateList extends React.Component {
     this.props.dispatch({
       type: 'contractList/getContractList',
       templateID: parameters.id,
+    })
+  }
+
+  updateHandler = (id, content) => {
+    this.props.dispatch({
+      type: 'template/updateTemplate',
+      targetID: id,
+      content: content
     })
   }
 }
