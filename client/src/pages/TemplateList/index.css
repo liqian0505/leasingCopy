@@ -1,7 +1,7 @@
 .createButton {
   position: absolute;
-  right: 4vmin;
-  top: 4vmin;
+  right: 45px;
+  top: 45px;
 
   width: 2vmin;
   height: 2vmin;
@@ -10,4 +10,9 @@
   background-image: url(../../assets/add.png);
 
   cursor: pointer;
+}
+
+.templateCard {
+  width: 100%;
+  height: 100%;
 }

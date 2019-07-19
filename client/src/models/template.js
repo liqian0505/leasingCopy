@@ -33,8 +33,20 @@ export default {
     },
   },
   effects: {
+    *createTemplate({ defaultContent }, { call, put }) {
+      const response = yield call(request.post, '/api/templates/new', { data: defaultContent });
+      const proList = response.map(item => ({
+        id: item.id,
+        name: item.content.name,
+        editorContent: item.content.editorContent,
+        schema: item.content.schema,
+      }))
+      yield put({
+        type: 'templateList/updateTemplateList',
+        newList: proList,
+      });
+    },
     *getTemplate({ targetID }, { call, put }) {
-      // const { name, editorContent, schema, id } = yield call(request.get, `/api/templates/${targetID}`)
       const { id, content } = yield call(request.get, `/api/templates/${targetID}`)
       const { name, editorContent, schema } = content
       console.log(id, name, editorContent, schema)
@@ -52,19 +64,6 @@ export default {
     },
     *updateTemplate({ targetID, content }, { call }) {
       const response = yield call(request.put, `/api/templates/${targetID}`, { data: content })
-    },
-    *createTemplate({ defaultContent }, { call, put }) {
-      const response = yield call(request.post, '/api/templates/new', { data: defaultContent });
-      const proList = response.map(item => ({
-        id: item.id,
-        name: item.content.name,
-        editorContent: item.content.editorContent,
-        schema: item.content.schema,
-      }))
-      yield put({
-        type: 'templateList/updateTemplateList',
-        newList: proList,
-      });
     },
   },
 };
