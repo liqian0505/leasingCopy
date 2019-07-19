@@ -5,12 +5,21 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import findRoute from '/Users/ics/Documents/repos/leasing/client/node_modules/umi-build-dev/lib/findRoute.js';
 
-
 // runtime plugins
 const plugins = require('umi/_runtimePlugin');
 window.g_plugins = plugins;
 plugins.init({
-  validKeys: ['patchRoutes','render','rootContainer','modifyRouteProps','onRouteChange','modifyInitialProps','initialProps','dva','locale',],
+  validKeys: [
+    'patchRoutes',
+    'render',
+    'rootContainer',
+    'modifyRouteProps',
+    'onRouteChange',
+    'modifyInitialProps',
+    'initialProps',
+    'dva',
+    'locale',
+  ],
 });
 plugins.use(require('../../../node_modules/umi-plugin-dva/lib/runtime'));
 
@@ -30,15 +39,21 @@ let clientRender = async () => {
     const activeRoute = findRoute(require('@tmp/router').routes, pathname);
     // 在客户端渲染前，执行 getInitialProps 方法
     // 拿到初始数据
-    if (activeRoute && activeRoute.component && activeRoute.component.getInitialProps) {
+    if (
+      activeRoute &&
+      activeRoute.component &&
+      activeRoute.component.getInitialProps
+    ) {
       const initialProps = plugins.apply('modifyInitialProps', {
         initialValue: {},
       });
-      props = activeRoute.component.getInitialProps ? await activeRoute.component.getInitialProps({
-        route: activeRoute,
-        isServer: false,
-        ...initialProps,
-      }) : {};
+      props = activeRoute.component.getInitialProps
+        ? await activeRoute.component.getInitialProps({
+            route: activeRoute,
+            isServer: false,
+            ...initialProps,
+          })
+        : {};
     }
   }
   const rootContainer = plugins.apply('rootContainer', {
@@ -49,17 +64,21 @@ let clientRender = async () => {
     document.getElementById('root'),
   );
 };
-const render = plugins.compose('render', { initialValue: clientRender });
+const render = plugins.compose(
+  'render',
+  { initialValue: clientRender },
+);
 
 const moduleBeforeRendererPromises = [];
 // client render
 if (__IS_BROWSER) {
-
-  Promise.all(moduleBeforeRendererPromises).then(() => {
-    render();
-  }).catch((err) => {
-    window.console && window.console.error(err);
-  });
+  Promise.all(moduleBeforeRendererPromises)
+    .then(() => {
+      render();
+    })
+    .catch(err => {
+      window.console && window.console.error(err);
+    });
 }
 
 // export server render
@@ -69,8 +88,13 @@ if (!__IS_BROWSER) {
     const pathname = ctx.req.url;
     require('@tmp/history').default.push(pathname);
     let props = {};
-    const activeRoute = findRoute(require('./router').routes, pathname) || false;
-    if (activeRoute && activeRoute.component && activeRoute.component.getInitialProps) {
+    const activeRoute =
+      findRoute(require('./router').routes, pathname) || false;
+    if (
+      activeRoute &&
+      activeRoute.component &&
+      activeRoute.component.getInitialProps
+    ) {
       const initialProps = plugins.apply('modifyInitialProps', {
         initialValue: {},
       });
@@ -80,34 +104,37 @@ if (!__IS_BROWSER) {
         ...initialProps,
       });
       props = plugins.apply('initialProps', {
-         initialValue: props,
+        initialValue: props,
       });
     } else {
       // message activeRoute or getInitialProps not found
       console.log(
         !activeRoute
           ? `${pathname} activeRoute not found`
-          : `${pathname} activeRoute's getInitialProps function not found`
+          : `${pathname} activeRoute's getInitialProps function not found`,
       );
     }
     const rootContainer = plugins.apply('rootContainer', {
       initialValue: React.createElement(require('./router').default, props),
     });
-    const htmlTemplateMap = {
-      
-    };
+    const htmlTemplateMap = {};
     return {
-      htmlElement: activeRoute && activeRoute.path ? htmlTemplateMap[activeRoute.path] : '',
+      htmlElement:
+        activeRoute && activeRoute.path
+          ? htmlTemplateMap[activeRoute.path]
+          : '',
       rootContainer,
+      matchPath: activeRoute && activeRoute.path,
+      g_initialData: props,
     };
-  }
+  };
   // using project react-dom version
   // https://github.com/facebook/react/issues/13991
   ReactDOMServer = require('react-dom/server');
 }
 
 export { ReactDOMServer };
-export default __IS_BROWSER ? null : serverRender;
+export default (__IS_BROWSER ? null : serverRender);
 
 require('../../global.less');
 

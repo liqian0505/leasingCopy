@@ -1,6 +1,7 @@
 package com.cvicse.leasing.controller;
 
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.cvicse.leasing.exception.TemplateNotFoundException;
 import com.cvicse.leasing.model.Contract;
@@ -73,6 +74,37 @@ public class TemplateController {
         return this.templateService.getAllTemplate();
         }catch(TemplateNotFoundException e){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Template Not Found.",e);
+        }
+    }
+
+//    @GetMapping("/{id}/commits")
+//    public JSONArray getTemplateChanges(@PathVariable String id){
+//        try{
+//            logger.info("Get Template commits with Template.id "+ id);
+//            return this.templateService.trackTemplateChangesWithJavers(id);
+//        }catch(TemplateNotFoundException e){
+//            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Template Not Found.",e);
+//        }
+//    }
+
+    @GetMapping("/{id}/commits")
+    public JSONArray getTemplateWithCommitId(@PathVariable String id, @RequestParam(value = "commitId",defaultValue = "null") String commitId){
+        if(commitId.equals("null")){
+            try{
+                logger.info("Get Template commits with Template.id "+ id);
+                return this.templateService.trackTemplateChangesWithJavers(id);
+            }catch(TemplateNotFoundException e){
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Template Not Found.",e);
+            }
+        }else{
+            try{
+                logger.info("Cet Template commit with commitId"+commitId);
+                JSONArray jsonArray = new JSONArray();
+                jsonArray.add(this.templateService.getTemplateWithJaversCommitId(id,commitId));
+                return jsonArray;
+            }catch (TemplateNotFoundException e){
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Template Not Found.",e);
+            }
         }
     }
 

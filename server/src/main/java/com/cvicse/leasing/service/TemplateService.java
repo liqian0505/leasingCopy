@@ -1,5 +1,7 @@
 package com.cvicse.leasing.service;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.cvicse.leasing.exception.ContractNotFoundException;
 import com.cvicse.leasing.exception.TemplateNotFoundException;
@@ -7,8 +9,11 @@ import com.cvicse.leasing.model.Contract;
 import com.cvicse.leasing.model.Template;
 import com.cvicse.leasing.repository.ContractRepository;
 import com.cvicse.leasing.repository.TemplateRepository;
+import org.aspectj.weaver.Shadow;
 import org.javers.core.Changes;
 import org.javers.core.Javers;
+import org.javers.core.diff.Change;
+import org.javers.core.metamodel.object.CdoSnapshot;
 import org.javers.repository.jql.JqlQuery;
 import org.javers.repository.jql.QueryBuilder;
 import org.slf4j.LoggerFactory;
@@ -51,9 +56,9 @@ public class TemplateService {
     }
 
 
-    public void createTemplate(Template newTemplate) {
+    public Template createTemplate(Template newTemplate) {
         logger.info("Template saved");
-        templateRepository.save(newTemplate);
+        return templateRepository.save(newTemplate);
     }
 
     public Template updateTemplate(JSONObject content, String id) {
@@ -117,11 +122,30 @@ public class TemplateService {
         }
     }
 
-    public Changes trackTemplateChangesWithJavers(String templateId) throws TemplateNotFoundException{
+    public JSONArray trackTemplateChangesWithJavers(String templateId) throws TemplateNotFoundException{
+        Template template = this.getTemplate(templateId);
+        JSONArray jsonArray = new JSONArray();
+        JqlQuery jqlQuery= QueryBuilder.byInstance(template).build();
+        List<CdoSnapshot> snapshots = javers.findSnapshots(jqlQuery);
+        for(CdoSnapshot snapshot:snapshots){
+           // System.out.println(javers.getJsonConverter().toJson(snapshot));
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("commitId",snapshot.getCommitId().getMajorId());
+            jsonObject.put("commitDate", snapshot.getCommitMetadata().getCommitDate());
+            jsonObject.put("state", JSON.parseObject(javers.getJsonConverter().toJson(snapshot.getState()),Template.class));
+            jsonArray.add(jsonObject);
+        }
+        return jsonArray;
+    }
+
+    public Template getTemplateWithJaversCommitId(String templateId, String commitId) throws TemplateNotFoundException{
         Template template = this.getTemplate(templateId);
         JqlQuery jqlQuery= QueryBuilder.byInstance(template).build();
-        Changes changes = javers.findChanges(jqlQuery);
-        System.out.println(changes.prettyPrint());
-        return changes;
+        List<CdoSnapshot> snapshots = javers.findSnapshots(jqlQuery);
+        for(CdoSnapshot snapshot:snapshots){
+            if(snapshot.getCommitId().getMajorId()== Integer.parseInt(commitId))
+                return JSON.parseObject(javers.getJsonConverter().toJson(snapshot.getState()),Template.class);
+        }
+        return null;
     }
 }
