@@ -2,6 +2,7 @@ package com.cvicse.leasing.service;
 
 import java.util.List;
 
+import com.alibaba.fastjson.JSONObject;
 import com.cvicse.leasing.exception.ContractNotFoundException;
 import com.cvicse.leasing.model.Contract;
 import com.cvicse.leasing.repository.ContractRepository;
@@ -20,8 +21,8 @@ public class ContractService {
     private static final Logger logger = LoggerFactory.getLogger(ContractService.class);
 
     public List<Contract> getAllContract() {
-        List<Contract> contracts = contractRepository.findAll();
         logger.info("contracts returned");
+        List<Contract> contracts = contractRepository.findAll();
         return contracts;
     }
 
@@ -36,12 +37,12 @@ public class ContractService {
         return contractRepository.save(newContract);
     }
 
-    public Contract updateContract(Contract newContract, String id) {
+    public Contract updateContract(JSONObject content, String id) {
         this.contractRepository.findById(id).ifPresent(contract -> {
-            contract.content = newContract.content;
+            contract.content = content;
             this.contractRepository.save(contract);
         });
-        return newContract;
+        return this.contractRepository.findById(id).get();
     }
 
     public void deleteContract(String id) throws ContractNotFoundException {

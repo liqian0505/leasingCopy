@@ -1,6 +1,7 @@
 package com.cvicse.leasing.controller;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.cvicse.leasing.exception.TemplateNotFoundException;
 import com.cvicse.leasing.model.Contract;
 import com.cvicse.leasing.model.Template;
@@ -50,28 +51,36 @@ public class TemplateController {
         }
     }
 
-    @PostMapping
-    public Template createTemplate(@RequestBody String name) {
+    @PostMapping("/new")
+    public List<Template> createTemplate(@RequestBody JSONObject content) {
         logger.info("Create Template");
-        Template newTemplate=new Template(name);
-        return this.templateService.createTemplate(newTemplate);
+        Template newTemplate=new Template(content);
+        this.templateService.createTemplate(newTemplate);
+        return templateService.getAllTemplate();
     }
 
     @PutMapping("/{id}")
-    public Template updateTemplate(@RequestBody Template newTemplate, @PathVariable String id) {
+    public Template updateTemplate(@RequestBody JSONObject content, @PathVariable String id) {
         logger.info("UpdateTemplate with Template.id " + id);
-        return this.templateService.updateTemplate(newTemplate, id);
+        return this.templateService.updateTemplate(content, id);
     }
 
     @DeleteMapping("/{id}")
-    public String deleteTemplate(@PathVariable String id) {
+    public List<Template> deleteTemplate(@PathVariable String id) {
         try{
         logger.info("Delete Template with Template.id " + id);
         this.templateService.deleteTemplate(id);
-        return "delete "+id+" succeed";
+        return this.templateService.getAllTemplate();
         }catch(TemplateNotFoundException e){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Template Not Found.",e);
         }
+    }
+
+
+    @RequestMapping(value = "*", method = { RequestMethod.GET, RequestMethod.POST,RequestMethod.DELETE,RequestMethod.PUT })
+    @ResponseBody
+    public String allFallback() {
+        return "Fallback for All Requests";
     }
 
 }

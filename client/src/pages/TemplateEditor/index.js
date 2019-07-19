@@ -33,13 +33,13 @@ class TemplateEditor extends React.Component {
   };
 
   componentDidMount() {
-    debugger
-    var query = this.getCurrentHerfQuery()
+    // debugger
+    let query = this.getCurrentHerfQuery()
 
     if (query.id !== undefined) {
       this.props.dispatch({
-        type: "template/getTemplate",
-        targetID: query.id
+        type: 'template/getTemplate',
+        targetID: query.id,
       })
     }
   }
@@ -59,33 +59,36 @@ class TemplateEditor extends React.Component {
   submitContent = () => {
     // 在编辑器获得焦点时按下ctrl+s会执行此方法
     // 编辑器内容可直接调用editorState.toHTML()来获取HTML格式的内容
-    const htmlContent = this.state.editorState.toHTML();
-    const stringContent = this.state.editorState.toRAW();
-    const jsonContent = this.state.editorState.toRAW(true);
-    console.log(htmlContent, stringContent, jsonContent);
-
-    const schemaContent = null
+    // const htmlContent = this.state.editorState.toHTML();
+    // const stringContent = this.state.editorState.toRAW();
+    console.log(this.props.template.editorState)
+    const jsonContent = this.props.template.editorState.toRAW(true);
+    console.log(JSON.stringify(this.props.template.schema));
 
     this.props.dispatch({
-      type: "template/updateTemplate",
+      type: 'template/updateTemplate',
       targetID: this.props.template.id,
-      jsonContent: jsonContent
+      content: {
+        name: this.props.template.name,
+        editorContent: jsonContent,
+        schema: this.props.template.schema,
+      },
     })
   };
 
-  handleEditorChange = editorState => {
-    this.setState({ editorState });
-  };
+  // handleEditorChange = editorState => {
+  //   this.setState({ editorState });
+  // };
 
   getCurrentHerfQuery = () => {
-    var regex = /[^&=?]+=[^&]*/g;
-    var parsedQuery = window.location.href.match(regex);
+    let regex = /[^&=?]+=[^&]*/g;
+    let parsedQuery = window.location.href.match(regex);
 
-    var query = {}
+    let query = {}
 
     if (parsedQuery !== null) {
-      parsedQuery.forEach((pairText) => {
-        var pair = pairText.split("=")
+      parsedQuery.forEach(pairText => {
+        let pair = pairText.split('=')
         query[pair[0]] = pair[1]
       })
     }
@@ -99,8 +102,10 @@ class TemplateEditor extends React.Component {
         <div className={styles.editorContainer}>
           <Row>
             <BraftEditor
-              value={template.editorState}//{editorState}
-              onChange={this.handleEditorChange}
+              value={template.editorState}
+              onChange={editorState => {
+                dispatch({ type: 'template/updateEditorState', payload: editorState })
+              }}
               onSave={this.submitContent}
             />
             <Drawer
@@ -113,9 +118,9 @@ class TemplateEditor extends React.Component {
             >
               <SchemaEditor
                 data={JSON.stringify(template.schema)}
-              // onChange={schema => {
-              //   dispatch({ type: 'bucciarati/updateSchema', payload: JSON.parse(schema) });
-              // }}
+              onChange={schema => {
+                dispatch({ type: 'template/updateSchema', payload: JSON.parse(schema) });
+              }}
               />
             </Drawer>
           </Row>

@@ -2,6 +2,8 @@ package com.cvicse.leasing.repository;
 
 import static org.assertj.core.api.Assertions.*;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.cvicse.leasing.model.Contract;
 
 import org.junit.Before;
@@ -25,25 +27,29 @@ public class ContractRepositoryTests {
     public void setUp() {
 
         repository.deleteAll();
-
-        c1 = repository.save(new Contract("C1"));
-        c2 = repository.save(new Contract("C2"));
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("content","C1");
+        JSONObject jsonObject1 = new JSONObject();
+        jsonObject1.put("content","C2");
+        c1 = repository.save(new Contract(jsonObject));
+        c2 = repository.save(new Contract(jsonObject1));
     }
 
     @Test
     public void setsIdOnSave() {
-
-        Contract c1 = repository.save(new Contract("C1"));
-
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("content","C1");
+        Contract c1 = repository.save(new Contract(jsonObject));
         assertThat(c1.id).isNotNull();
     }
 
     @Test
     public void findsByName() {
-
-        Contract result = repository.findByContent("C1");
-
-        assertThat(result).extracting("name").contains("C1");
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("content","C1");
+        Contract result = repository.findByContent(jsonObject);
+        assertThat(result.getId()).isNotNull();
+        //assertThat(result).extracting("content").contains({"content"="C1"});
     }
 
 }

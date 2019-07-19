@@ -44,57 +44,62 @@ class ContractEditor extends React.Component {
 
   render() {
     const { contract } = this.props
+    console.log(contract)
+    debugger
 
-    const editor = (
-      <BraftEditor
-        className={styles.editor}
-        value={contract.editorState}
-        controls={[]}
-        readOnly />
-    )
+    const form = <Form className={styles.form} schema={contract.schema} formData={contract.formData} onSubmit={this.submitHandler} onError={e => alert(e)} />
 
-    const drawer = (
-      <Drawer
-        title="合同填写"
-        placement="right"
-        width="50%"
-        closable={false}
-        visible={this.state.drawerVisible}
-        onClose={e => this.setState({ drawerVisible: false })}>
-        <Form schema={contract.schema} formData={contract.formData} onError={e => alert(e)} />
+    const editorDrawer = (
+      <Drawer title="合同填写" placement="right" width="50%" closable={false} visible={this.state.drawerVisible} onClose={e => this.setState({ drawerVisible: false })}>
+        <BraftEditor className={styles.editor} value={contract.editorState} controls={[]} readOnly />
       </Drawer>
     )
 
     const drawerSwitch = <div className={styles.drawerSwitch} onClick={e => this.setState({ drawerVisible: true })} />
-    const commitSwitch = <div className={styles.commitSwitch} onClick={e => this.submitContent} />
 
     return (
-      <BasicLayout>
-        {editor}
-        {drawer}
+      <div>
+        {form}
+        {editorDrawer}
         {drawerSwitch}
-        {commitSwitch}
-      </BasicLayout>
+      </div>
     )
   }
 
   constructor(props) {
     super(props)
-
     this.state = {
       drawerVisible: false
     }
   }
 
   componentDidMount() {
-    var query = this.getCurrentHerfQuery()
+    this.query = this.getCurrentHerfQuery()
+    this.props.dispatch({
+      type: "contract/getContract",
+      targetID: this.query.id
+    })
+  }
 
-    if (query.id !== undefined) {
-      this.props.dispatch({
-        type: "contract/getContract",
-        targetID: query.id
-      })
-    }
+  submitHandler = ({ formData }, e) => {
+    const { id, name, editorContent, templateID } = this.props.contract
+
+    var copyContent = JSON.parse(JSON.stringify(editorContent))
+
+    const data = formData
+    jp.apply(copyContent, '$..text', value => eval('`' + value + '`'))
+    // console.log(jp.query(copyContent,'$..text'))
+    // debugger
+    this.props.dispatch({
+      type: "contract/updateContract",
+      targetID: id,
+      content: {
+        name,
+        formData,
+        templateID
+      },
+      newEditorState: BraftEditor.createEditorState(copyContent)
+    })
   }
 
   getCurrentHerfQuery = () => {
@@ -113,4 +118,4 @@ class ContractEditor extends React.Component {
   }
 }
 
-export default connect(({ contract, template }) => ({ contract, template }))(ContractEditor);
+export default connect(({ contract }) => ({ contract }))(ContractEditor);

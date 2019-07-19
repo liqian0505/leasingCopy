@@ -1,28 +1,25 @@
 language: java
 jdk:
-  - openjdk8
-# Test & Build SpringBoot app
+- openjdk8
 before-install:
-  - sudo apt-get update
-  - sudo apt-get install docker.io
-  - sudo apt-get install docker-compose
-  - sudo apt-get install node
+- sudo apt-get update
+- sudo apt-get install docker.io
+- sudo apt-get install docker-compose
+- sudo apt-get install node
 install: true
 script:
-  - bash ./set_up.sh
-  - mvn package
-# safelist
+- bash ./set_up.sh
+- mvn clean package -Dmaven.test.skip=true
 branches:
   only:
-    - master
-# set up cache
+  - dev
 cache: npm
+# travis encrypt $(heroku auth:token) --add deploy.api_key
 deploy:
   provider: heroku
   api_key:
-    secure: Ise82QmFoMwy7k3IIPRKCvq4bMkOtOIbMELCPujlyAfftFKI1Yk4oPZyZc+OhlG/H0FtdtfIiF+mMI87ImMEbIS8ldmME9D9VyPKaTPm5xYw3jVJK9syNjMKOGL6btL9YcMzDDNCU7YjNE6zqmFhKFOH5jHwdUnBuUeJ6psjoTbYJsm3XygP7J0ygUti60U4ym8uE+PfiHJU4vOgB50uTR69hiLVdPHP1NVU63lS6fSWqBeL819C/kGYxuMzO3vG3Ww5buM4w0cy6sq0QeYRie3pxl9RTUSkc+8CQKyP45QClbrzyrylEQcPhVvHNyKEkI0PFoLreqOsnIAHvOzROEU4wsl5gIoEeZdpMZVOFOC6q2n0GXExR5FJFX+7ck5EHXVCG9EXYrAL24/KrdyjvoyXAQ9settMaA/0HjtkrEZ2YifnSOpL81+GzCoWOkcx3rqb85ukIb+1CWxcVCVY3tHIxIPeMYpdQtDLZhCB1mbjZZgzBHfm+K8caTmEgNurhx4RcRiXm/HQcQbBiLVDS62G+amvHVIi0A6TpOV3Fw9yJEw2HNT/VI/gi64PhTTSEhAZa9JoAcNp2u2/j7hGiPQW9OWjO5mZGRJ+6pE64J+P/M49DLQoCg84qadPPwSZxctqryZ42bv30izEQ8nbBWsH+ccG2DDrfxFvANuuUAw=
+    secure: SYryt6hULzGUxloyFRouRpgkGacBZCk7fSCa8pjAukCvPiT28iIWqBjwae4JvX9uDr0e1Kv5ku6/tMKrnJg8v5g2/6YIUSJY/DqtJ8ywyUdtBDqGM4CXxzrLDkXwZ2eQvxLgYaJ/7aNamcH1dWPApLVf3Hay1BFM00MAZsuCFRq/1P9m6J345odL0dxtwTPGNkq9ZS6fKpDe+xMob84GeHw9VCezpRdU7dJXkjfiFu2yT/OUg2ScZAdBaWJE/Q6FXCT85nwL3eG3tnaXMZKaOO3uiCQoVu3wY5RPHmtp4nPiDzrzw7/A5IDz+AbGziX9Fp5bMuv6Kxd4H8ldDvucDhk+5Y9qA5S7Qa8fJuIqnihmcF9wz5adOy8uaFb+jSLLAOM82ZmtN1vkbsm50HI+fmNU4cBSkMJNRGxvunmIT7PpeQtMKvSolAlPlTDMM2UePgYYptdj3HzkiuArKKKpreWb+twBCVx8nIJoZRp0ZFF3fgEofTvbcJ4h3gk793z0cyrLZQTmGNjIpxl/u43j9i6eU1GIsMJipe50FVXNXfMlx4luM/35IU3JuyoEL9TufIKS/Vsz1QcagglnYpfRurzXXFvs1AvpdZ9GCyzIIzDcSeuXDbK75nTBJg7ku+UCAUJyG/r0SCS7JTvAAOXCL3rW2J+pxWqUjL3e/fZl6RM=
   app: cvise
   on:
-    repo: CaribouW/leasing  # 暂时先用个人的分支 , 之后将要改变为upstream的内容
+    repo: CaribouW/leasing
 sudo: true
-

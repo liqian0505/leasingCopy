@@ -7,41 +7,44 @@ export default {
   reducers: {
     updateContractList(_, { newList }) {
       return newList
-    },
-    deleteContractInList(state, { targetID }) {
-      return state.filter(contract => contract.id !== targetID)
-    },
-    createContractInList(state, { newID }) {
-      return state.concat({
-        id: newID,
-        name: "未定名合同",
-        schema: {
-          type: 'object',
-          title: 'empty object',
-          properties: {},
-          formData: null,
-          editorState: null
-        }
-      })
     }
   },
   effects: {
-    *getContractList({ templateID }, { call, put }) {
-      const response = yield call(request, '/api/contracts', { id: templateID });
-
-      yield put({ type: 'updateContractList', newList: response })
-
-      router.push("/ContractList")
+    *getContractList({ templateID, jump }, { call, put }) {
+      const response = templateID === undefined ? yield call(request, '/api/contracts') : yield call(request, `/api/contracts?id=${templateID}`)
+      yield put({
+        type: 'updateContractList', newList: response.map(contract => {
+          contract.content['id'] = contract.id
+          return contract.content
+        })
+      })
+      if (jump !== undefined) router.push(`/ContractList?id=${templateID}`)
     },
-    *deleteContract({ targetID }, { call, put }) {
-      const response = yield call(request.delete, `/api/contracts/${targetID}`)
-
-      yield put({ type: 'deleteContractInList', targetID: targetID })
+    *deleteContract({ targetID, templateID }, { call, put }) {
+      const response = yield call(request.delete, `/api/contracts/${targetID}?templateId=${templateID}`)
+      yield put({
+        type: 'updateContractList', newList: response.map(contract => {
+          contract.content['id'] = contract.id
+          return contract.content
+        })
+      })
     },
-    *createContract(_, { call, put }) {
-      const { id } = yield call(request.post, "/api/contracts")
-      console.log(id)
-      yield put({ type: 'createContractInList', newID: id })
+    *createContract({ templateID }, { call, put }) {
+      const defaultContent = {
+        name: '未命名合同',
+        formData: {},
+        templateID: templateID
+      }
+
+      const response = yield call(request.post, `/api/contracts?templateId=${templateID}`, { data: defaultContent })
+
+      yield put({
+        type: 'updateContractList', 
+        newList: response.map(contract => {
+          contract.content['id'] = contract.id
+          return contract.content
+        })
+      })
     }
   },
 };
