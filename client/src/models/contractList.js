@@ -13,23 +13,28 @@ export default {
     *getContractList({ templateID, jump }, { call, put }) {
       const response = templateID === undefined ? yield call(request, '/api/contracts') : yield call(request, `/api/contracts?id=${templateID}`)
       yield put({
-        type: 'updateContractList', newList: response.map(contract => {
+        type: 'updateContractList', 
+        newList: response.map(contract => {
+          contract.content = {...contract.content}
           contract.content['id'] = contract.id
           return contract.content
         })
       })
+
       if (jump !== undefined) router.push(`/ContractList?id=${templateID}`)
     },
     *deleteContract({ targetID, templateID }, { call, put }) {
       const response = yield call(request.delete, `/api/contracts/${targetID}?templateId=${templateID}`)
       yield put({
         type: 'updateContractList', newList: response.map(contract => {
+          contract.content = {...contract.content}
           contract.content['id'] = contract.id
           return contract.content
         })
       })
     },
     *createContract({ templateID }, { call, put }) {
+
       const defaultContent = {
         name: '未命名合同',
         formData: {},
@@ -41,6 +46,7 @@ export default {
       yield put({
         type: 'updateContractList', 
         newList: response.map(contract => {
+          contract.content = {...contract.content}
           contract.content['id'] = contract.id
           return contract.content
         })

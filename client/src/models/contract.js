@@ -1,6 +1,7 @@
 import request from '../utils/request'
 import router from 'umi/router'
 import BraftEditor from 'braft-editor'
+import jp from 'jsonpath'
 
 export default {
   namespace: 'contract',
@@ -14,13 +15,27 @@ export default {
     templateID: null,
     formData: null,
     editorState: null,
-    editorContent: null
+    editorContent: null,
+    commitVersionList: []
   },
   reducers: {
     setContractState(state, { newState }) {
+
+      var editorContent = newState.editorContent !== undefined ? newState.editorContent : state.editorContent
+      const data = newState.formData !== undefined ? newState.formData : state.formData
+
+      editorContent = { ...editorContent }
+
+      var copyContent = JSON.parse(JSON.stringify(editorContent))
+      jp.apply(copyContent, '$..text', value => {
+        const result = eval('`' + value + '`')
+        return result.replace("undefined", "「----」")
+      })
+
       return {
         ...state,
-        ...newState
+        ...newState,
+        editorState: BraftEditor.createEditorState(copyContent)
       }
     }
   },
@@ -28,17 +43,17 @@ export default {
     *getContract({ targetID, jump }, { call, put }) {
 
       const { id, content } = yield call(request, `/api/contracts/${targetID}`)     //获取目标合同id及content
+      const commitVersionList = yield call(request, `/api/contracts/${id}/commits`) //获取目标合同全部历史修改记录
       const template = yield call(request, `/api/templates/${content.templateID}`)  //获取目标模板
       const { editorContent, schema } = template.content                            //获取模板editorContent及schema
-      const editorState = BraftEditor.createEditorState(editorContent)              //创建新editorState
 
       yield put({
         type: "setContractState",
         newState: {
           id,
           schema,
-          editorState,
           editorContent,
+          commitVersionList,
           ...content
         }
       })
@@ -46,24 +61,12 @@ export default {
       if (jump !== undefined) router.push("/ContractEditor?id=" + id)
     },
 
-    *updateContract({ targetID, content, newEditorState }, { call, put }) {
+    *updateContract({ targetID, content }, { call, put }) {
       const response = yield call(request.put, `/api/contracts/${targetID}`, { data: content })
-
-      if (newEditorState !== undefined) {
-        yield put({
-          type: "setContractState",
-          newState: {
-            ...response.content,
-            editorState: newEditorState
-          }
-        })
-      }
-      else {
-        yield put({
-          type: "setContractState",
-          newState: response.content
-        })
-      }
+      yield put({
+        type: "setContractState",
+        newState: response.content
+      })
     }
   },
 };
