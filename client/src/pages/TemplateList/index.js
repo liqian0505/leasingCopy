@@ -11,10 +11,12 @@ class TemplateList extends React.Component {
   render() {
     return (
       <div>
-        <Row className={styles.createButton}>
+        {/* <Row className={styles.createButton}>
           <Button type="primary" icon="plus" onClick={this.createHandler}>New Template</Button>
         </Row>
-        <Row><Table columns={this.columns} dataSource={this.props.templateList} rowKey="id" /></Row>
+        <Row></Row> */}
+        <Table columns={this.columns} dataSource={this.props.templateList} rowKey="id" />
+        <div className={styles.createButton} onClick={this.createHandler} />
       </div>
     )
   }
