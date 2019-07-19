@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Col, Drawer, Row } from 'antd';
+import { Button, Col, Drawer, Row, Timeline } from 'antd';
 // 引入富文本编辑器组件
 import BraftEditor from 'braft-editor';
 import Table from 'braft-extensions/dist/table';
@@ -29,7 +29,8 @@ BraftEditor.use([
 
 class TemplateEditor extends React.Component {
   state = {
-    visible: false,
+    schemaVisible: false,
+    versionVisible: false,
   };
 
   componentDidMount() {
@@ -46,13 +47,25 @@ class TemplateEditor extends React.Component {
 
   showDrawer = () => {
     this.setState({
-      visible: true,
+      schemaVisible: true,
     });
   };
 
   onClose = () => {
     this.setState({
-      visible: false,
+      schemaVisible: false,
+    });
+  };
+
+  showVersionDrawer = () => {
+    this.setState({
+      versionVisible: true,
+    });
+  };
+
+  onVersionClose = () => {
+    this.setState({
+      versionVisible: false,
     });
   };
 
@@ -99,49 +112,68 @@ class TemplateEditor extends React.Component {
   render() {
     const { dispatch, template } = this.props;
     return (
-        <div className={styles.editorContainer}>
-          <Row>
-            <BraftEditor
-              value={template.editorState}
-              onChange={editorState => {
-                dispatch({ type: 'template/updateEditorState', payload: editorState })
-              }}
-              onSave={this.submitContent}
-            />
-            <Drawer
-              title="Schema Editor"
-              placement="right"
-              closable={false}
-              onClose={this.onClose}
-              visible={this.state.visible}
-              width="50%"
-            >
-              <SchemaEditor
-                data={JSON.stringify(template.schema)}
+      <div className={styles.editorContainer}>
+        <Row>
+          <BraftEditor
+            value={template.editorState}
+            onChange={editorState => {
+              dispatch({ type: 'template/updateEditorState', payload: editorState })
+            }}
+            onSave={this.submitContent}
+          />
+          <Drawer
+            title="Edition Version"
+            placement="left"
+            closable={false}
+            onClose={this.onVersionClose}
+            visible={this.state.versionVisible}
+            width="50%"
+          >
+            <Timeline>
+              <Timeline.Item></Timeline.Item>
+            </Timeline>
+          </Drawer>
+          <Drawer
+            title="Schema Editor"
+            placement="right"
+            closable={false}
+            onClose={this.onClose}
+            visible={this.state.schemaVisible}
+            width="50%"
+          >
+            <SchemaEditor
+              data={JSON.stringify(template.schema)}
               onChange={schema => {
                 dispatch({ type: 'template/updateSchema', payload: JSON.parse(schema) });
               }}
-              />
-            </Drawer>
-          </Row>
-          <Row>
-            <Col span={20}></Col>
-            <Col span={2}>
-              <div className={styles.buttonContainer}>
-                <Button type="primary" block onClick={this.showDrawer}>
-                  Drawer
+            />
+          </Drawer>
+        </Row>
+        <Row>
+          <Col span={2}>
+            <div className={styles.buttonContainer}>
+              <Button type="primary" block onClick={this.showVersionDrawer}>
+                Version
+              </Button>
+            </div>
+          </Col>
+          <Col span={18}></Col>
+          <Col span={2}>
+            <div className={styles.buttonContainer}>
+              <Button type="primary" block onClick={this.showDrawer}>
+                Drawer
                 </Button>
-              </div>
-            </Col>
-            <Col span={2}>
-              <div className={styles.buttonContainer}>
-                <Button type="primary" block onClick={this.submitContent}>
-                  Save
+            </div>
+          </Col>
+          <Col span={2}>
+            <div className={styles.buttonContainer}>
+              <Button type="primary" block onClick={this.submitContent}>
+                Save
                 </Button>
-              </div>
-            </Col>
-          </Row>
-          {/* 另一种button排版样式
+            </div>
+          </Col>
+        </Row>
+        {/* 另一种button排版样式
           <Row>
             <Col span={19}></Col>
             <Col span={2}>
@@ -152,7 +184,7 @@ class TemplateEditor extends React.Component {
               <Button type="primary" block onClick={this.submitContent}>Save</Button>
             </Col>
           </Row> */}
-        </div>
+      </div>
     );
   }
 }
