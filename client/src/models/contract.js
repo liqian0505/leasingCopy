@@ -8,62 +8,62 @@ export default {
     id: null,
     schema: {
       type: 'object',
-      title: 'empty object',
+      title: '',
       properties: {},
     },
     templateID: null,
     formData: null,
-    editorState: null
+    editorState: null,
+    editorContent: null
   },
   reducers: {
-    setContractState(_, { newState }) { return newState }
+    setContractState(state, { newState }) {
+      return {
+        ...state,
+        ...newState
+      }
+    }
   },
   effects: {
-    *getContract({ targetID }, { call, put }) {
-      // const { id, formData, templateID } = yield call(request, `/contract/${targetID}`)
-      // const { editorContent, schema } = yield call(request, `/template/${templateID}`)
+    *getContract({ targetID, jump }, { call, put }) {
 
-      // yield put({
-      //   type: "setContractState",
-      //   newState: {
-      //     id,
-      //     formData,
-      //     schema,
-      //     templateID,
-      //     editorState: BraftEditor.createEditorState(editorContent)
-      //   }
-      // })
-
-      // router.push("/ContractEditor?id=" + id)
-
-      const editorContent = {
-        blocks: [{
-          key: '3b1pq',
-          text: 'empty${data.field_1}',
-          type: 'unstyled',
-          depth: 0,
-          inlineStyleRanges: [],
-          entityRanges: [],
-          data: {}
-        }],
-        entityMap: {}
-      }
+      const { id, content } = yield call(request, `/api/contracts/${targetID}`)     //获取目标合同id及content
+      const template = yield call(request, `/api/templates/${content.templateID}`)  //获取目标模板
+      const { editorContent, schema } = template.content                            //获取模板editorContent及schema
+      const editorState = BraftEditor.createEditorState(editorContent)              //创建新editorState
 
       yield put({
         type: "setContractState",
         newState: {
-          id: '10',
-          formData: {
-
-          },
-          schema: { "type": "object", "title": "empty object", "properties": { "field_1": { "type": "string" }, "field_2": { "type": "string" } }, "required": ["field_1", "field_2"] },
-          editorState: BraftEditor.createEditorState(editorContent)
+          id,
+          schema,
+          editorState,
+          editorContent,
+          ...content
         }
       })
+
+      if (jump !== undefined) router.push("/ContractEditor?id=" + id)
     },
-    *updateContract({ targetID, content }, { call }) {
-      console.log(targetID, content)
-      const response = yield call(request.put, `/api/contracts/${targetID}`, { body: content })
+
+    *updateContract({ targetID, content, newEditorState }, { call, put }) {
+      const response = yield call(request.put, `/api/contracts/${targetID}`, { data: content })
+
+      if (newEditorState !== undefined) {
+        yield put({
+          type: "setContractState",
+          newState: {
+            ...response.content,
+            editorState: newEditorState
+          }
+        })
+      }
+      else {
+        yield put({
+          type: "setContractState",
+          newState: response.content
+        })
+      }
     }
   },
 };

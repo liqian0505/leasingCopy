@@ -10,7 +10,7 @@ export default {
     }
   },
   effects: {
-    *getContractList({ templateID }, { call, put }) {
+    *getContractList({ templateID, jump }, { call, put }) {
       const response = templateID === undefined ? yield call(request, '/api/contracts') : yield call(request, `/api/contracts?id=${templateID}`)
       yield put({
         type: 'updateContractList', newList: response.map(contract => {
@@ -18,6 +18,7 @@ export default {
           return contract.content
         })
       })
+      if (jump !== undefined) router.push(`/ContractList?id=${templateID}`)
     },
     *deleteContract({ targetID, templateID }, { call, put }) {
       const response = yield call(request.delete, `/api/contracts/${targetID}?templateId=${templateID}`)
@@ -38,7 +39,8 @@ export default {
       const response = yield call(request.post, `/api/contracts?templateId=${templateID}`, { data: defaultContent })
 
       yield put({
-        type: 'updateContractList', newList: response.map(contract => {
+        type: 'updateContractList', 
+        newList: response.map(contract => {
           contract.content['id'] = contract.id
           return contract.content
         })
