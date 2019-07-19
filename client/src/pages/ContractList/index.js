@@ -1,38 +1,53 @@
 import React from 'react';
 import { connect } from 'dva';
-import { Table, Dropdown, Menu } from 'antd';
+import { Table, Dropdown, Menu, Modal } from 'antd';
 import BasicLayout from '@/layouts/BasicLayout';
 
 import styles from './index.css';
 import CustomIcon from '@/components/Perish/CustomIcon';
 import CustomInput from '@/components/Perish/CustomInput';
+import template from '@/models/template';
 
 class ContractList extends React.Component {
   render() {
 
     const table = <Table columns={this.columns} dataSource={this.props.contractList} rowKey="id" />
-    const menu = (
-      <Menu onClick={({ key }) => this.createHandler(key)}>
-        {this.props.templateList.map(template => (<Menu.Item key={template.id} >{template.name}</Menu.Item>))}
-      </Menu>
-    )
+    const modalSwitch = <div className={styles.createButton} onClick={e => this.setState({ modalVisible: true })} />
+    const templateItemList = this.props.templateList.map(template => (
+      <div
+        className={styles.templateItem}
+        key={template.id}
+        data-id={template.id}
+        onClick={e => this.createHandler(e.target.dataset.id)}>
+        {template.name}
+      </div>
+    ))
 
-    const dropdown = (
-      <Dropdown overlay={menu} trigger={['click']}>
-        <div className={styles.createButton} />
-      </Dropdown>
+    const modal = (
+      <Modal
+        title="可用模板"
+        footer={null}
+        onCancel={e=>this.setState({modalVisible: false})}
+        visible={this.state.modalVisible}>
+        {templateItemList}
+      </Modal>
     )
 
     return (
       <div>
         {table}
-        {dropdown}
+        {modalSwitch}
+        {modal}
       </div>
     )
   }
 
   constructor(props) {
     super(props)
+
+    this.state = {
+      modalVisible: false
+    }
 
     this.columns = [
       {
@@ -80,6 +95,9 @@ class ContractList extends React.Component {
     this.props.dispatch({
       type: "contractList/createContract",
       templateID: id
+    })
+    this.setState({
+      modalVisible: false
     })
   }
 

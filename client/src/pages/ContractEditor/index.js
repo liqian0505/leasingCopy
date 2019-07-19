@@ -1,9 +1,8 @@
 import React from 'react';
-import jp from 'jsonpath';
 import { connect } from 'dva';
 import BraftEditor from 'braft-editor';
 import BasicLayout from '@/layouts/BasicLayout';
-import { Button, Col, Drawer, Row, Icon } from 'antd';
+import { Button, Col, Drawer, Row, Icon, Timeline } from 'antd';
 import Form from 'react-jsonschema-form';
 
 import 'bootstrap/dist/css/bootstrap.css';
@@ -44,14 +43,31 @@ class ContractEditor extends React.Component {
 
   render() {
     const { contract } = this.props
-    console.log(contract)
-    debugger
 
     const form = <Form className={styles.form} schema={contract.schema} formData={contract.formData} onSubmit={this.submitHandler} onError={e => alert(e)} />
 
     const editorDrawer = (
       <Drawer title="合同填写" placement="right" width="50%" closable={false} visible={this.state.drawerVisible} onClose={e => this.setState({ drawerVisible: false })}>
         <BraftEditor className={styles.editor} value={contract.editorState} controls={[]} readOnly />
+        {/* <div className={styles.timeLine}>
+          <Timeline className={styles.timeLine}>
+            <Timeline.Item>Create a services site 2015-09-01</Timeline.Item>
+            <Timeline.Item>Solve initial network problems 2015-09-01</Timeline.Item>
+            <Timeline.Item>Technical testing 2015-09-01</Timeline.Item>
+            <Timeline.Item>Network problems being solved 2015-09-01</Timeline.Item>
+          </Timeline>
+        </div> */}
+        <Timeline className={styles.timeLine}>
+          {
+            contract.commitVersionList.map(version => (
+              <Timeline.Item key={version.commitId} >
+                <div data-version={version} onClick={e => this.versionHandler(e.target.dataset.version)}>
+                  {version.commitDate}
+                </div>
+              </Timeline.Item>
+            ))
+          }
+        </Timeline>
       </Drawer>
     )
 
@@ -82,14 +98,8 @@ class ContractEditor extends React.Component {
   }
 
   submitHandler = ({ formData }, e) => {
-    const { id, name, editorContent, templateID } = this.props.contract
+    const { id, name, templateID } = this.props.contract
 
-    var copyContent = JSON.parse(JSON.stringify(editorContent))
-
-    const data = formData
-    jp.apply(copyContent, '$..text', value => eval('`' + value + '`'))
-    // console.log(jp.query(copyContent,'$..text'))
-    // debugger
     this.props.dispatch({
       type: "contract/updateContract",
       targetID: id,
@@ -97,9 +107,12 @@ class ContractEditor extends React.Component {
         name,
         formData,
         templateID
-      },
-      newEditorState: BraftEditor.createEditorState(copyContent)
+      }
     })
+  }
+
+  versionHandler = version => {
+    console.log(version)
   }
 
   getCurrentHerfQuery = () => {

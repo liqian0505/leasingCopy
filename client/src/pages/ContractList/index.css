@@ -1,7 +1,7 @@
 .createButton{
   position: absolute;
-  right: 45px;
-  top: 45px;
+  right: 40px;
+  top: 40px;
 
   width: 2vmin;
   height: 2vmin;
@@ -9,5 +9,9 @@
   background-size: 100% 100%;
   background-image: url(../../assets/add.png);
 
+  cursor: pointer;
+}
+
+.templateItem{
   cursor: pointer;
 }
