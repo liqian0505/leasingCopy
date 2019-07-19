@@ -2,6 +2,7 @@ package com.cvicse.leasing.controller;
 
 import java.util.List;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.cvicse.leasing.exception.ContractNotFoundException;
 import com.cvicse.leasing.exception.TemplateNotFoundException;
@@ -95,6 +96,27 @@ public class ContractController {
            logger.info(e.getMessage());
            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Contract Not Found");
        }
+    }
+
+    @GetMapping("/{id}/commits")
+    public JSONArray getContractWithCommitId(@PathVariable String id, @RequestParam(value = "commitId",defaultValue = "null") String commitId){
+        if(commitId.equals("null")){
+            try{
+                logger.info("Get Contract commits with Template.id "+ id);
+                return this.contractService.trackContractChangesWithJavers(id);
+            }catch(ContractNotFoundException e){
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Contract Not Found.",e);
+            }
+        }else{
+            try{
+                logger.info("Cet Contract commit with commitId"+commitId);
+                JSONArray jsonArray = new JSONArray();
+                jsonArray.add(this.contractService.getContractWithJaversCommitId(id,commitId));
+                return jsonArray;
+            }catch (ContractNotFoundException e){
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Contract Not Found.",e);
+            }
+        }
     }
 
 }
