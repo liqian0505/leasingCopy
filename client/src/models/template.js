@@ -1,7 +1,7 @@
 import router from 'umi/router'
 import BraftEditor from 'braft-editor';
-import request from '../utils/request';
 import { stat } from 'fs';
+import request from '../utils/request';
 
 export default {
   namespace: 'template',
@@ -56,6 +56,8 @@ export default {
         editorContent: item.content.editorContent,
         schema: item.content.schema,
       }))
+      proList.push({ id: 'default' });
+      proList.reverse();
       yield put({
         type: 'templateList/updateTemplateList',
         newList: proList,
@@ -77,8 +79,12 @@ export default {
       })
       router.push(`/TemplateEditor?id=${targetID}`)
     },
-    *updateTemplate({ targetID, content }, { call }) {
-      const response = yield call(request.put, `/api/templates/${targetID}`, { data: content })
+    *updateTemplate({ targetID, content }, { call, put }) {
+      yield call(request.put, `/api/templates/${targetID}`, { data: content })
+      yield put({
+        type: 'getCommitList',
+        targetID,
+      })
     },
     *getCommitList({ targetID }, { call, put }) {
       const response = yield call(request, `/api/templates/${targetID}/commits`)

@@ -78,10 +78,7 @@ class TemplateEditor extends React.Component {
     // 编辑器内容可直接调用editorState.toHTML()来获取HTML格式的内容
     // const htmlContent = this.state.editorState.toHTML();
     // const stringContent = this.state.editorState.toRAW();
-    console.log(this.props.template.editorState)
     const jsonContent = this.props.template.editorState.toRAW(true);
-    console.log(JSON.stringify(this.props.template.schema));
-
     this.props.dispatch({
       type: 'template/updateTemplate',
       targetID: this.props.template.id,
@@ -91,10 +88,12 @@ class TemplateEditor extends React.Component {
         schema: this.props.template.schema,
       },
     })
-    this.props.dispatch({
-      type: 'template/getCommitList',
-      targetID: this.props.template.id,
-    })
+    // console.log(this.props.template)
+    // this.props.dispatch({
+    //   type: 'template/getCommitList',
+    //   targetID: this.props.template.id,
+    // })
+    console.log(this.props.template.commitList[0])
   };
 
   getCommitContent = e => {

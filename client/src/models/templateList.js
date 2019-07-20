@@ -19,7 +19,6 @@ export default {
       }))
       proList.push({ id: 'default' });
       proList.reverse();
-      console.log(proList)
       yield put({
         type: 'updateTemplateList',
         newList: proList,
@@ -33,6 +32,8 @@ export default {
         editorContent: item.content.editorContent,
         schema: item.content.schema,
       }))
+      proList.push({ id: 'default' });
+      proList.reverse();
       yield put({
         type: 'updateTemplateList',
         newList: proList,

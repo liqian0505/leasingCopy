@@ -6,12 +6,13 @@ import BasicLayout from '@/layouts/BasicLayout';
 import styles from './index.css';
 import CustomIcon from '@/components/Perish/CustomIcon';
 import CustomInput from '@/components/Perish/CustomInput';
+import { symbol } from 'prop-types';
 
 class TemplateList extends React.Component {
   render() {
     const { templateList } = this.props;
     return (
-      <div>
+      <div className={styles.container}>
         {/* <Table columns={this.columns} dataSource={this.props.templateList} rowKey="id" />
         <div className={styles.createButton} onClick={this.createHandler} /> */}
         <List
@@ -29,15 +30,15 @@ class TemplateList extends React.Component {
             if (item.id === 'default') {
               return (
                 <List.Item>
-                  <Button type="dashed" onClick={this.createHandler} className={styles.templateCard} style={{ height: '200px' }}>
+                  <Button type="dashed" onClick={this.createHandler} className={styles.templateCard} style={{ height: '150px' }}>
                     <Icon type="plus" /> Add template
                     </Button>
                 </List.Item>
               )
             }
-            else return (
+            return (
               <List.Item>
-                <Card className={styles.templateCard} hoverable bodyStyle={{ height: '150px' }}
+                <Card className={styles.templateCard} hoverable bodyStyle={{ height: '100px' }}
                   actions={[
                     <CustomIcon title="编辑" parameters={item} type="edit" onClick={parameters => this.editHandler(parameters)} />,
                     <CustomIcon title="删除" parameters={item} type="delete" onClick={parameters => this.deleteHandler(parameters)} />,
@@ -45,7 +46,8 @@ class TemplateList extends React.Component {
                     <Icon type="ellipsis" />
                   ]}
                 >
-                <CustomInput record={item} defaultValue={item.name} onChange={(id, content) => this.updateHandler(id, content)} />
+                {item.name}
+                {/* <CustomInput record={item} defaultValue={item.name} onChange={(id, content) => this.updateHandler(id, content)} /> */}
                 </Card>
               </List.Item>
             )
@@ -124,7 +126,7 @@ class TemplateList extends React.Component {
     this.props.dispatch({
       type: 'contractList/getContractList',
       templateID: parameters.id,
-      jump: true
+      jump: true,
     })
   }
 
@@ -132,7 +134,7 @@ class TemplateList extends React.Component {
     this.props.dispatch({
       type: 'template/updateTemplate',
       targetID: id,
-      content: content
+      content,
     })
   }
 }
