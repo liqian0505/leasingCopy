@@ -22,6 +22,7 @@ class ContractList extends React.Component {
         {template.name}
       </div>
     ))
+    const templateVersionList = this.props.template.commitList
 
     const modal = (
       <Modal
@@ -30,6 +31,7 @@ class ContractList extends React.Component {
         onCancel={e => this.setState({ modalVisible: false })}
         visible={this.state.modalVisible}>
         {templateItemList}
+        {templateVersionList}
       </Modal>
     )
 
@@ -51,12 +53,12 @@ class ContractList extends React.Component {
 
     this.columns = [
       {
-        title: '合同名称', key: 'id', render: (id, record) => {
-          return <CustomInput record={record} defaultValue={record.name} onChange={(id, record) => this.updateHandler(id, record)} />
-        }
+        title: '合同名称', key: 'id', 
+        render: record => <CustomInput record={record} defaultValue={record.name} onChange={(id, record) => this.updateHandler(id, record)} />
       },
       {
-        title: '选项', render: record => {
+        title: '选项', 
+        render: record => {
           const parameters = { id: record.id, templateID: record.templateID }
           return (
             <div>
@@ -126,4 +128,4 @@ class ContractList extends React.Component {
   }
 }
 
-export default connect(({ contractList, templateList }) => ({ contractList, templateList }))(ContractList);
+export default connect(({ contractList, templateList, template }) => ({ contractList, templateList, template }))(ContractList);

@@ -5,17 +5,15 @@ export default {
   namespace: 'contractList',
   state: [],
   reducers: {
-    updateContractList(_, { newList }) {
-      return newList
-    }
+    updateContractList(_, { newList }) { return newList }
   },
   effects: {
     *getContractList({ templateID, jump }, { call, put }) {
       const response = templateID === undefined ? yield call(request, '/api/contracts') : yield call(request, `/api/contracts?id=${templateID}`)
       yield put({
-        type: 'updateContractList', 
+        type: 'updateContractList',
         newList: response.map(contract => {
-          contract.content = {...contract.content}
+          contract.content = { ...contract.content }
           contract.content['id'] = contract.id
           return contract.content
         })
@@ -27,7 +25,7 @@ export default {
       const response = yield call(request.delete, `/api/contracts/${targetID}?templateId=${templateID}`)
       yield put({
         type: 'updateContractList', newList: response.map(contract => {
-          contract.content = {...contract.content}
+          contract.content = { ...contract.content }
           contract.content['id'] = contract.id
           return contract.content
         })
@@ -44,9 +42,9 @@ export default {
       const response = yield call(request.post, `/api/contracts?templateId=${templateID}`, { data: defaultContent })
 
       yield put({
-        type: 'updateContractList', 
+        type: 'updateContractList',
         newList: response.map(contract => {
-          contract.content = {...contract.content}
+          contract.content = { ...contract.content }
           contract.content['id'] = contract.id
           return contract.content
         })
