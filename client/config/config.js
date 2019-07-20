@@ -90,18 +90,22 @@ export default {
                 },
                 {
                     path: '/ContractEditor',
+                    name: 'ContractEditor',
                     component: './ContractEditor',
                 },
                 {
                     path: '/ContractList',
+                    name: 'ContractList',
                     component: './ContractList',
                 },
                 {
                     path: '/TemplateEditor',
+                    name: 'TemplateEditor',
                     component: './TemplateEditor',
                 },
                 {
                     path: '/TemplateList',
+                    name: 'TemplateList',
                     component: './TemplateList',
                 },
             ],
