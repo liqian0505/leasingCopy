@@ -294,6 +294,6 @@ dist/
 package-lock.json
 
 # umi.js build output
-.umi
+*/.umi/
 
 # End of https://www.gitignore.io/api/node,code,macos,maven,eclipse,intellij
