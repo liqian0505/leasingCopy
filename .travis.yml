@@ -9,7 +9,7 @@ before-install:
 install: true
 script:
 - bash ./set_up.sh
-- mvn clean package
+- mvn clean package -Dmaven.test.skip=true 
 branches:
   only:
   - dev
