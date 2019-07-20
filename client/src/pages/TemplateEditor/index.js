@@ -35,11 +35,15 @@ class TemplateEditor extends React.Component {
 
   componentDidMount() {
     // debugger
-    let query = this.getCurrentHerfQuery()
+    const query = this.getCurrentHerfQuery()
 
     if (query.id !== undefined) {
       this.props.dispatch({
         type: 'template/getTemplate',
+        targetID: query.id,
+      })
+      this.props.dispatch({
+        type: 'template/getCommitList',
         targetID: query.id,
       })
     }
@@ -87,21 +91,33 @@ class TemplateEditor extends React.Component {
         schema: this.props.template.schema,
       },
     })
+    this.props.dispatch({
+      type: 'template/getCommitList',
+      targetID: this.props.template.id,
+    })
   };
+
+  getCommitContent = e => {
+    this.props.dispatch({
+      type: 'template/getCommit',
+      targetID: this.props.template.id,
+      commitID: e.target.name,
+    })
+  }
 
   // handleEditorChange = editorState => {
   //   this.setState({ editorState });
   // };
 
   getCurrentHerfQuery = () => {
-    let regex = /[^&=?]+=[^&]*/g;
-    let parsedQuery = window.location.href.match(regex);
+    const regex = /[^&=?]+=[^&]*/g;
+    const parsedQuery = window.location.href.match(regex);
 
-    let query = {}
+    const query = {}
 
     if (parsedQuery !== null) {
       parsedQuery.forEach(pairText => {
-        let pair = pairText.split('=')
+        const pair = pairText.split('=')
         query[pair[0]] = pair[1]
       })
     }
@@ -130,7 +146,9 @@ class TemplateEditor extends React.Component {
             width="50%"
           >
             <Timeline>
-              <Timeline.Item></Timeline.Item>
+              {this.props.template.commitList.map(item =>
+                <Timeline.Item><a name={item.commitId} onClick={this.getCommitContent}>{`Version: ${item.commitId} Time: ${item.commitDate}`}</a></Timeline.Item>,
+              )}
             </Timeline>
           </Drawer>
           <Drawer

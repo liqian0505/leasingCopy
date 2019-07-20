@@ -1,6 +1,7 @@
 import router from 'umi/router'
 import BraftEditor from 'braft-editor';
 import request from '../utils/request';
+import { stat } from 'fs';
 
 export default {
   namespace: 'template',
@@ -14,10 +15,18 @@ export default {
     }, // SchemaEditor的JSON
     id: null, // TemplateID
     name: '未命名模板', // 模板名称
+    commitList: [],
   },
   reducers: {
     updateState(state, { payload }) {
-      return payload;
+      return {
+        ...state,
+        editorContent: payload.editorContent,
+        editorState: payload.editorState,
+        schema: payload.schema,
+        id: payload.id,
+        name: payload.name,
+      }
     },
     updateEditorState(state, { payload }) {
       return {
@@ -29,6 +38,12 @@ export default {
       return {
         ...state,
         schema: payload,
+      }
+    },
+    updateCommitList(state, { payload }) {
+      return {
+        ...state,
+        commitList: payload,
       }
     },
   },
@@ -64,6 +79,29 @@ export default {
     },
     *updateTemplate({ targetID, content }, { call }) {
       const response = yield call(request.put, `/api/templates/${targetID}`, { data: content })
+    },
+    *getCommitList({ targetID }, { call, put }) {
+      const response = yield call(request, `/api/templates/${targetID}/commits`)
+      console.log(response)
+      yield put({
+        type: 'updateCommitList',
+        payload: response,
+      })
+    },
+    *getCommit({ targetID, commitID }, { call, put }) {
+      const response = yield call(request, `/api/templates/${targetID}/commits?commitId=${commitID}`);
+      const { id, content } = response[0];
+      const { name, editorContent, schema } = content;
+      yield put({
+        type: 'updateState',
+        payload: {
+          name,
+          editorContent,
+          schema,
+          id,
+          editorState: BraftEditor.createEditorState(editorContent),
+        },
+      })
     },
   },
 };
