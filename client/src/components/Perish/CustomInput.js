@@ -4,6 +4,7 @@ import styles from './CustomInput.css'
 
 class CustomInput extends React.Component {
   render() {
+    console.log(this.props.defaultValue)
     return (
       <Input
         className={styles.container}
