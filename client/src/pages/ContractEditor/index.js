@@ -49,14 +49,6 @@ class ContractEditor extends React.Component {
     const editorDrawer = (
       <Drawer title="合同填写" placement="right" width="50%" closable={false} visible={this.state.drawerVisible} onClose={e => this.setState({ drawerVisible: false })}>
         <BraftEditor className={styles.editor} value={contract.editorState} controls={[]} readOnly />
-        {/* <div className={styles.timeLine}>
-          <Timeline className={styles.timeLine}>
-            <Timeline.Item>Create a services site 2015-09-01</Timeline.Item>
-            <Timeline.Item>Solve initial network problems 2015-09-01</Timeline.Item>
-            <Timeline.Item>Technical testing 2015-09-01</Timeline.Item>
-            <Timeline.Item>Network problems being solved 2015-09-01</Timeline.Item>
-          </Timeline>
-        </div> */}
         <Timeline className={styles.timeLine}>
           {
             contract.commitVersionList.map(version => (

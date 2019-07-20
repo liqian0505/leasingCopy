@@ -20,14 +20,14 @@ export function _onCreate() {
     app.use(plugin);
   });
   
-  app.model({ namespace: 'contract', ...(require('/Users/ics/Documents/repos/leasing/client/src/models/contract.js').default) });
-app.model({ namespace: 'contractList', ...(require('/Users/ics/Documents/repos/leasing/client/src/models/contractList.js').default) });
-app.model({ namespace: 'global', ...(require('/Users/ics/Documents/repos/leasing/client/src/models/global.js').default) });
-app.model({ namespace: 'login', ...(require('/Users/ics/Documents/repos/leasing/client/src/models/login.js').default) });
-app.model({ namespace: 'setting', ...(require('/Users/ics/Documents/repos/leasing/client/src/models/setting.js').default) });
-app.model({ namespace: 'template', ...(require('/Users/ics/Documents/repos/leasing/client/src/models/template.js').default) });
-app.model({ namespace: 'templateList', ...(require('/Users/ics/Documents/repos/leasing/client/src/models/templateList.js').default) });
-app.model({ namespace: 'user', ...(require('/Users/ics/Documents/repos/leasing/client/src/models/user.js').default) });
+  app.model({ namespace: 'contract', ...(require('/Users/perish/Projects/leasing/client/src/models/contract.js').default) });
+app.model({ namespace: 'contractList', ...(require('/Users/perish/Projects/leasing/client/src/models/contractList.js').default) });
+app.model({ namespace: 'global', ...(require('/Users/perish/Projects/leasing/client/src/models/global.js').default) });
+app.model({ namespace: 'login', ...(require('/Users/perish/Projects/leasing/client/src/models/login.js').default) });
+app.model({ namespace: 'setting', ...(require('/Users/perish/Projects/leasing/client/src/models/setting.js').default) });
+app.model({ namespace: 'template', ...(require('/Users/perish/Projects/leasing/client/src/models/template.js').default) });
+app.model({ namespace: 'templateList', ...(require('/Users/perish/Projects/leasing/client/src/models/templateList.js').default) });
+app.model({ namespace: 'user', ...(require('/Users/perish/Projects/leasing/client/src/models/user.js').default) });
   return app;
 }
 
