@@ -44,8 +44,7 @@ export default {
 
       const { id, content } = yield call(request, `/api/contracts/${targetID}`)     //获取目标合同id及content
       const commitVersionList = yield call(request, `/api/contracts/${id}/commits`) //获取目标合同全部历史修改记录
-      const template = yield call(request, `/api/templates/${content.templateID}`)  //获取目标模板
-      const { editorContent, schema } = template.content                            //获取模板editorContent及schema
+      const { editorContent, schema } = content                                     //获取模板editorContent及schema
 
       yield put({
         type: "setContractState",

@@ -6,15 +6,15 @@ import { stat } from 'fs';
 export default {
   namespace: 'template',
   state: {
-    editorContent: null, // BraftEditor的初始值
-    editorState: null, // BraftEditor的快照
+    editorContent: null,      // BraftEditor的初始值
+    editorState: null,        // BraftEditor的快照
     schema: {
       type: 'object',
       title: 'empty object',
       properties: {},
-    }, // SchemaEditor的JSON
-    id: null, // TemplateID
-    name: '未命名模板', // 模板名称
+    },                        // SchemaEditor的JSON
+    id: null,                 // TemplateID
+    name: '未命名模板',       // 模板名称
     commitList: [],
   },
   reducers: {
@@ -61,10 +61,10 @@ export default {
         newList: proList,
       });
     },
-    *getTemplate({ targetID }, { call, put }) {
+    *getTemplate({ targetID, jump }, { call, put }) {
       const { id, content } = yield call(request.get, `/api/templates/${targetID}`)
       const { name, editorContent, schema } = content
-      console.log(id, name, editorContent, schema)
+      // console.log(id, name, editorContent, schema)
       yield put({
         type: 'updateState',
         payload: {
@@ -75,14 +75,14 @@ export default {
           editorState: BraftEditor.createEditorState(editorContent),
         },
       })
-      router.push(`/TemplateEditor?id=${targetID}`)
+      if (jump !== undefined) router.push(`/TemplateEditor?id=${targetID}`)
     },
     *updateTemplate({ targetID, content }, { call }) {
       const response = yield call(request.put, `/api/templates/${targetID}`, { data: content })
     },
     *getCommitList({ targetID }, { call, put }) {
       const response = yield call(request, `/api/templates/${targetID}/commits`)
-      console.log(response)
+      // console.log(response)
       yield put({
         type: 'updateCommitList',
         payload: response,

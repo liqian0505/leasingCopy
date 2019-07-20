@@ -31,12 +31,18 @@ export default {
         })
       })
     },
-    *createContract({ templateID }, { call, put }) {
+    *createContract({ templateID, commitID }, { call, put }) {
+
+      const commitList = yield call(request, `/api/templates/${templateID}/commits?commitId=${commitID}`)
+
+      const { id, content } = commitList[0]
 
       const defaultContent = {
+        ...content,
         name: '未命名合同',
         formData: {},
-        templateID: templateID
+        templateID: templateID,
+        templateCommitID: commitID
       }
 
       const response = yield call(request.post, `/api/contracts?templateId=${templateID}`, { data: defaultContent })

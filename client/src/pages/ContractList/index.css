@@ -15,3 +15,16 @@
 .templateItem{
   cursor: pointer;
 }
+
+.templateItemList{
+  width: 95%;
+  background-color: aqua;
+}
+
+.templateVersionItem{
+  cursor: pointer;
+}
+
+.templateVersionItemList{
+  background-color: blue;
+}

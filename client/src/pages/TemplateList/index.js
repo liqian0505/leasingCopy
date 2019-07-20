@@ -45,7 +45,7 @@ class TemplateList extends React.Component {
                     <Icon type="ellipsis" />
                   ]}
                 >
-                <CustomInput record={item} defaultValue={item.name} onChange={(id, content) => this.updateHandler(id, content)} />
+                  <CustomInput record={item} defaultValue={item.name} onChange={(id, content) => this.updateHandler(id, content)} />
                 </Card>
               </List.Item>
             )
@@ -110,6 +110,7 @@ class TemplateList extends React.Component {
     this.props.dispatch({
       type: 'template/getTemplate',
       targetID: parameters.id,
+      jump: true
     })
   }
 
