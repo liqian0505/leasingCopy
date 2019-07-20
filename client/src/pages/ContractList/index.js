@@ -27,7 +27,7 @@ class ContractList extends React.Component {
       <Modal
         title="可用模板"
         footer={null}
-        onCancel={e=>this.setState({modalVisible: false})}
+        onCancel={e => this.setState({ modalVisible: false })}
         visible={this.state.modalVisible}>
         {templateItemList}
       </Modal>
@@ -91,10 +91,11 @@ class ContractList extends React.Component {
     })
   }
 
-  createHandler = id => {
+  createHandler = (id, commitID) => {
     this.props.dispatch({
       type: "contractList/createContract",
-      templateID: id
+      templateID: id,
+      commitID
     })
     this.setState({
       modalVisible: false
