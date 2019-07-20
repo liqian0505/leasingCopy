@@ -47,4 +47,9 @@ export default {
   'menu.editor.flow': '流程编辑器',
   'menu.editor.mind': '脑图编辑器',
   'menu.editor.koni': '拓扑编辑器',
+  //
+  'menu.ContractEditor': '合同填写',
+  'menu.ContractList': '合同管理',
+  'menu.TemplateEditor': '模板编辑',
+  'menu.TemplateList': '模板管理',
 };
