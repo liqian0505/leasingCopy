@@ -91,21 +91,25 @@ export default {
                 {
                     path: '/ContractEditor',
                     name: 'ContractEditor',
+                    icon: 'edit',
                     component: './ContractEditor',
                 },
                 {
                     path: '/ContractList',
                     name: 'ContractList',
+                    icon: 'unordered-list',
                     component: './ContractList',
                 },
                 {
                     path: '/TemplateEditor',
                     name: 'TemplateEditor',
+                    icon: 'edit',
                     component: './TemplateEditor',
                 },
                 {
                     path: '/TemplateList',
                     name: 'TemplateList',
+                    icon: 'unordered-list',
                     component: './TemplateList',
                 },
             ],
