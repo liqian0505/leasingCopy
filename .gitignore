@@ -294,3 +294,11 @@ typings/
 
 client/src/pages/.umi/
 
+
+client/src/pages/.umi/dva.js
+
+client/src/pages/.umi/umi.js
+
+client/src/pages/.umi/polyfills.js
+
+client/src/pages/.umi/LocaleWrapper.jsx
