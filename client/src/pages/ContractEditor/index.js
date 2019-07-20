@@ -42,6 +42,7 @@ const getDefaultData = schema => {
 class ContractEditor extends React.Component {
 
   render() {
+
     const { contract } = this.props
 
     const form = <Form className={styles.form} schema={contract.schema} formData={contract.formData} onSubmit={this.submitHandler} onError={e => alert(e)} />
@@ -49,11 +50,16 @@ class ContractEditor extends React.Component {
     const editorDrawer = (
       <Drawer title="合同填写" placement="right" width="50%" closable={false} visible={this.state.drawerVisible} onClose={e => this.setState({ drawerVisible: false })}>
         <BraftEditor className={styles.editor} value={contract.editorState} controls={[]} readOnly />
+      </Drawer>
+    )
+
+    const commitDrawer = (
+      <Drawer title="历史版本" placement="left" width="30%" closable={false} visible={this.state.commitVisible} onClose={e => this.setState({ commitVisible: false })}>
         <Timeline className={styles.timeLine}>
           {
             contract.commitVersionList.map(version => (
               <Timeline.Item key={version.commitId} >
-                <div data-version={version} onClick={e => this.versionHandler(e.target.dataset.version)}>
+                <div data-commitid={version.commitId} onClick={e => this.versionHandler(e.target.dataset.commitid)}>
                   {version.commitDate}
                 </div>
               </Timeline.Item>
@@ -64,12 +70,17 @@ class ContractEditor extends React.Component {
     )
 
     const drawerSwitch = <div className={styles.drawerSwitch} onClick={e => this.setState({ drawerVisible: true })} />
+    const commitSwitch = <div className={styles.commitSwitch} onClick={e => this.setState({ commitVisible: true })} />
+    const submitSwitch = <div className={styles.submitSwitch} onClick={this.submitHandler} />
 
     return (
       <div>
         {form}
         {editorDrawer}
+        {commitDrawer}
         {drawerSwitch}
+        {submitSwitch}
+        {commitSwitch}
       </div>
     )
   }
@@ -77,34 +88,42 @@ class ContractEditor extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      drawerVisible: false
+      drawerVisible: false,
+      commitVisible: false
     }
   }
 
   componentDidMount() {
     this.query = this.getCurrentHerfQuery()
-    this.props.dispatch({
-      type: "contract/getContract",
-      targetID: this.query.id
-    })
+    if (this.query.id !== undefined) {
+      this.props.dispatch({
+        type: "contract/getContract",
+        targetID: this.query.id
+      })
+    }
   }
 
   submitHandler = ({ formData }, e) => {
-    const { id, name, templateID } = this.props.contract
+    const { contract } = this.props
+    delete contract['id']
+    console.log(contract)
 
     this.props.dispatch({
       type: "contract/updateContract",
       targetID: id,
       content: {
-        name,
-        formData,
-        templateID
+        ...contract,
+        formData
       }
     })
   }
 
-  versionHandler = version => {
-    console.log(version)
+  versionHandler = commitID => {
+    this.dispatch({
+      type: "contract/rollbackContract",
+      targetID: this.props.contract.id,
+      commitID
+    })
   }
 
   getCurrentHerfQuery = () => {

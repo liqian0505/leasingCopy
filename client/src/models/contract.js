@@ -66,6 +66,12 @@ export default {
         type: "setContractState",
         newState: response.content
       })
+    },
+
+    *rollbackContract({targetID, commitID},{call, put}){
+      const response = yield call(request,`/api/contracts/${targetID}/commits?commitId=${commitID}`)
+      console.log(response)
+
     }
   },
 };

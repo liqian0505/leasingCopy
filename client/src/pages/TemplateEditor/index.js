@@ -146,9 +146,13 @@ class TemplateEditor extends React.Component {
             width="50%"
           >
             <Timeline>
-              {this.props.template.commitList.map(item =>
-                <Timeline.Item><a name={item.commitId} onClick={this.getCommitContent}>{`Version: ${item.commitId} Time: ${item.commitDate}`}</a></Timeline.Item>,
-              )}
+              {this.props.template.commitList.map(item => (
+                <Timeline.Item key={item.commitId}>
+                  <a name={item.commitId} onClick={this.getCommitContent}>
+                    {`Version: ${item.commitId} Time: ${item.commitDate}`}
+                  </a>
+                </Timeline.Item>
+              ))}
             </Timeline>
           </Drawer>
           <Drawer

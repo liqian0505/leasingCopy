@@ -26,6 +26,18 @@
   background-image: url(../../assets/save.png);
 }
 
+.commitSwitch{
+  position: absolute;
+  right: 9vmin;
+  top: 1vmin;
+
+  width: 2.5vmin;
+  height: 2.5vmin;
+
+  background-size: 100% 100%;
+  background-image: url(../../assets/tree.png);
+}
+
 .form{
   height: 900px;
 }

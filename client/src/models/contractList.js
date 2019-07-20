@@ -21,8 +21,8 @@ export default {
 
       if (jump !== undefined) router.push(`/ContractList?id=${templateID}`)
     },
-    *deleteContract({ targetID, templateID }, { call, put }) {
-      const response = yield call(request.delete, `/api/contracts/${targetID}?templateId=${templateID}`)
+    *deleteContract({ targetID }, { call, put }) {
+      const response = yield call(request.delete, `/api/contracts/${targetID}`)
       yield put({
         type: 'updateContractList', newList: response.map(contract => {
           contract.content = { ...contract.content }
@@ -45,7 +45,7 @@ export default {
         templateCommitID: commitID
       }
 
-      const response = yield call(request.post, `/api/contracts?templateId=${templateID}`, { data: defaultContent })
+      const response = yield call(request.post, `/api/contracts`, { data: defaultContent })
 
       yield put({
         type: 'updateContractList',

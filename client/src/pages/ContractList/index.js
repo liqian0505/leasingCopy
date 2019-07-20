@@ -72,7 +72,7 @@ class ContractList extends React.Component {
           return (
             <div>
               <CustomIcon type="edit" onClick={parameters => this.editHandler(parameters.id)} parameters={parameters} />
-              <CustomIcon type="delete" onClick={parameters => this.deleteHandler(parameters)} parameters={parameters} />
+              <CustomIcon type="delete" onClick={parameters => this.deleteHandler(parameters.id)} parameters={parameters} />
             </div>
           )
         }
@@ -96,11 +96,10 @@ class ContractList extends React.Component {
   }
 
   /* 删除按钮事件响应 */
-  deleteHandler = parameters => {
+  deleteHandler = id => {
     this.props.dispatch({
       type: "contractList/deleteContract",
-      targetID: parameters.id,
-      templateID: parameters.templateID
+      targetID: id
     })
   }
 
