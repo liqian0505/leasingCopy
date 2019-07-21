@@ -6,6 +6,7 @@ import com.cvicse.leasing.model.UserModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 
 
 /**
@@ -22,15 +24,18 @@ import java.util.Iterator;
  */
 @Component
 public class UrlInterceptor implements HandlerInterceptor {
-    static public final Logger logger = LoggerFactory.getLogger(UrlInterceptor.class);
+    private static final Logger logger = LoggerFactory.getLogger(UrlInterceptor.class);
     @Autowired
     private AuthConfig authConfig;
 
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
-        //System.out.println("interceptortest pre");
-        logger.info("interceptortest pre");
+        logger.info("interceptor test pre");
         Cookie[] cookies = httpServletRequest.getCookies();
+        if (cookies == null || cookies.length == 0) {
+            httpServletResponse.setStatus(HttpStatus.FORBIDDEN.value());
+            return false;
+        }
         //接口中直接放入username 的cookie 即可
         String userName = Arrays.stream(cookies)
                 .filter(item -> item.getName().equals("username"))
@@ -43,16 +48,21 @@ public class UrlInterceptor implements HandlerInterceptor {
             UserModel tmpModel = iterator.next();
             if (tmpModel.getUsername().equals(userName)) {
                 target = tmpModel;
+                break;
             }
         }
         //can't find the user, so you can't get access
         if (target == null) {
+            httpServletResponse.setStatus(HttpStatus.FORBIDDEN.value());
             return false;
         }
-        String apiUri = httpServletRequest.getRequestURI();
+        String apiUri = httpServletRequest.getRequestURI().split("/")[2];
 
-        target.getModels();
-
+        List<String> models = target.getModels();
+        if (!models.contains(apiUri)){
+            httpServletResponse.setStatus(HttpStatus.FORBIDDEN.value());
+            return false;
+        }
         return true;
     }
 

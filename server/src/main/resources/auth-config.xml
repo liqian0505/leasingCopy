@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <root>
-    <UserModel user="A" models="Contract"/>
+    <UserModel user="A" models="contracts"/>
+    <UserModel user="B" models="templates"/>
+    <UserModel user="C" models="contracts,templates"/>
 </root>
