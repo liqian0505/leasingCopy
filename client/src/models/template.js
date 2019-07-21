@@ -1,6 +1,5 @@
 import router from 'umi/router'
 import BraftEditor from 'braft-editor';
-// import { stat } from 'fs';
 import request from '../utils/request';
 import { template } from '@babel/core';
 
@@ -30,18 +29,21 @@ export default {
         name: payload.name,
       }
     },
+    // onChange更新EditorState
     updateEditorState(state, { payload }) {
       return {
         ...state,
         editorState: payload,
       }
     },
+    // onChange更新Schema
     updateSchema(state, { payload }) {
       return {
         ...state,
         schema: payload,
       }
     },
+    // DidMount和onSubmit更新CommitList
     updateCommitList(state, { payload }) {
       return {
         ...state,
@@ -49,6 +51,12 @@ export default {
         commitID: payload[0].commitId,
       }
     },
+    updateCommitID(state, { payload }) {
+      return {
+        ...state,
+        commitID: payload,
+      }
+    }
   },
   effects: {
     *createTemplate({ defaultContent }, { call, put }) {
@@ -77,7 +85,6 @@ export default {
     *getTemplate({ targetID, jump }, { call, put }) {
       const { id, content } = yield call(request.get, `/api/templates/${targetID}`)
       const { name, editorContent, schema } = content
-      // console.log(id, name, editorContent, schema)
       yield put({
         type: 'updateState',
         payload: {
@@ -92,7 +99,6 @@ export default {
     },
     *updateTemplate({ targetID, content }, { call, put }) {
       const respone = yield call(request.put, `/api/templates/${targetID}`, { data: content })
-      console.log(respone)
       yield put({
         type: 'getCommitList',
         targetID,
@@ -100,7 +106,6 @@ export default {
     },
     *getCommitList({ targetID }, { call, put }) {
       const response = yield call(request, `/api/templates/${targetID}/commits`)
-      // console.log(response)
       yield put({
         type: 'updateCommitList',
         payload: response,
@@ -110,6 +115,10 @@ export default {
       const response = yield call(request, `/api/templates/${targetID}/commits?commitId=${commitID}`);
       const { id, content } = response[0];
       const { name, editorContent, schema } = content;
+      yield put({
+        type: 'updateCommitID',
+        payload: commitID,
+      })
       yield put({
         type: 'updateState',
         payload: {
