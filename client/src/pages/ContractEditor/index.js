@@ -2,42 +2,13 @@ import React from 'react';
 import { connect } from 'dva';
 import BraftEditor from 'braft-editor';
 import BasicLayout from '@/layouts/BasicLayout';
-import { Button, Col, Drawer, Row, Icon, Timeline } from 'antd';
+import { Button, Col, Drawer, Row, Icon, Timeline, message } from 'antd';
 import Form from 'react-jsonschema-form';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import styles from './index.css';
 
-const getDefaultData = schema => {
-  const data = {};
-  const { properties } = schema;
-  Object.keys(properties).forEach(item => {
-    switch (properties[item].type) {
-      case 'string':
-        data[item] = '';
-        break;
-      case 'number':
-        data[item] = 0;
-        break;
-      case 'array':
-        data[item] = [];
-        break;
-      case 'boolean':
-        data[item] = false;
-        break;
-      case 'integer':
-        data[item] = 0;
-        break;
-      case 'object':
-        data[item] = getDefaultData(properties[item]);
-        break;
-      default:
-        console.log(properties[item].type);
-        break;
-    }
-  });
-  return data;
-};
+var format = require('date-format');
 
 class ContractEditor extends React.Component {
 
@@ -55,12 +26,12 @@ class ContractEditor extends React.Component {
 
     const commitDrawer = (
       <Drawer title="历史版本" placement="left" width="30%" closable={false} visible={this.state.commitVisible} onClose={e => this.setState({ commitVisible: false })}>
-        <Timeline className={styles.timeLine}>
+        <Timeline>
           {
-            contract.commitVersionList.map(version => (
-              <Timeline.Item key={version.commitId} >
-                <div data-commitid={version.commitId} onClick={e => this.versionHandler(e.target.dataset.commitid)}>
-                  {version.commitDate}
+            contract.commitVersionList.map(commit => (
+              <Timeline.Item key={commit.commitId} color={commit.commitId === Number(contract.currentCommitID) ? 'green' : 'blue'}>
+                <div data-commitid={commit.commitId} onClick={e => this.commitHandler(e.target.dataset.commitid)} >
+                  {this.dateParser(commit.commitDate)}
                 </div>
               </Timeline.Item>
             ))
@@ -105,8 +76,8 @@ class ContractEditor extends React.Component {
 
   submitHandler = ({ formData }, e) => {
     const { contract } = this.props
+    const id = contract.id
     delete contract['id']
-    console.log(contract)
 
     this.props.dispatch({
       type: "contract/updateContract",
@@ -116,14 +87,22 @@ class ContractEditor extends React.Component {
         formData
       }
     })
+    message.success('保存成功');
   }
 
-  versionHandler = commitID => {
-    this.dispatch({
+  commitHandler = commitID => {
+    this.props.dispatch({
       type: "contract/rollbackContract",
       targetID: this.props.contract.id,
-      commitID
+      commitID,
     })
+    message.success(`成功切换到版本${commitID}`)
+  }
+
+  dateParser = text => {
+    const date = format.parse(format.ISO8601_FORMAT, text)
+    const formatDate = format("yyyy-MM-dd hh:mm:ss", date)
+    return formatDate
   }
 
   getCurrentHerfQuery = () => {
