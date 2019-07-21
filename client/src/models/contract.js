@@ -61,7 +61,14 @@ export default {
     },
 
     *updateContract({ targetID, content }, { call, put }) {
-      const response = yield call(request.put, `/api/contracts/${targetID}`, { data: content })
+      const contractRequest = {
+        id: targetID,
+        content: content
+      }
+      const response = yield call(request.put, `/api/contracts/${targetID}`, {
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(contractRequest)
+      })
       const commitVersionList = yield call(request, `/api/contracts/${targetID}/commits`)
 
       yield put({

@@ -21,6 +21,7 @@ export default {
 
       if (jump !== undefined) router.push(`/ContractList?id=${templateID}`)
     },
+
     *deleteContract({ targetID }, { call, put }) {
       const response = yield call(request.delete, `/api/contracts/${targetID}`)
       yield put({
@@ -31,21 +32,25 @@ export default {
         })
       })
     },
+
     *createContract({ templateID, commitID }, { call, put }) {
-
       const commitList = yield call(request, `/api/templates/${templateID}/commits?commitId=${commitID}`)
-
       const { id, content } = commitList[0]
-
-      const defaultContent = {
-        ...content,
-        name: '未命名合同',
-        formData: {},
-        templateID: templateID,
-        templateCommitID: commitID
+      const contractRequest = {
+        id: null,
+        content: {
+          ...content,
+          name: '未命名合同',
+          formData: {},
+          templateID: templateID,
+          templateCommitID: commitID
+        }
       }
 
-      const response = yield call(request.post, `/api/contracts`, { data: defaultContent })
+      const response = yield call(request.post, `/api/contracts/new`, {
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(contractRequest)
+      })
 
       yield put({
         type: 'updateContractList',
