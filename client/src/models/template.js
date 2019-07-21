@@ -1,21 +1,22 @@
 import router from 'umi/router'
 import BraftEditor from 'braft-editor';
-import { stat } from 'fs';
+// import { stat } from 'fs';
 import request from '../utils/request';
 
 export default {
   namespace: 'template',
   state: {
-    editorContent: null,      // BraftEditor的初始值
-    editorState: null,        // BraftEditor的快照
+    editorContent: null, // BraftEditor的初始值
+    editorState: null, // BraftEditor的快照
     schema: {
       type: 'object',
       title: 'empty object',
       properties: {},
-    },                        // SchemaEditor的JSON
-    id: null,                 // TemplateID
-    name: '未命名模板',       // 模板名称
+    }, // SchemaEditor的JSON
+    id: null, // TemplateID
+    name: '未命名模板', // 模板名称
     commitList: [],
+    commitID: '',
   },
   reducers: {
     updateState(state, { payload }) {
@@ -44,6 +45,7 @@ export default {
       return {
         ...state,
         commitList: payload,
+        commitID: payload[0].commitId,
       }
     },
   },
@@ -80,7 +82,8 @@ export default {
       if (jump !== undefined) router.push(`/TemplateEditor?id=${targetID}`)
     },
     *updateTemplate({ targetID, content }, { call, put }) {
-      yield call(request.put, `/api/templates/${targetID}`, { data: content })
+      const respone = yield call(request.put, `/api/templates/${targetID}`, { data: content })
+      console.log(respone)
       yield put({
         type: 'getCommitList',
         targetID,

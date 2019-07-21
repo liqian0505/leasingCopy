@@ -86,7 +86,7 @@ export default {
             // authority: ['admin', 'user'],
             routes: [{
                     path: '/',
-                    component: './index',
+                    component: './TemplateList',
                 },
                 {
                     path: '/ContractEditor',
