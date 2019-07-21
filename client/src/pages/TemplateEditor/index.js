@@ -114,7 +114,6 @@ class TemplateEditor extends React.Component {
   dateParser = text => {
     const date = format.parse(format.ISO8601_FORMAT, text)
     const formatDate = format("yyyy-MM-dd hh:mm:ss", date)
-    console.log(formatDate)
     return formatDate
   }
 
@@ -158,7 +157,7 @@ class TemplateEditor extends React.Component {
               {this.props.template.commitList.map(item => (
                 <Timeline.Item key={item.commitId} color={Number(this.props.template.commitID) === Number(item.commitId) ? 'green' : 'blue'}>
                   <a name={item.commitId} onClick={this.getCommitContent}>
-                    {`Version: ${item.commitId} Time: ${this.dateParse(item.commitDate)}`}
+                    {`Version: ${item.commitId} Time: ${this.dateParser(item.commitDate)}`}
                   </a>
                 </Timeline.Item>
               ))}
