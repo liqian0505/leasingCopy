@@ -30,7 +30,7 @@ public class UrlInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
-        logger.info("interceptor test pre");
+        logger.info("进入url拦截器，请求uri : " + httpServletRequest.getRequestURI());
         Cookie[] cookies = httpServletRequest.getCookies();
         if (cookies == null || cookies.length == 0) {
             httpServletResponse.setStatus(HttpStatus.FORBIDDEN.value());
@@ -59,7 +59,7 @@ public class UrlInterceptor implements HandlerInterceptor {
         String apiUri = httpServletRequest.getRequestURI().split("/")[2];
 
         List<String> models = target.getModels();
-        if (!models.contains(apiUri)){
+        if (!models.contains(apiUri)) {
             httpServletResponse.setStatus(HttpStatus.FORBIDDEN.value());
             return false;
         }
@@ -68,13 +68,9 @@ public class UrlInterceptor implements HandlerInterceptor {
 
     @Override
     public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, ModelAndView modelAndView) throws Exception {
-        //System.out.println("interceptortest post");
-        logger.info("interceptortest post");
     }
 
     @Override
     public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) throws Exception {
-        //System.out.println("interceptortest after");
-        logger.info("interceptortest after");
     }
 }

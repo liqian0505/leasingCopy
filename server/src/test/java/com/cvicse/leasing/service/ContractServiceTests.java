@@ -1,27 +1,9 @@
 package com.cvicse.leasing.service;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import com.cvicse.leasing.exception.ContractNotFoundException;
-import com.cvicse.leasing.exception.TemplateNotFoundException;
-import com.cvicse.leasing.model.Contract;
-import com.cvicse.leasing.model.Template;
-import com.cvicse.leasing.repository.ContractRepository;
-import com.google.gson.JsonObject;
-import org.junit.Before;
-import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 
 /**
