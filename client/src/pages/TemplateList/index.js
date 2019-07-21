@@ -46,12 +46,8 @@ class TemplateList extends React.Component {
                     <Icon type="ellipsis" />
                   ]}
                 >
-<<<<<<< HEAD
-                  <CustomInput record={item} defaultValue={item.name} onChange={(id, content) => this.updateHandler(id, content)} />
-=======
                 {item.name}
                 {/* <CustomInput record={item} defaultValue={item.name} onChange={(id, content) => this.updateHandler(id, content)} /> */}
->>>>>>> ced83e1b137e01239e083fa473fe70c14d102b6d
                 </Card>
               </List.Item>
             )

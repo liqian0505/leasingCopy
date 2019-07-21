@@ -4,7 +4,7 @@ export default {
   namespace: 'templateList',
   state: [],
   reducers: {
-    updateTemplateList(state, { newList }) {
+    updateTemplateList(_, { newList }) {
       return newList;
     },
   },

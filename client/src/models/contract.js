@@ -13,18 +13,21 @@ export default {
       properties: {},
     },
     templateID: null,
-    formData: null,
+    formData: {},
     editorState: null,
-    editorContent: null,
-    commitVersionList: []
+    editorContent: {},
+    commitVersionList: [],
+    currentCommitID: null
   },
   reducers: {
     setContractState(state, { newState }) {
+      var nextState = {
+        ...state,
+        ...newState
+      }
 
-      var editorContent = newState.editorContent !== undefined ? newState.editorContent : state.editorContent
-      const data = newState.formData !== undefined ? newState.formData : state.formData
-
-      editorContent = { ...editorContent }
+      var { editorContent, formData } = nextState
+      const data = formData
 
       var copyContent = JSON.parse(JSON.stringify(editorContent))
       jp.apply(copyContent, '$..text', value => {
@@ -33,8 +36,7 @@ export default {
       })
 
       return {
-        ...state,
-        ...newState,
+        ...nextState,
         editorState: BraftEditor.createEditorState(copyContent)
       }
     }
@@ -44,16 +46,14 @@ export default {
 
       const { id, content } = yield call(request, `/api/contracts/${targetID}`)     //获取目标合同id及content
       const commitVersionList = yield call(request, `/api/contracts/${id}/commits`) //获取目标合同全部历史修改记录
-      const { editorContent, schema } = content                                     //获取模板editorContent及schema
 
       yield put({
         type: "setContractState",
         newState: {
+          ...content,
           id,
-          schema,
-          editorContent,
           commitVersionList,
-          ...content
+          currentCommitID: commitVersionList[commitVersionList.length - 1].commitId
         }
       })
 
@@ -62,16 +62,31 @@ export default {
 
     *updateContract({ targetID, content }, { call, put }) {
       const response = yield call(request.put, `/api/contracts/${targetID}`, { data: content })
+      const commitVersionList = yield call(request, `/api/contracts/${targetID}/commits`)
+
       yield put({
         type: "setContractState",
-        newState: response.content
+        newState: {
+          ...response.content,
+          commitVersionList,
+          currentCommitID: commitVersionList[commitVersionList.length - 1].commitId
+        }
       })
     },
 
-    *rollbackContract({targetID, commitID},{call, put}){
-      const response = yield call(request,`/api/contracts/${targetID}/commits?commitId=${commitID}`)
-      console.log(response)
+    *rollbackContract({ targetID, commitID }, { call, put }) {
+      const response = yield call(request, `/api/contracts/${targetID}/commits?commitId=${commitID}`)
+      const commitVersionList = yield call(request, `/api/contracts/${targetID}/commits`)
+      const { content } = response[0]
 
+      yield put({
+        type: "setContractState",
+        newState: {
+          ...content,
+          commitVersionList,
+          currentCommitID: commitID
+        }
+      })
     }
   },
 };
