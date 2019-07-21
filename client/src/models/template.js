@@ -2,6 +2,7 @@ import router from 'umi/router'
 import BraftEditor from 'braft-editor';
 // import { stat } from 'fs';
 import request from '../utils/request';
+import { template } from '@babel/core';
 
 export default {
   namespace: 'template',
@@ -51,13 +52,21 @@ export default {
   },
   effects: {
     *createTemplate({ defaultContent }, { call, put }) {
-      const response = yield call(request.post, '/api/templates/new', { data: defaultContent });
+
+      const templateRequest = { id: null, content: defaultContent }
+
+      const response = yield call(request.post, '/api/templates/new', { 
+        headers: { 'Content-Type': 'application/json'} ,
+        body: JSON.stringify(templateRequest) 
+      });
+
       const proList = response.map(item => ({
         id: item.id,
         name: item.content.name,
         editorContent: item.content.editorContent,
         schema: item.content.schema,
       }))
+      
       proList.push({ id: 'default' });
       proList.reverse();
       yield put({
