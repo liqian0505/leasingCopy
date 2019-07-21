@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Col, Drawer, Row, Timeline } from 'antd';
+import { Button, Col, Drawer, message, Row, Timeline } from 'antd';
 // 引入富文本编辑器组件
 import BraftEditor from 'braft-editor';
 import Table from 'braft-extensions/dist/table';
@@ -13,7 +13,7 @@ import 'json-schema-editor-visual/dist/main.css';
 import { connect } from 'dva';
 // import BasicLayout from '@/layouts/BasicLayout';
 import styles from './index.css';
-
+import format from 'date-format'
 const option = {};
 const SchemaEditor = schemaEditor(option);
 // 初始化表格扩展
@@ -31,6 +31,7 @@ class TemplateEditor extends React.Component {
   state = {
     schemaVisible: false,
     versionVisible: false,
+    currentCommitID: '',
   };
 
   componentDidMount() {
@@ -46,6 +47,10 @@ class TemplateEditor extends React.Component {
         type: 'template/getCommitList',
         targetID: query.id,
       })
+      // console.log(this.props.template.commitList)
+      // this.setState({
+      //   currentCommitID: this.props.template.commitList[0].commitId,
+      // })
     }
   }
 
@@ -89,20 +94,17 @@ class TemplateEditor extends React.Component {
         schema: this.props.template.schema,
       },
     })
-    // console.log(this.props.template)
-    // this.props.dispatch({
-    //   type: 'template/getCommitList',
-    //   targetID: this.props.template.id,
-    // })
-    console.log(this.props.template.commitList[0])
+    message.success('保存成功');
   };
 
   getCommitContent = e => {
+    const commitID = e.target.name;
     this.props.dispatch({
       type: 'template/getCommit',
       targetID: this.props.template.id,
-      commitID: e.target.name,
+      commitID,
     })
+    message.success(`成功切换到版本${commitID}`)
   }
 
   // handleEditorChange = editorState => {
@@ -147,9 +149,9 @@ class TemplateEditor extends React.Component {
           >
             <Timeline>
               {this.props.template.commitList.map(item => (
-                <Timeline.Item key={item.commitId}>
+                <Timeline.Item key={item.commitId} color={item.commitID === this.state.currentCommitID ? 'green' : 'blue'}>
                   <a name={item.commitId} onClick={this.getCommitContent}>
-                    {`Version: ${item.commitId} Time: ${item.commitDate}`}
+                    {`Version: ${item.commitId} Time: ${format.asString(item.commitDate)}`}
                   </a>
                 </Timeline.Item>
               ))}
