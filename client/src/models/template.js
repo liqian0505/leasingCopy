@@ -1,7 +1,7 @@
 import router from 'umi/router'
 import BraftEditor from 'braft-editor';
-import request from '../utils/request';
 import { template } from '@babel/core';
+import request from '../utils/request';
 
 export default {
   namespace: 'template',
@@ -56,16 +56,15 @@ export default {
         ...state,
         commitID: payload,
       }
-    }
+    },
   },
   effects: {
     *createTemplate({ defaultContent }, { call, put }) {
-
       const templateRequest = { id: null, content: defaultContent }
 
-      const response = yield call(request.post, '/api/templates/new', { 
-        headers: { 'Content-Type': 'application/json'} ,
-        body: JSON.stringify(templateRequest) 
+      const response = yield call(request.post, '/api/templates/new', {
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(templateRequest),
       });
 
       const proList = response.map(item => ({
@@ -74,7 +73,7 @@ export default {
         editorContent: item.content.editorContent,
         schema: item.content.schema,
       }))
-      
+
       proList.push({ id: 'default' });
       proList.reverse();
       yield put({
@@ -98,7 +97,11 @@ export default {
       if (jump !== undefined) router.push(`/TemplateEditor?id=${targetID}`)
     },
     *updateTemplate({ targetID, content }, { call, put }) {
-      const respone = yield call(request.put, `/api/templates/${targetID}`, { data: content })
+      const templateRequest = { id: targetID, content }
+      const respone = yield call(request.put, `/api/templates/${targetID}`, { 
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(templateRequest),
+       })
       yield put({
         type: 'getCommitList',
         targetID,

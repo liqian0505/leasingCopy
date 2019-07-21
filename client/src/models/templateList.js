@@ -16,9 +16,9 @@ export default {
 
       const proList = response.map(item => ({
         id: item.id,
-        // name: item.content.name,
-        // editorContent: item.content.editorContent,
-        // schema: item.content.schema,
+        name: item.content.name,
+        editorContent: item.content.editorContent,
+        schema: item.content.schema,
       }))
       proList.push({ id: 'default' });
       proList.reverse();
