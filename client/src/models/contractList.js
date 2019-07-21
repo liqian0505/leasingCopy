@@ -9,7 +9,7 @@ export default {
   },
   effects: {
     *getContractList({ templateID, jump }, { call, put }) {
-      const response = templateID === undefined ? yield call(request, '/api/contracts') : yield call(request, `/api/contracts?id=${templateID}`)
+      const response = yield call(request, '/api/contracts')
       yield put({
         type: 'updateContractList',
         newList: response.map(contract => {
