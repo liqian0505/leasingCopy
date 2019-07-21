@@ -4,13 +4,14 @@ export default {
   namespace: 'templateList',
   state: [],
   reducers: {
-    updateTemplateList(state, { newList }) {
+    updateTemplateList(_, { newList }) {
       return newList;
     },
   },
   effects: {
     *getTemplateList(_, { call, put }) {
       const response = yield call(request, '/api/templates');
+      // console.log(response)
       const proList = response.map(item => ({
         id: item.id,
         name: item.content.name,

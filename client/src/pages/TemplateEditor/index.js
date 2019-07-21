@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Col, Drawer, Row, Timeline } from 'antd';
+import { Button, Col, Drawer, message, Row, Timeline } from 'antd';
 // 引入富文本编辑器组件
 import BraftEditor from 'braft-editor';
 import Table from 'braft-extensions/dist/table';
@@ -14,6 +14,7 @@ import { connect } from 'dva';
 // import BasicLayout from '@/layouts/BasicLayout';
 import styles from './index.css';
 
+var format = require('date-format');
 const option = {};
 const SchemaEditor = schemaEditor(option);
 // 初始化表格扩展
@@ -46,6 +47,10 @@ class TemplateEditor extends React.Component {
         type: 'template/getCommitList',
         targetID: query.id,
       })
+      // console.log(this.props.template.commitList)
+      // this.setState({
+      //   currentCommitID: this.props.template.commitList[0].commitId,
+      // })
     }
   }
 
@@ -79,6 +84,7 @@ class TemplateEditor extends React.Component {
     // const htmlContent = this.state.editorState.toHTML();
     // const stringContent = this.state.editorState.toRAW();
     const jsonContent = this.props.template.editorState.toRAW(true);
+    console.log(jsonContent)
     this.props.dispatch({
       type: 'template/updateTemplate',
       targetID: this.props.template.id,
@@ -88,25 +94,28 @@ class TemplateEditor extends React.Component {
         schema: this.props.template.schema,
       },
     })
-    // console.log(this.props.template)
-    // this.props.dispatch({
-    //   type: 'template/getCommitList',
-    //   targetID: this.props.template.id,
-    // })
-    console.log(this.props.template.commitList[0])
+    message.success('保存成功');
   };
 
   getCommitContent = e => {
+    const commitID = e.target.name;
     this.props.dispatch({
       type: 'template/getCommit',
       targetID: this.props.template.id,
-      commitID: e.target.name,
+      commitID,
     })
+    message.success(`成功切换到版本${commitID}`)
   }
 
   // handleEditorChange = editorState => {
   //   this.setState({ editorState });
   // };
+
+  dateParser = text => {
+    const date = format.parse(format.ISO8601_FORMAT, text)
+    const formatDate = format("yyyy-MM-dd hh:mm:ss", date)
+    return formatDate
+  }
 
   getCurrentHerfQuery = () => {
     const regex = /[^&=?]+=[^&]*/g;
@@ -146,9 +155,9 @@ class TemplateEditor extends React.Component {
           >
             <Timeline>
               {this.props.template.commitList.map(item => (
-                <Timeline.Item key={item.commitId}>
+                <Timeline.Item key={item.commitId} color={Number(this.props.template.commitID) === Number(item.commitId) ? 'green' : 'blue'}>
                   <a name={item.commitId} onClick={this.getCommitContent}>
-                    {`Version: ${item.commitId} Time: ${item.commitDate}`}
+                    {`Version: ${item.commitId} Time: ${this.dateParser(item.commitDate)}`}
                   </a>
                 </Timeline.Item>
               ))}

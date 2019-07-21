@@ -58,17 +58,28 @@
             <artifactId>javers-spring-boot-starter-mongo</artifactId>
             <version>5.6.0</version>
         </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.8</version>
-        </dependency>
         <!--		支持读取xml文件,作为实体类转化-->
         <dependency>
             <groupId>dom4j</groupId>
             <artifactId>dom4j</artifactId>
             <version>1.6.1</version>
         </dependency>
+		<!-- https://mvnrepository.com/artifact/org.javers/javers-spring-boot-starter-mongo -->
+		<dependency>
+			<groupId>org.javers</groupId>
+			<artifactId>javers-spring-boot-starter-mongo</artifactId>
+			<version>5.6.0</version>
+		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>org.projectlombok</groupId>-->
+<!--			<artifactId>lombok</artifactId>-->
+<!--			<version>1.18.8</version>-->
+<!--		</dependency>-->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<optional>true</optional>
+		</dependency>
 
 
     </dependencies>

@@ -50,7 +50,7 @@ public class UrlInterceptor implements HandlerInterceptor {
             return false;
         }
         String apiUri = httpServletRequest.getRequestURI();
-        
+
         target.getModels();
 
         return true;

@@ -54,6 +54,7 @@
     "braft-editor": "^2.3.7",
     "braft-extensions": "^0.0.18",
     "classnames": "^2.2.6",
+    "date-format": "^2.1.0",
     "dva": "^2.4.1",
     "json-schema-editor-visual": "^1.0.22",
     "jsonpath": "^1.0.2",
