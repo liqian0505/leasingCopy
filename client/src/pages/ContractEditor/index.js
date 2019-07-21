@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'dva';
 import BraftEditor from 'braft-editor';
 import BasicLayout from '@/layouts/BasicLayout';
-import { Button, Col, Drawer, Row, Icon, Timeline } from 'antd';
+import { Button, Col, Drawer, Row, Icon, Timeline, message } from 'antd';
 import Form from 'react-jsonschema-form';
 
 import 'bootstrap/dist/css/bootstrap.css';
@@ -87,14 +87,16 @@ class ContractEditor extends React.Component {
         formData
       }
     })
+    message.success('保存成功');
   }
 
   commitHandler = commitID => {
     this.props.dispatch({
       type: "contract/rollbackContract",
       targetID: this.props.contract.id,
-      commitID
+      commitID,
     })
+    message.success(`成功切换到版本${commitID}`)
   }
 
   dateParser = text => {

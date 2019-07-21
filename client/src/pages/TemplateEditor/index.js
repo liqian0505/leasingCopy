@@ -13,7 +13,8 @@ import 'json-schema-editor-visual/dist/main.css';
 import { connect } from 'dva';
 // import BasicLayout from '@/layouts/BasicLayout';
 import styles from './index.css';
-import format from 'date-format'
+
+var format = require('date-format');
 const option = {};
 const SchemaEditor = schemaEditor(option);
 // 初始化表格扩展
@@ -31,7 +32,6 @@ class TemplateEditor extends React.Component {
   state = {
     schemaVisible: false,
     versionVisible: false,
-    currentCommitID: '',
   };
 
   componentDidMount() {
@@ -111,6 +111,13 @@ class TemplateEditor extends React.Component {
   //   this.setState({ editorState });
   // };
 
+  dateParser = text => {
+    const date = format.parse(format.ISO8601_FORMAT, text)
+    const formatDate = format("yyyy-MM-dd hh:mm:ss", date)
+    console.log(formatDate)
+    return formatDate
+  }
+
   getCurrentHerfQuery = () => {
     const regex = /[^&=?]+=[^&]*/g;
     const parsedQuery = window.location.href.match(regex);
@@ -149,9 +156,9 @@ class TemplateEditor extends React.Component {
           >
             <Timeline>
               {this.props.template.commitList.map(item => (
-                <Timeline.Item key={item.commitId} color={item.commitID === this.state.currentCommitID ? 'green' : 'blue'}>
+                <Timeline.Item key={item.commitId} color={Number(this.props.template.commitID) === Number(item.commitId) ? 'green' : 'blue'}>
                   <a name={item.commitId} onClick={this.getCommitContent}>
-                    {`Version: ${item.commitId} Time: ${format.asString(item.commitDate)}`}
+                    {`Version: ${item.commitId} Time: ${this.dateParse(item.commitDate)}`}
                   </a>
                 </Timeline.Item>
               ))}
