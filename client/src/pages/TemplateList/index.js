@@ -99,42 +99,44 @@ class TemplateList extends React.Component {
     const { templateList } = this.props;
     // console.log(templateList.length)
     const ItemList = templateList.map(item => (
-        <List.Item>
-          <Card className={styles.templateCard} hoverable bodyStyle={{ height: '100px' }}
-            actions={[
-              <CustomIcon title="编辑" parameters={item} type="edit" onClick={parameters => this.editHandler(parameters)} />,
-              <CustomIcon title="删除" parameters={item} type="delete" onClick={parameters => this.deleteHandler(parameters)} />,
-              <CustomIcon title="查看合同列表" parameters={item} type="bars" onClick={parameters => this.filterHandler(parameters)} />,
-              <Icon type="ellipsis" />,
-            ]}
-          >
-            {item.name}
-            {/* <CustomInput record={item} defaultValue={item.name} onChange={(id, content) => this.updateHandler(id, content)} /> */}
-          </Card>
-        </List.Item>))
+      <List.Item key={item.id}>
+        <Card className={styles.templateCard} hoverable bodyStyle={{ height: '100px' }}
+          actions={[
+            <CustomIcon title="编辑" parameters={item} type="edit" onClick={parameters => this.editHandler(parameters)} />,
+            <CustomIcon title="删除" parameters={item} type="delete" onClick={parameters => this.deleteHandler(parameters)} />,
+            <CustomIcon title="查看合同列表" parameters={item} type="bars" onClick={parameters => this.filterHandler(parameters)} />,
+            <Icon type="ellipsis" />,
+          ]}
+        >
+          {item.name}
+          {/* <CustomInput record={item} defaultValue={item.name} onChange={(id, content) => this.updateHandler(id, content)} /> */}
+        </Card>
+      </List.Item>
+    ))
+
     ItemList.push(
-      <List.Item>
+      <List.Item key="defalut-add-item">
         <Button type="dashed" onClick={this.createHandler} className={styles.templateCard} style={{ height: '150px' }}>
           <Icon type="plus" /> Add template
-                </Button>
+        </Button>
       </List.Item>,
     )
+
     ItemList.reverse()
 
     return (
       <div className={styles.container} >
-        <List grid={
-          {
-            gutter: 16,
-            xs: 1,
-            sm: 2,
-            md: 3,
-            lg: 3,
-            xl: 4,
-            xxl: 6,
-          }
-        }
-        >{ItemList}</List>
+        <List grid={{
+          gutter: 16,
+          xs: 1,
+          sm: 2,
+          md: 3,
+          lg: 3,
+          xl: 4,
+          xxl: 6,
+        }}>
+          {ItemList}
+        </List>
       </div >
     )
   }

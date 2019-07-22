@@ -22,7 +22,7 @@ class ContractList extends React.Component {
       //   {template.name}
       // </div>
       <List.Item key={template.id}>
-        <Card className={styles.templateItemCard} hoverable>
+        <Card className={styles.templateItemCard} hoverable data-id={template.id} onClick={e => this.createHandler(e.target.dataset.id)}>
           {template.name}
         </Card>
       </List.Item>
@@ -111,14 +111,16 @@ class ContractList extends React.Component {
 
   /* 创建按钮事件响应 */
   createHandler = (id, commitID) => {
-    this.props.dispatch({
-      type: "contractList/createContract",
-      templateID: id,
-      commitID
-    })
-    this.setState({
-      modalVisible: false
-    })
+    // this.props.dispatch({
+    //   type: "contractList/createContract",
+    //   templateID: id,
+    //   commitID
+    // })
+    // this.setState({
+    //   modalVisible: false
+    // })
+
+    console.log(id)
   }
 
   /* 修改名称事件响应 */
