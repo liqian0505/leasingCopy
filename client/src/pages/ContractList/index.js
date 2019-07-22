@@ -29,7 +29,10 @@ class ContractList extends React.Component {
     ))
 
     const templateItemListContainer = (
-      <List gird={{ gutter: 16, xs: 1, sm: 2, md: 3, lg: 3, xl: 4, xxl: 6 }} dataSource={templateItemList} renderItem={item=>item}/>
+      <List
+        gird={{ gutter: 16, column: 2, }}
+        dataSource={templateItemList}
+        renderItem={item => item} />
     )
 
     // const templateVersionItemList = this.props.template.commitList.map(commit => (
