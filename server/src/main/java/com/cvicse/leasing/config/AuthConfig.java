@@ -12,6 +12,8 @@ import java.util.List;
 import org.dom4j.*;
 import org.springframework.stereotype.Component;
 
+
+
 /**
  * 读取权限配置文件, 形成动态配置
  *
