@@ -63,7 +63,9 @@ export default {
       const templateRequest = { id: null, content: defaultContent }
 
       const response = yield call(request.post, '/api/templates/new', {
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json'
+        },
         body: JSON.stringify(templateRequest),
       });
 

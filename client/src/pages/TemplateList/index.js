@@ -3,6 +3,7 @@ import { connect } from 'dva';
 import { Table, Button, Icon, Divider, Row, Col, Tooltip, List, Card } from 'antd';
 import { symbol } from 'prop-types';
 import BasicLayout from '@/layouts/BasicLayout';
+import Cookies from 'js-cookie';
 
 import styles from './index.css';
 import CustomIcon from '@/components/Perish/CustomIcon';
@@ -59,6 +60,9 @@ class TemplateList extends React.Component {
 
   constructor(props) {
     super(props)
+
+    Cookies.set('username','C')
+
     this.columns = [
       {
         title: '模版名称',
