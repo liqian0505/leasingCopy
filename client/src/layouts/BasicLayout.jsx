@@ -12,7 +12,7 @@ import Authorized from '@/utils/Authorized';
 import RightContent from '@/components/GlobalHeader/RightContent';
 import { isAntDesignPro } from '@/utils/utils';
 import { Card } from 'antd';
-import logo from '../assets/logo.svg';
+import logo from '../assets/logo.png';
 
 /**
  * use Authorized check all menu item
@@ -78,7 +78,7 @@ const BasicLayout = props => {
 
   return (
     <ProLayout
-      logo={logo}
+      logo={<div style={{backgroundColor: '#4682B4'}}><img src={logo}/></div>}
       onCollapse={handleMenuCollapse}
       menuItemRender={(menuItemProps, defaultDom) => {
         if (menuItemProps.isUrl) {
