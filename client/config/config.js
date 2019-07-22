@@ -88,24 +88,26 @@ export default {
                     path: '/',
                     component: './TemplateList',
                 },
-                // {
-                //     path: '/ContractEditor',
-                //     name: 'ContractEditor',
-                //     component: './ContractEditor',
-                //     icon: 'audit',
-                // },
+                {
+                    path: '/ContractEditor',
+                    name: 'ContractEditor',
+                    component: './ContractEditor',
+                    icon: 'audit',
+                    hideInMenu: true,
+                },
                 {
                     path: '/ContractList',
                     name: 'ContractList',
                     component: './ContractList',
                     icon: 'profile',
                 },
-                // {
-                //     path: '/TemplateEditor',
-                //     name: 'TemplateEditor',
-                //     component: './TemplateEditor',
-                //     icon: 'solution',
-                // },
+                {
+                    path: '/TemplateEditor',
+                    name: 'TemplateEditor',
+                    component: './TemplateEditor',
+                    icon: 'solution',
+                    hideInMenu: true,
+                },
                 {
                     path: '/TemplateList',
                     name: 'TemplateList',

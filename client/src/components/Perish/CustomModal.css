@@ -1,0 +1,22 @@
+.container{
+  z-index: 10;
+  background-color: aqua;
+}
+
+.modal-enter {
+  opacity: 0;
+}
+
+.modal-enterActive {
+  opacity: 1;
+  transition: all 100ms linear;
+}
+
+.modal-exit {
+  opacity: 1;
+}
+
+.modal-exitActive {
+  opacity: 0;
+  transition: all 100ms linear;
+}

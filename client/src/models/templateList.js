@@ -12,7 +12,7 @@ export default {
   effects: {
     *getTemplateList(_, { call, put }) {
       const response = yield call(request, '/api/templates');
-      // console.log(response)
+      console.log(response)
       const proList = response.map(item => ({
         id: item.id,
         name: item.content.name,
@@ -23,6 +23,7 @@ export default {
         type: 'updateTemplateList',
         newList: proList,
       });
+      message.success("成功获取模板列表",0.5)
     },
     *deleteTemplate({ targetID }, { call, put }) {
       const response = yield call(request.delete, `/api/templates/${targetID}`);

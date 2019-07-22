@@ -2,6 +2,7 @@ import request from '../utils/request'
 import router from 'umi/router'
 import BraftEditor from 'braft-editor'
 import jp from 'jsonpath'
+import { message } from 'antd'
 
 export default {
   namespace: 'contract',
@@ -44,6 +45,7 @@ export default {
   effects: {
     *getContract({ targetID, jump }, { call, put }) {
       const response = yield call(request, `/api/contracts/${targetID}`)            //获取目标合同id及content
+      console.log(response)
       const { id, content } = response[0]
       const commitVersionList = yield call(request, `/api/contracts/${id}/commits`) //获取目标合同全部历史修改记录
 
@@ -57,6 +59,7 @@ export default {
         }
       })
 
+      message.success("成功获取合同内容", 0.5)
       if (jump !== undefined) router.push("/ContractEditor?id=" + id)
     },
 
@@ -65,16 +68,19 @@ export default {
         id: targetID,
         content: content
       }
+
       const response = yield call(request.put, `/api/contracts/${targetID}`, {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(contractRequest)
       })
+
       const commitVersionList = yield call(request, `/api/contracts/${targetID}/commits`)
 
       yield put({
         type: "setContractState",
         newState: {
           ...response.content,
+          id: response.id,
           commitVersionList,
           currentCommitID: commitVersionList[commitVersionList.length - 1].commitId
         }

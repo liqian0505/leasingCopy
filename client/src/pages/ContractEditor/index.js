@@ -67,6 +67,7 @@ class ContractEditor extends React.Component {
   componentDidMount() {
     this.query = this.getCurrentHerfQuery()
     if (this.query.id !== undefined) {
+      console.log(this.query)
       this.props.dispatch({
         type: "contract/getContract",
         targetID: this.query.id
@@ -76,8 +77,13 @@ class ContractEditor extends React.Component {
 
   submitHandler = ({ formData }, e) => {
     const { contract } = this.props
+
+    console.log(contract)
+
     const id = contract.id
     delete contract['id']
+    delete contract['commitVersionList']
+    console.log(contract)
 
     this.props.dispatch({
       type: "contract/updateContract",
@@ -87,7 +93,6 @@ class ContractEditor extends React.Component {
         formData
       }
     })
-    message.success('保存成功');
   }
 
   commitHandler = commitID => {

@@ -14,17 +14,13 @@
 
 .templateItemCard{
   cursor: pointer;
-  border: none;
 }
 
-.templateItemList{
-  width: 95%;
+.templateItemRow{
+  margin-bottom: 8px;
+  background-color: pink;
 }
 
 .templateVersionItem{
   cursor: pointer;
-}
-
-.templateVersionItemList{
-  background-color: pink;
 }

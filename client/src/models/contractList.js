@@ -1,5 +1,6 @@
 import request from '../utils/request'
 import router from 'umi/router'
+import { message } from 'antd'
 
 export default {
   namespace: 'contractList',
@@ -9,16 +10,17 @@ export default {
   },
   effects: {
     *getContractList({ templateID, jump }, { call, put }) {
+      console.log(Date(),"enter")
       const response = yield call(request, '/api/contracts')
+      console.log(Date(),response)
       yield put({
         type: 'updateContractList',
         newList: response.map(contract => {
-          contract.content = { ...contract.content }
           contract.content['id'] = contract.id
           return contract.content
         })
       })
-
+      message.success("成功获取合同列表", 0.5)
       if (jump !== undefined) router.push(`/ContractList?id=${templateID}`)
     },
 
@@ -31,11 +33,11 @@ export default {
           return contract.content
         })
       })
+      message.success("删除成功", 0.5)
     },
 
     *createContract({ templateID, commitID }, { call, put }) {
-      const commitList = yield call(request, `/api/templates/${templateID}/commits?commitId=${commitID}`)
-      const { id, content } = commitList[0]
+      const { id, content } = yield call(request, `/api/templates/${templateID}`)
       const contractRequest = {
         id: null,
         content: {
