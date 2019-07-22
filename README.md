@@ -17,6 +17,22 @@
 * Java框架：Spring Boot
 
 ### 本地构建
+#### 后端
+
+MacOS下
+```
+cd server
+docker-compose up -d
+mvn spring-boot:run
+```
+然后可以直接用curl或postman工具访问后端服务，例如：
+
+```
+curl http://localhost:8000/api/contracts
+```
+
+Windows平台建议使用Windows 10的Subsystem for Linux安装并运行docker，其他跟macOS应该是一样的。
+
 #### 前端
 ```
 cd client
@@ -30,22 +46,9 @@ npm install
 npm start
 ```
 建议使用国内镜像并使用[tyarn](https://umijs.org/zh/guide/getting-started.html#%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87)或[cnpm](https://npm.taobao.org/)工具。
-#### 后端
 
-MacOS下
-```
-cd server
-docker-compose up -d
-mvn spring-boot:run
-```
-然后可以直接用curl或postman工具访问后端服务，例如：
 
-```
-curl http://localhost:8080/api/contracts
-```
-
-Windows平台建议使用Windows 10的Subsystem for Linux安装并运行docker，其他跟macOS应该是一样的。
-
+前端运行在3000端口，请确保本地后端已启动。
 ### 本地构建
 
 ### 领域模型
