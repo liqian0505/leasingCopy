@@ -20,6 +20,6 @@ deploy:
   provider: script
   skip_cleanup: true
   on:
-    branch: dev
+    repo: CaribouW/leasing
   script: rsync -r --delete-after server/target/cvise.jar root@106.14.140.93:/root/webapps
 sudo: true
