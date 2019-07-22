@@ -6,6 +6,8 @@ before-install:
 - sudo apt-get install docker.io
 - sudo apt-get install docker-compose
 - sudo apt-get install node
+- openssl aes-256-cbc -K $encrypted_17719a85a8a7_key -iv $encrypted_17719a85a8a7_iv
+  -in id_rsa.enc -out ~/.ssh/id_rsa -d
 install: true
 script:
 - bash ./set_up.sh
@@ -21,6 +23,3 @@ deploy:
     branch: dev
   script: rsync -r --delete-after server/target/cvise.jar root@106.14.140.93:/root/webapps
 sudo: true
-before_install:
-- openssl aes-256-cbc -K $encrypted_17719a85a8a7_key -iv $encrypted_17719a85a8a7_iv
-  -in id_rsa.enc -out ~/.ssh/id_rsa -d
