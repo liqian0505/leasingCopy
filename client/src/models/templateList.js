@@ -1,4 +1,5 @@
 import request from '../utils/request';
+import { message } from 'antd'
 
 export default {
   namespace: 'templateList',
@@ -18,8 +19,6 @@ export default {
         editorContent: item.content.editorContent,
         schema: item.content.schema,
       }))
-      proList.push({ id: 'default' });
-      proList.reverse();
       yield put({
         type: 'updateTemplateList',
         newList: proList,
@@ -33,12 +32,11 @@ export default {
         editorContent: item.content.editorContent,
         schema: item.content.schema,
       }))
-      proList.push({ id: 'default' });
-      proList.reverse();
       yield put({
         type: 'updateTemplateList',
         newList: proList,
       });
+      message.success(`删除模板${targetID}`);
     },
   },
 };

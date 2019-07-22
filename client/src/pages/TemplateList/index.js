@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'dva';
-import { Table, Button, Icon, Divider, Row, Col, Tooltip, List, Card } from 'antd';
-import { symbol } from 'prop-types';
+import { Button, Icon, Row, Col, List, Card, message } from 'antd';
+// import { symbol } from 'prop-types';
 import BasicLayout from '@/layouts/BasicLayout';
 
 import styles from './index.css';
@@ -9,84 +9,6 @@ import CustomIcon from '@/components/Perish/CustomIcon';
 import CustomInput from '@/components/Perish/CustomInput';
 
 class TemplateList extends React.Component {
-  render() {
-    const { templateList } = this.props;
-    return (
-      <div className={styles.container}>
-        {/* <Table columns={this.columns} dataSource={this.props.templateList} rowKey="id" />
-        <div className={styles.createButton} onClick={this.createHandler} /> */}
-        <List
-          grid={{
-            gutter: 16,
-            xs: 1,
-            sm: 2,
-            md: 3,
-            lg: 3,
-            xl: 4,
-            xxl: 6,
-          }}
-          dataSource={templateList}
-          renderItem={item => {
-            if (item.id === 'default') {
-              return (
-                <List.Item>
-                  <Button type="dashed" onClick={this.createHandler} className={styles.templateCard} style={{ height: '150px' }}>
-                    <Icon type="plus" /> Add template
-                    </Button>
-                </List.Item>
-              )
-            }
-            return (
-              <List.Item>
-                <Card className={styles.templateCard} hoverable bodyStyle={{ height: '100px' }}
-                  actions={[
-                    <CustomIcon title="编辑" parameters={item} type="edit" onClick={parameters => this.editHandler(parameters)} />,
-                    <CustomIcon title="删除" parameters={item} type="delete" onClick={parameters => this.deleteHandler(parameters)} />,
-                    <CustomIcon title="查看合同列表" parameters={item} type="bars" onClick={parameters => this.filterHandler(parameters)} />,
-                    <Icon type="ellipsis" />
-                  ]}
-                >
-                {item.name}
-                {/* <CustomInput record={item} defaultValue={item.name} onChange={(id, content) => this.updateHandler(id, content)} /> */}
-                </Card>
-              </List.Item>
-            )
-          }}
-        />
-      </div>
-    )
-  }
-
-  constructor(props) {
-    super(props)
-    this.columns = [
-      {
-        title: '模版名称',
-        dataIndex: 'name',
-        key: 'name',
-        render: (name, record) => (
-          <CustomInput record={record} defaultValue={name} onChange={(id, content) => this.updateHandler(id, content)} />
-        ),
-      },
-      {
-        title: '选项',
-        render: record => {
-          const parameters = {
-            id: record.id,
-          }
-
-          return (
-            <div>
-              <CustomIcon title="编辑" parameters={parameters} type="edit" onClick={parameters => this.editHandler(parameters)} />
-              <CustomIcon title="删除" parameters={parameters} type="delete" onClick={parameters => this.deleteHandler(parameters)} />
-              <CustomIcon title="查看合同列表" parameters={parameters} type="bars" onClick={parameters => this.filterHandler(parameters)} />
-            </div>
-          )
-        },
-      },
-    ]
-  }
-
   componentDidMount() {
     this.props.dispatch({
       type: 'templateList/getTemplateList',
@@ -141,6 +63,30 @@ class TemplateList extends React.Component {
 
   render() {
     const { templateList } = this.props;
+    // console.log(templateList.length)
+    const ItemList = templateList.length === 0 ? [] : templateList.map(item => (
+        <List.Item>
+          <Card className={styles.templateCard} hoverable bodyStyle={{ height: '100px' }}
+            actions={[
+              <CustomIcon title="编辑" parameters={item} type="edit" onClick={parameters => this.editHandler(parameters)} />,
+              <CustomIcon title="删除" parameters={item} type="delete" onClick={parameters => this.deleteHandler(parameters)} />,
+              <CustomIcon title="查看合同列表" parameters={item} type="bars" onClick={parameters => this.filterHandler(parameters)} />,
+              <Icon type="ellipsis" />,
+            ]}
+          >
+            {item.name}
+            {/* <CustomInput record={item} defaultValue={item.name} onChange={(id, content) => this.updateHandler(id, content)} /> */}
+          </Card>
+        </List.Item>))
+    ItemList.push(
+      <List.Item>
+        <Button type="dashed" onClick={this.createHandler} className={styles.templateCard} style={{ height: '150px' }}>
+          <Icon type="plus" /> Add template
+                </Button>
+      </List.Item>,
+    )
+    ItemList.reverse()
+
     return (
       <div className={styles.container} >
         <List grid={
@@ -154,40 +100,8 @@ class TemplateList extends React.Component {
             xxl: 6,
           }
         }
-          dataSource={templateList}
-          renderItem={
-            item => {
-              if (item.id === 'default') {
-                return (
-                  <List.Item>
-                    <Button type="dashed"
-                      onClick={this.createHandler}
-                      className={styles.templateCard}
-                      style={{ height: '150px' }} >
-                      <Icon type="plus" /> Add template
-                </Button>
-                  </List.Item>
-                )
-              }
-              return (
-                <List.Item>
-                  <Card className={styles.templateCard} hoverable bodyStyle={{ height: '100px' }}
-                    actions={[
-                      <CustomIcon title="编辑" parameters={item} type="edit" onClick={parameters => this.editHandler(parameters)} />,
-                      <CustomIcon title="删除" parameters={item} type="delete" onClick={parameters => this.deleteHandler(parameters)} />,
-                      <CustomIcon title="查看合同列表" parameters={item} type="bars" onClick={parameters => this.filterHandler(parameters)} />,
-                      <Icon type="ellipsis" />,
-                    ]}
-                  >
-                    {item.name}
-                    {/* <CustomInput record={item} defaultValue={item.name} onChange={(id, content) => this.updateHandler(id, content)} /> */}
-                  </Card>
-                </List.Item>
-              )
-            }
-          }
-        />
-      </div>
+        >{ItemList}</List>
+      </div >
     )
   }
 }
