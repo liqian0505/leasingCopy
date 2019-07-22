@@ -4,8 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 
 import javax.validation.constraints.NotNull;
 
-public class Contract {
-    @NotNull
+public class TemplateRequest {
     private String id;
 
     @NotNull
@@ -21,5 +20,9 @@ public class Contract {
 
     public void setContent(JSONObject content){
         this.content = content;
+    }
+
+    public JSONObject getContent() {
+        return content;
     }
 }

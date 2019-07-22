@@ -1,6 +1,6 @@
 //package com.cvicse.leasing.controller;
 //
-//import com.cvicse.leasing.model.Contract;
+//import com.cvicse.leasing.model.ContractRequest;
 //import com.cvicse.leasing.service.ContractService;
 //import org.junit.Before;
 //import org.junit.Test;
@@ -43,7 +43,7 @@
 //
 //    @Test
 //    public void whenPostContract_thenCreateContract() throws Exception{
-//        Contract contract = new Contract("C1");
+//        ContractRequest contract = new ContractRequest("C1");
 //        given(contractService.createContract(Mockito.any())).willReturn(contract);
 //        mvc.perform(post("/api/contracts")
 //                .contentType(MediaType.APPLICATION_JSON)
@@ -56,9 +56,9 @@
 //
 //    @Test
 //    public void whenGetContracts_thenGetContracts() throws Exception{
-//        Contract contract1 = new Contract("C1");
-//        Contract contract2 = new Contract("C2");
-//        List<Contract> contractList = Arrays.asList(contract1,contract2);
+//        ContractRequest contract1 = new ContractRequest("C1");
+//        ContractRequest contract2 = new ContractRequest("C2");
+//        List<ContractRequest> contractList = Arrays.asList(contract1,contract2);
 //        given(contractService.getAllContract()).willReturn(contractList);
 //
 //        mvc.perform(get("/api/contracts")

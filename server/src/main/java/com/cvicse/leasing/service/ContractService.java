@@ -6,14 +6,10 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.cvicse.leasing.exception.ContractNotFoundException;
-import com.cvicse.leasing.exception.TemplateNotFoundException;
 import com.cvicse.leasing.model.Contract;
-import com.cvicse.leasing.model.Template;
+import com.cvicse.leasing.payload.ContractRequest;
 import com.cvicse.leasing.repository.ContractRepository;
-
-import org.javers.core.Changes;
 import org.javers.core.Javers;
-import org.javers.core.diff.Change;
 import org.javers.core.metamodel.object.CdoSnapshot;
 import org.javers.repository.jql.JqlQuery;
 import org.javers.repository.jql.QueryBuilder;
@@ -41,26 +37,30 @@ public class ContractService {
 
     public Contract getContract(String id) throws ContractNotFoundException {
         if(!this.contractRepository.findById(id).isPresent())
-            throw new ContractNotFoundException("Contract Not Found in contractRepository.");
+            throw new ContractNotFoundException("ContractRequest Not Found in contractRepository.");
         return this.contractRepository.findById(id).get();
     }
 
-    public Contract createContract(Contract newContract) {
+    public Contract createContract(ContractRequest contractRequest) {
         logger.info("contract saved");
-        return contractRepository.save(newContract);
+        Contract contract = new Contract(contractRequest.getContent());
+        return contractRepository.save(contract);
     }
 
-    public Contract updateContract(JSONObject content, String id) {
+    public Contract updateContract(ContractRequest contractRequest, String id) throws ContractNotFoundException{
         this.contractRepository.findById(id).ifPresent(contract -> {
-            contract.content = content;
+            contract.content = contractRequest.getContent();
             this.contractRepository.save(contract);
         });
+        if(!this.contractRepository.findById(id).isPresent()){
+            throw new ContractNotFoundException("ContractRequest Not Found in contractRepository.");
+        }
         return this.contractRepository.findById(id).get();
     }
 
     public void deleteContract(String id) throws ContractNotFoundException {
         if(!this.contractRepository.findById(id).isPresent())
-            throw new ContractNotFoundException("Contract Not Found in contractRepository.");
+            throw new ContractNotFoundException("ContractRequest Not Found in contractRepository.");
         logger.info("contract deleted");
         this.contractRepository.deleteById(id);
     }

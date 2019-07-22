@@ -3,16 +3,11 @@ package com.cvicse.leasing.service;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.cvicse.leasing.exception.ContractNotFoundException;
 import com.cvicse.leasing.exception.TemplateNotFoundException;
-import com.cvicse.leasing.model.Contract;
 import com.cvicse.leasing.model.Template;
-import com.cvicse.leasing.repository.ContractRepository;
+import com.cvicse.leasing.payload.TemplateRequest;
 import com.cvicse.leasing.repository.TemplateRepository;
-import org.aspectj.weaver.Shadow;
-import org.javers.core.Changes;
 import org.javers.core.Javers;
-import org.javers.core.diff.Change;
 import org.javers.core.metamodel.object.CdoSnapshot;
 import org.javers.repository.jql.JqlQuery;
 import org.javers.repository.jql.QueryBuilder;
@@ -20,8 +15,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
-
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,9 +24,6 @@ import java.util.List;
 public class TemplateService {
     @Autowired
     private TemplateRepository templateRepository;
-
-    @Autowired
-    private ContractRepository contractRepository;
 
     @Autowired
     private Javers javers;
@@ -48,78 +38,38 @@ public class TemplateService {
 
     public Template getTemplate(String id) throws TemplateNotFoundException {
         if(!this.templateRepository.findById(id).isPresent()) {
-            logger.info("Template Not Found in templateRepository.");
-            throw new TemplateNotFoundException("Template Not Found in templateRepository.");
+            logger.info("TemplateRequest Not Found in templateRepository.");
+            throw new TemplateNotFoundException("TemplateRequest Not Found in templateRepository.");
         }
-        logger.info("Template "+id+" returned");
+        logger.info("TemplateRequest "+id+" returned");
         return this.templateRepository.findById(id).get();
     }
 
 
-    public Template createTemplate(Template newTemplate) {
-        logger.info("Template saved");
-        return templateRepository.save(newTemplate);
+    public Template createTemplate(TemplateRequest templateRequest) {
+        logger.info("TemplateRequest saved");
+        logger.info(templateRequest.getContent().toJSONString());
+        Template template =new Template(templateRequest.getContent());
+        return templateRepository.save(template);
     }
 
-    public Template updateTemplate(JSONObject content, String id) {
+    public Template updateTemplate(TemplateRequest templateRequest, String id) throws TemplateNotFoundException{
         this.templateRepository.findById(id).ifPresent(template -> {
-            template.content = content;
+            template.content = templateRequest.getContent();
             this.templateRepository.save(template);
         });
+        if(this.templateRepository.findById(id).isPresent()){
         return this.templateRepository.findById(id).get();
+        }else {
+            throw new TemplateNotFoundException("TemplateRequest Not Found in templateRepository.");
+        }
     }
 
     public void deleteTemplate(String id) throws TemplateNotFoundException {
         if(!this.templateRepository.findById(id).isPresent())
-            throw new TemplateNotFoundException("Template Not Found in templateRepository.");
-        logger.info("Template deleted");
+            throw new TemplateNotFoundException("TemplateRequest Not Found in templateRepository.");
+        logger.info("TemplateRequest deleted");
         this.templateRepository.deleteById(id);
-    }
-
-
-    public ArrayList<Contract> getContractList(String id) throws Exception {
-        if(!this.templateRepository.findById(id).isPresent()) {
-            logger.info("Template Not Found in templateRepository.");
-            throw new TemplateNotFoundException("Template Not Found in templateRepository.");
-        }
-        ArrayList<Contract> contracts = new ArrayList<>();
-        logger.info(this.templateRepository.findById(id).get().contractIdList.toString());
-        for(String contractId: this.templateRepository.findById(id).get().contractIdList) {
-            if(this.contractRepository.findById(contractId).isPresent()) {
-                logger.info("contract "+ contractId + " existed.");
-                contracts.add(this.contractRepository.findById(contractId).get());
-            }
-            else{
-                logger.info("Contract "+contractId+ " Not Found in contractRepository.");
-                throw new ContractNotFoundException("Contract Not Found in contractRepository.");
-            }
-        }
-
-        logger.info("return contractList.");
-        return contracts;
-    }
-
-    public void addContract(String templateId,String contractId) throws Exception{
-        if(this.getTemplate(templateId).contractIdList.contains(contractId)){
-            throw new Exception("contract has existed");
-        }
-        else{
-            logger.info("add new contractId");
-            Template template = this.getTemplate(templateId);
-            template.contractIdList.add(contractId);
-            this.templateRepository.save(template);
-        }
-    }
-
-    public void deleteContract(String templateId,String contractId) throws Exception{
-        if(this.getTemplate(templateId).contractIdList.contains(contractId)){
-            Template template = this.getTemplate(templateId);
-            template.contractIdList.remove(contractId);
-            this.templateRepository.save(template);
-        }
-        else{
-            throw new Exception("contract can not found in template");
-        }
     }
 
     public JSONArray trackTemplateChangesWithJavers(String templateId) throws TemplateNotFoundException{
@@ -128,7 +78,6 @@ public class TemplateService {
         JqlQuery jqlQuery= QueryBuilder.byInstance(template).build();
         List<CdoSnapshot> snapshots = javers.findSnapshots(jqlQuery);
         for(CdoSnapshot snapshot:snapshots){
-           // System.out.println(javers.getJsonConverter().toJson(snapshot));
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("commitId",snapshot.getCommitId().getMajorId());
             jsonObject.put("commitDate", snapshot.getCommitMetadata().getCommitDate());

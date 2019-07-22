@@ -1,6 +1,6 @@
 //package com.cvicse.leasing.controller;
 //
-//import com.cvicse.leasing.model.Template;
+//import com.cvicse.leasing.model.TemplateRequest;
 //import com.cvicse.leasing.service.TemplateService;
 //import org.junit.Before;
 //import org.junit.Test;
@@ -40,7 +40,7 @@
 ////
 ////    @Test
 ////    public void whenPostTemplate_thenCreateTemplate() throws Exception{
-////        Template template = new Template("T1");
+////        TemplateRequest template = new TemplateRequest("T1");
 ////        given(templateService.createTemplate(Mockito.any())).willReturn(template);
 ////        mvc.perform(post("/api/templates")
 ////                .contentType(MediaType.APPLICATION_JSON)
@@ -53,9 +53,9 @@
 //
 //    @Test
 //    public void whenGetTemplates_thenGetTemplates() throws Exception{
-//        Template template1 = new Template("T1");
-//        Template template2 = new Template("T2");
-//        List<Template> templateList = Arrays.asList(template1,template2);
+//        TemplateRequest template1 = new TemplateRequest("T1");
+//        TemplateRequest template2 = new TemplateRequest("T2");
+//        List<TemplateRequest> templateList = Arrays.asList(template1,template2);
 //        given(templateService.getAllTemplate()).willReturn(templateList);
 //
 //        mvc.perform(get("/api/templates")

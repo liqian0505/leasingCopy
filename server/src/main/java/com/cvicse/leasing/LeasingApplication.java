@@ -53,21 +53,21 @@ public class LeasingApplication /*implements CommandLineRunner*/ {
 //		repository.deleteAll();
 //
 //		JSONObject content = new JSONObject();
-//		content.put("content","Template 1");
+//		content.put("content","TemplateRequest 1");
 //		JSONObject content1 = new JSONObject();
-//		content1.put("content","Template 2");
-//		repository.save(new Template(content));
-//		repository.save(new Template(content1));
+//		content1.put("content","TemplateRequest 2");
+//		repository.save(new TemplateRequest(content));
+//		repository.save(new TemplateRequest(content1));
 //
 //		contractRepository.deleteAll();
 //
 //		JSONObject contractContent = new JSONObject();
-//		contractContent.put("content","Contract 1");
+//		contractContent.put("content","ContractRequest 1");
 //		JSONObject contractContent1 = new JSONObject();
-//		contractContent.put("content","Contract 2");
-//		contractRepository.save(new Contract(contractContent));
-//		contractRepository.save(new Contract(contractContent1));
-//		Contract c = contractRepository.findByContent(contractContent);
+//		contractContent.put("content","ContractRequest 2");
+//		contractRepository.save(new ContractRequest(contractContent));
+//		contractRepository.save(new ContractRequest(contractContent1));
+//		ContractRequest c = contractRepository.findByContent(contractContent);
 //		JSONObject c1= new JSONObject();
 //		 c1.put("content","ABC");
 //		 c.content = c1;
@@ -88,7 +88,7 @@ public class LeasingApplication /*implements CommandLineRunner*/ {
 //
 //		logger.info("Found the initial version: ");
 //		for (CdoSnapshot change : changes) {
-//			logger.info("Contract snapshot: {}", change);
+//			logger.info("ContractRequest snapshot: {}", change);
 //		}
 
 }

@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 
 @Data
-@Document(collection = "Contract")
+@Document(collection = "ContractRequest")
 public class Contract {
 
     @Id
@@ -24,7 +24,7 @@ public class Contract {
 
     @Override
     public String toString() {
-        return String.format("Contract[id=%s, content='%s']", id, content);
+        return String.format("ContractRequest[id=%s, content='%s']", id, content);
     }
 
     public JSONObject getContent() {
