@@ -18,7 +18,6 @@
 
 .templateItemList{
   width: 95%;
-  background-color: aqua;
 }
 
 .templateVersionItem{
@@ -26,5 +25,5 @@
 }
 
 .templateVersionItemList{
-  background-color: blue;
+  background-color: pink;
 }
