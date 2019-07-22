@@ -42,7 +42,7 @@ public class ContractController {
     public Contract getContract(@PathVariable String id) {
         try{
             logger.info("Get contract with contract.id " + id);
-            return (List<Contract>) this.contractService.getContract(id);
+            return this.contractService.getContract(id);
             // return this.contractService.getAllContract();
         }catch(ContractNotFoundException e) {
             logger.info(e.getMessage());
