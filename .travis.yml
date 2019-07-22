@@ -1,25 +1,40 @@
-language: java
-jdk:
-- openjdk8
-before-install:
-- sudo apt-get update
-- sudo apt-get install docker.io
-- sudo apt-get install docker-compose
-- sudo apt-get install node
-- openssl aes-256-cbc -K $encrypted_17719a85a8a7_key -iv $encrypted_17719a85a8a7_iv
-  -in id_rsa.enc -out ~\/.ssh/id_rsa -d
-install: true
+# language: java
+# jdk:
+# - openjdk8
+# before-install:
+# - sudo apt-get update
+# - sudo apt-get install docker.io
+# - sudo apt-get install docker-compose
+# - sudo apt-get install node
+# - openssl aes-256-cbc -K $encrypted_17719a85a8a7_key -iv $encrypted_17719a85a8a7_iv
+#   -in id_rsa.enc -out ~\/.ssh/id_rsa -d
+# install: true
+# script:
+# - bash ./set_up.sh
+# - mvn clean package -Dmaven.test.skip=true
+# branches:
+#   only:
+#   - master
+# deploy:
+#   provider: script
+#   skip_cleanup: true
+#   on:
+#     branch: master
+#   script: rsync -r --delete-after server/target/cvise.jar root@106.14.140.93:/root/webapps
+# sudo: true
+language: node_js
+node_js:
+  - "stable"
+cache:
+  directories:
+  - node_modules
 script:
-- bash ./set_up.sh
-- mvn clean package -Dmaven.test.skip=true
-branches:
-  only:
-  - master
+  - npm test
+  - npm run build
 deploy:
-  provider: script
+  provider: pages
   skip_cleanup: true
+  github_token: $github_token
+  local_dir: build
   on:
     branch: master
-  script: rsync -r --delete-after server/target/cvise.jar root@106.14.140.93:/root/webapps
-sudo: true
-
