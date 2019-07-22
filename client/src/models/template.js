@@ -70,6 +70,7 @@ export default {
         body: JSON.stringify(templateRequest),
       });
 
+      console.log(response)
       const proList = response.map(item => ({
         id: item.id,
         name: item.content.name,
@@ -80,6 +81,7 @@ export default {
         type: 'templateList/updateTemplateList',
         newList: proList,
       });
+      message.success('成功创建新模板')
     },
     *getTemplate({ targetID, jump }, { call, put }) {
       const { id, content } = yield call(request.get, `/api/templates/${targetID}`)
