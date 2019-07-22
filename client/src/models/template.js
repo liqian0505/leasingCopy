@@ -1,8 +1,8 @@
 import router from 'umi/router';
 import BraftEditor from 'braft-editor';
 import { template } from '@babel/core';
-import request from '../utils/request';
 import { message } from 'antd';
+import request from '../utils/request';
 
 export default {
   namespace: 'template',
@@ -58,19 +58,23 @@ export default {
         commitID: payload,
       }
     },
+    updateName(state, { payload }) {
+      return {
+        ...state,
+        name: payload,
+      }
+    },
   },
   effects: {
     *createTemplate({ defaultContent }, { call, put }) {
       const templateRequest = { id: null, content: defaultContent }
 
       const response = yield call(request.post, '/api/templates/new', {
-        headers: { 
-          'Content-Type': 'application/json'
+        headers: {
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(templateRequest),
       });
-
-      console.log(response)
       const proList = response.map(item => ({
         id: item.id,
         name: item.content.name,

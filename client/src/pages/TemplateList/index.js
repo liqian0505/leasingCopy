@@ -12,35 +12,7 @@ import CustomInput from '@/components/Perish/CustomInput';
 class TemplateList extends React.Component {
   constructor(props) {
     super(props)
-
     Cookies.set('username', 'C')
-
-    this.columns = [
-      {
-        title: '模版名称',
-        dataIndex: 'name',
-        key: 'name',
-        render: (name, record) => (
-          <CustomInput record={record} defaultValue={name} onChange={(id, content) => this.updateHandler(id, content)} />
-        ),
-      },
-      {
-        title: '选项',
-        render: record => {
-          const parameters = {
-            id: record.id,
-          }
-
-          return (
-            <div>
-              <CustomIcon title="编辑" parameters={parameters} type="edit" onClick={parameters => this.editHandler(parameters)} />
-              <CustomIcon title="删除" parameters={parameters} type="delete" onClick={parameters => this.deleteHandler(parameters)} />
-              <CustomIcon title="查看合同列表" parameters={parameters} type="bars" onClick={parameters => this.filterHandler(parameters)} />
-            </div>
-          )
-        },
-      },
-    ]
   }
 
   componentDidMount() {
