@@ -12,8 +12,9 @@
   cursor: pointer;
 }
 
-.templateItem{
+.templateItemCard{
   cursor: pointer;
+  border: none;
 }
 
 .templateItemList{

@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'dva';
-import { Table, Dropdown, Menu, Modal, Row, Col } from 'antd';
+import { Table, Dropdown, Menu, Modal, Row, Col, List, Card } from 'antd';
 import BasicLayout from '@/layouts/BasicLayout';
 
 import styles from './index.css';
@@ -14,33 +14,39 @@ class ContractList extends React.Component {
     const table = <Table columns={this.columns} dataSource={this.props.contractList} rowKey="id" />
     const modalSwitch = <div className={styles.createButton} onClick={e => this.setState({ modalVisible: true })} />
     const templateItemList = this.props.templateList.map(template => (
-      <div
-        className={styles.templateItem}
-        key={template.id}
-        data-id={template.id}
-        onClick={e => this.commitHandler(e.target.dataset.id)}>
-        {template.name}
-      </div>
+      // <div
+      //   className={styles.templateItem}
+      //   key={template.id}
+      //   data-id={template.id}
+      //   onClick={e => this.commitHandler(e.target.dataset.id)}>
+      //   {template.name}
+      // </div>
+      <List.Item key={template.id}>
+        <Card className={styles.templateItemCard} hoverable>
+          {template.name}
+        </Card>
+      </List.Item>
     ))
 
-    const templateVersionItemList = this.props.template.commitList.map(commit => (
-      <div
-        className={styles.templateVersionItem}
-        key={commit.commitId}
-        data-templateid={this.props.template.id}
-        data-commitid={commit.commitId}
-        onClick={e => this.createHandler(e.target.dataset.templateid, e.target.dataset.commitid)}>
-        {commit.commitId}</div>
-    ))
+    const templateItemListContainer = (
+      <List gird={{ gutter: 16, xs: 1, sm: 2, md: 3, lg: 3, xl: 4, xxl: 6 }}>
+        {templateItemList}
+      </List>
+    )
+
+    // const templateVersionItemList = this.props.template.commitList.map(commit => (
+    //   <div
+    //     className={styles.templateVersionItem}
+    //     key={commit.commitId}
+    //     data-templateid={this.props.template.id}
+    //     data-commitid={commit.commitId}
+    //     onClick={e => this.createHandler(e.target.dataset.templateid, e.target.dataset.commitid)}>
+    //     {commit.commitId}</div>
+    // ))
 
     const modal = (
       <Modal title="可用模板" footer={null} onCancel={e => this.setState({ modalVisible: false })} visible={this.state.modalVisible}>
-        {/* <div className={styles.templateItemList}>{templateItemList}</span>
-        <span className={styles.templateVersionList}>{templateVersionList}</span> */}
-        <Row>
-          <Col span={16}><div className={styles.templateItemList}>{templateItemList}</div></Col>
-          <Col span={8}><div className={styles.templateVersionItemList}>{templateVersionItemList}</div></Col>
-        </Row>
+        {templateItemListContainer}
       </Modal>
     )
 
