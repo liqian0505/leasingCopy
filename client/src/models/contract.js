@@ -8,15 +8,19 @@ export default {
   namespace: 'contract',
   state: {
     id: null,
-    schema: {
-      type: 'object',
-      title: '',
-      properties: {},
+    content: {
+      name: null,
+      schema: {
+        type: 'object',
+        title: '',
+        properties: {},
+      },
+      templateID: null,
+      templateCommitID: null,
+      formData: {},
+      editorContent: {},
     },
-    templateID: null,
-    formData: {},
     editorState: null,
-    editorContent: {},
     commitVersionList: [],
     currentCommitID: null
   },
@@ -27,7 +31,7 @@ export default {
         ...newState
       }
 
-      var { editorContent, formData } = nextState
+      var { editorContent, formData } = nextState.content
       const data = formData
 
       var copyContent = JSON.parse(JSON.stringify(editorContent))
@@ -52,8 +56,8 @@ export default {
       yield put({
         type: "setContractState",
         newState: {
-          ...content,
           id,
+          content,
           commitVersionList,
           currentCommitID: commitVersionList[commitVersionList.length - 1].commitId
         }
@@ -79,8 +83,7 @@ export default {
       yield put({
         type: "setContractState",
         newState: {
-          ...response.content,
-          id: response.id,
+          ...response,
           commitVersionList,
           currentCommitID: commitVersionList[commitVersionList.length - 1].commitId
         }
@@ -90,12 +93,11 @@ export default {
     *rollbackContract({ targetID, commitID }, { call, put }) {
       const response = yield call(request, `/api/contracts/${targetID}/commits?commitId=${commitID}`)
       const commitVersionList = yield call(request, `/api/contracts/${targetID}/commits`)
-      const { content } = response[0]
 
       yield put({
         type: "setContractState",
         newState: {
-          ...content,
+          ...response[0],
           commitVersionList,
           currentCommitID: commitID
         }

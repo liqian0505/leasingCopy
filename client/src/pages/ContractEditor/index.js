@@ -14,13 +14,13 @@ class ContractEditor extends React.Component {
 
   render() {
 
-    const { contract } = this.props
+    const { id, content, editorState, commitVersionList, currentCommitID } = this.props.contract
 
-    const form = <Form className={styles.form} schema={contract.schema} formData={contract.formData} onSubmit={this.submitHandler} onError={e => alert(e)} />
+    const form = <Form className={styles.form} schema={content.schema} formData={content.formData} onSubmit={this.submitHandler} onError={e => alert(e)} />
 
     const editorDrawer = (
       <Drawer title="合同填写" placement="right" width="50%" closable={false} visible={this.state.drawerVisible} onClose={e => this.setState({ drawerVisible: false })}>
-        <BraftEditor className={styles.editor} value={contract.editorState} controls={[]} readOnly />
+        <BraftEditor className={styles.editor} value={editorState} controls={[]} readOnly />
       </Drawer>
     )
 
@@ -28,8 +28,8 @@ class ContractEditor extends React.Component {
       <Drawer title="历史版本" placement="left" width="30%" closable={false} visible={this.state.commitVisible} onClose={e => this.setState({ commitVisible: false })}>
         <Timeline>
           {
-            contract.commitVersionList.map(commit => (
-              <Timeline.Item key={commit.commitId} color={commit.commitId === Number(contract.currentCommitID) ? 'green' : 'blue'}>
+            commitVersionList.map(commit => (
+              <Timeline.Item key={commit.commitId} color={commit.commitId === Number(currentCommitID) ? 'green' : 'blue'}>
                 <div data-commitid={commit.commitId} onClick={e => this.commitHandler(e.target.dataset.commitid)} >
                   {this.dateParser(commit.commitDate)}
                 </div>
@@ -76,29 +76,26 @@ class ContractEditor extends React.Component {
   }
 
   submitHandler = ({ formData }, e) => {
-    const { contract } = this.props
+    const { id, content } = this.props.contract
 
-    console.log(contract)
-
-    const id = contract.id
-    delete contract['id']
-    delete contract['commitVersionList']
-    console.log(contract)
+    console.log(content)
 
     this.props.dispatch({
       type: "contract/updateContract",
       targetID: id,
       content: {
-        ...contract,
+        ...content,
         formData
       }
     })
   }
 
   commitHandler = commitID => {
+    const { id } = this.props.contract
+
     this.props.dispatch({
       type: "contract/rollbackContract",
-      targetID: this.props.contract.id,
+      targetID: id,
       commitID,
     })
     message.success(`成功切换到版本${commitID}`)
