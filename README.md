@@ -41,7 +41,7 @@ mvn spring-boot:run
 然后可以直接用curl或postman工具访问后端服务，例如：
 
 ```
-curl http://localhost:8080/api/contracts
+curl http://localhost:8000/api/contracts
 ```
 
 Windows平台建议使用Windows 10的Subsystem for Linux安装并运行docker，其他跟macOS应该是一样的。
