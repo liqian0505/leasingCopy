@@ -10,9 +10,7 @@ export default {
   },
   effects: {
     *getContractList({ templateID, jump }, { call, put }) {
-      console.log(Date(),"enter")
       const response = yield call(request, '/api/contracts')
-      console.log(Date(),response)
       yield put({
         type: 'updateContractList',
         newList: response.map(contract => {
@@ -42,7 +40,7 @@ export default {
         id: null,
         content: {
           ...content,
-          name: '未命名合同',
+          name: content.name+"-合同",
           formData: {},
           templateID: templateID,
           templateCommitID: commitID

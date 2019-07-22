@@ -69,7 +69,6 @@ class TemplateList extends React.Component {
 
   render() {
     const { templateList } = this.props;
-    // console.log(templateList.length)
     const ItemList = templateList.map(item => (
       <List.Item key={item.id}>
         <Card className={styles.templateCard} hoverable bodyStyle={{ height: '100px' }}

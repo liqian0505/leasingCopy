@@ -67,7 +67,6 @@ class ContractEditor extends React.Component {
   componentDidMount() {
     this.query = this.getCurrentHerfQuery()
     if (this.query.id !== undefined) {
-      console.log(this.query)
       this.props.dispatch({
         type: "contract/getContract",
         targetID: this.query.id
@@ -77,8 +76,6 @@ class ContractEditor extends React.Component {
 
   submitHandler = ({ formData }, e) => {
     const { id, content } = this.props.contract
-
-    console.log(content)
 
     this.props.dispatch({
       type: "contract/updateContract",

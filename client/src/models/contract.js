@@ -49,8 +49,7 @@ export default {
   effects: {
     *getContract({ targetID, jump }, { call, put }) {
       const response = yield call(request, `/api/contracts/${targetID}`)            //获取目标合同id及content
-      console.log(response)
-      const { id, content } = response[0]
+      const { id, content } = response.find(contract => contract.id === targetID)
       const commitVersionList = yield call(request, `/api/contracts/${id}/commits`) //获取目标合同全部历史修改记录
 
       yield put({
@@ -88,6 +87,8 @@ export default {
           currentCommitID: commitVersionList[commitVersionList.length - 1].commitId
         }
       })
+
+      message.success("保存成功",0.5)
     },
 
     *rollbackContract({ targetID, commitID }, { call, put }) {
