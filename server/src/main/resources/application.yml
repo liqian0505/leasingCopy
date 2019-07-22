@@ -3,5 +3,5 @@ server:
 spring:
   data:
     mongodb:
-      uri: mongodb://heroku_1cm1qpq0:8tpe6jf3nm507o22k6aq3hlu23@ds353457.mlab.com:53457/heroku_1cm1qpq0
+#      uri: mongodb://heroku_1cm1qpq0:8tpe6jf3nm507o22k6aq3hlu23@ds353457.mlab.com:53457/heroku_1cm1qpq0
 #      uri: mongodb://heroku_slbzv3xd:ojcahf31amsquhb9chfg0kbrhg@ds151817.mlab.com:51817/heroku_slbzv3xd

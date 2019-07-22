@@ -49,7 +49,7 @@ export default {
   effects: {
     *getContract({ targetID, jump }, { call, put }) {
       const response = yield call(request, `/api/contracts/${targetID}`)            //获取目标合同id及content
-      const { id, content } = response.find(contract => contract.id === targetID)
+      const { id, content } = response
       const commitVersionList = yield call(request, `/api/contracts/${id}/commits`) //获取目标合同全部历史修改记录
 
       yield put({

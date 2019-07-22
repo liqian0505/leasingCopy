@@ -39,7 +39,7 @@ public class ContractController {
     }
 
     @GetMapping("/{id}")
-    public List<Contract> getContract(@PathVariable String id) {
+    public Contract getContract(@PathVariable String id) {
         try{
             logger.info("Get contract with contract.id " + id);
             return this.contractService.getContract(id);
