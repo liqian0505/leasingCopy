@@ -11,7 +11,7 @@ export default {
     editorState: null, // BraftEditor的快照
     schema: {
       type: 'object',
-      title: 'empty object',
+      title: 'Unnamed Object',
       properties: {},
     }, // SchemaEditor的JSON
     id: null, // TemplateID
@@ -100,6 +100,7 @@ export default {
           editorState: BraftEditor.createEditorState(editorContent),
         },
       })
+      message.success("成功获取模板内容")
       if (jump !== undefined) router.push(`/TemplateEditor?id=${targetID}`)
     },
     *updateTemplate({ targetID, content }, { call, put }) {

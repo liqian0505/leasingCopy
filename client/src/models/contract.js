@@ -10,11 +10,12 @@ export default {
     id: null,
     content: {
       name: null,
-      schema: {
-        type: 'object',
-        title: '',
-        properties: {},
-      },
+      schema: null,
+      // {
+      //   type: 'object',
+      //   title: '',
+      //   properties: {},
+      // },
       templateID: null,
       templateCommitID: null,
       formData: {},

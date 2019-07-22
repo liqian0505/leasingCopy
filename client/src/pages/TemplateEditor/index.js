@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Col, Drawer, message, Row, Timeline, Typography } from 'antd';
+import { Button, Col, Drawer, message, Row, Timeline, Typography, Spin } from 'antd';
 // 引入富文本编辑器组件
 import BraftEditor from 'braft-editor';
 import Table from 'braft-extensions/dist/table';
@@ -15,7 +15,8 @@ import { connect } from 'dva';
 import styles from './index.css';
 import CustomInput from '@/components/Perish/CustomInput';
 
-let format = require('date-format');
+const format = require('date-format');
+
 const { Paragraph, Title } = Typography;
 const option = {};
 const SchemaEditor = schemaEditor(option);
@@ -78,9 +79,11 @@ class TemplateEditor extends React.Component {
 
   onChange = str => {
     console.log(str);
+    const { schema } = this.props.template;
+    schema.title = str;
     this.props.dispatch({
-      type: 'template/updateName',
-      payload: str,
+      type: 'template/updateSchema',
+      payload: schema,
     })
   };
 
@@ -142,24 +145,18 @@ class TemplateEditor extends React.Component {
     return (
       <div className={styles.editorContainer}>
         <Row>
-        <Title editable={{ onChange: this.onChange }} level={4} >{this.props.template.name}</Title>
+          <Title editable={{ onChange: str => this.props.dispatch({ type: 'template/updateName', payload: str }) }} level={4} >{this.props.template.name}</Title>
           {/* <CustomInput record={this.props.template} defaultValue={this.props.template.name}
           onChange={(id, content) => this.updateHandler(id, content)}
           /> */}
         </Row>
         <Row>
-          <BraftEditor
-            value={template.editorState}
-            onChange={editorState => {
-              dispatch({ type: 'template/updateEditorState', payload: editorState })
-            }}
-            onSave={this.submitContent}
-          />
-          </Row>
-          <Row>
+          {template.editorState === null ? <Spin /> : <BraftEditor value={template.editorState} onChange={editorState => { dispatch({ type: 'template/updateEditorState', payload: editorState }) }} onSave={this.submitContent} />}
+        </Row>
+        <Row>
           <Drawer
             title="Edition Version"
-            placement="left"
+            placement="right"
             closable={false}
             onClose={this.onVersionClose}
             visible={this.state.versionVisible}
@@ -183,6 +180,7 @@ class TemplateEditor extends React.Component {
             visible={this.state.schemaVisible}
             width="50%"
           >
+            <Title editable={{ onChange: this.onChange }} level={4} >{this.props.template.schema.title}</Title>
             <SchemaEditor
               data={JSON.stringify(template.schema)}
               onChange={schema => {

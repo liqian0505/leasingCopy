@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'dva';
 import BraftEditor from 'braft-editor';
 import BasicLayout from '@/layouts/BasicLayout';
-import { Button, Col, Drawer, Row, Icon, Timeline, message } from 'antd';
+import { Button, Col, Drawer, Row, Icon, Timeline, message, Spin } from 'antd';
 import Form from 'react-jsonschema-form';
 
 import 'bootstrap/dist/css/bootstrap.css';
@@ -16,7 +16,7 @@ class ContractEditor extends React.Component {
 
     const { id, content, editorState, commitVersionList, currentCommitID } = this.props.contract
 
-    const form = <Form className={styles.form} schema={content.schema} formData={content.formData} onSubmit={this.submitHandler} onError={e => alert(e)} />
+    const form = content.schema === null ? <Spin /> : <Form className={styles.form} schema={content.schema} formData={content.formData} onSubmit={this.submitHandler} onError={e => alert(e)} />
 
     const editorDrawer = (
       <Drawer title="合同填写" placement="right" width="50%" closable={false} visible={this.state.drawerVisible} onClose={e => this.setState({ drawerVisible: false })}>

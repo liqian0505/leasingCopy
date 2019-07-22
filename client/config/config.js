@@ -167,7 +167,7 @@ export default {
     chainWebpack: webpackPlugin,
     proxy: {
         '/api': {
-            target: leasingDebug?'http://localhost:8000':'http://192.168.1.105:8000',
+            target: leasingDebug?'http://192.168.1.136:8000':'http://localhost:8000',
             changeOrigin: true,
         },
     }
