@@ -6,23 +6,20 @@ before-install:
 - sudo apt-get install docker.io
 - sudo apt-get install docker-compose
 - sudo apt-get install node
-- openssl aes-256-cbc -K $encrypted_17719a85a8a7_key -iv $encrypted_17719a85a8a7_iv
-  -in id_rsa.enc -out ~/.ssh/id_rsa -d
-addons:
-  ssh_known_hosts: 106.14.140.93
 install: true
 script:
 - bash ./set_up.sh
-- mvn clean package -Dmaven.test.skip=true
+- mvn clean package -Dmaven.test.skip=true 
 branches:
   only:
   - dev
-  - master
-# deploy:
-#   provider: script
-#   skip_cleanup: true
-#   on:
-#     repo: CaribouW/leasing
-#     branch: dev
-#   script: rsync -r --delete-after server/target/cvise.jar root@106.14.140.93:/root/webapps
+cache: npm
+# travis encrypt $(heroku auth:token) --add deploy.api_key
+deploy:
+  provider: heroku
+  api_key:
+    secure: SYryt6hULzGUxloyFRouRpgkGacBZCk7fSCa8pjAukCvPiT28iIWqBjwae4JvX9uDr0e1Kv5ku6/tMKrnJg8v5g2/6YIUSJY/DqtJ8ywyUdtBDqGM4CXxzrLDkXwZ2eQvxLgYaJ/7aNamcH1dWPApLVf3Hay1BFM00MAZsuCFRq/1P9m6J345odL0dxtwTPGNkq9ZS6fKpDe+xMob84GeHw9VCezpRdU7dJXkjfiFu2yT/OUg2ScZAdBaWJE/Q6FXCT85nwL3eG3tnaXMZKaOO3uiCQoVu3wY5RPHmtp4nPiDzrzw7/A5IDz+AbGziX9Fp5bMuv6Kxd4H8ldDvucDhk+5Y9qA5S7Qa8fJuIqnihmcF9wz5adOy8uaFb+jSLLAOM82ZmtN1vkbsm50HI+fmNU4cBSkMJNRGxvunmIT7PpeQtMKvSolAlPlTDMM2UePgYYptdj3HzkiuArKKKpreWb+twBCVx8nIJoZRp0ZFF3fgEofTvbcJ4h3gk793z0cyrLZQTmGNjIpxl/u43j9i6eU1GIsMJipe50FVXNXfMlx4luM/35IU3JuyoEL9TufIKS/Vsz1QcagglnYpfRurzXXFvs1AvpdZ9GCyzIIzDcSeuXDbK75nTBJg7ku+UCAUJyG/r0SCS7JTvAAOXCL3rW2J+pxWqUjL3e/fZl6RM=
+  app: cvise
+  on:
+    repo: CaribouW/leasing
 sudo: true
