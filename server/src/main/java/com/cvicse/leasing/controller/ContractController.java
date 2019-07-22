@@ -42,8 +42,8 @@ public class ContractController {
     public List<Contract> getContract(@PathVariable String id) {
         try{
             logger.info("Get contract with contract.id " + id);
-            this.contractService.getContract(id);
-            return this.contractService.getAllContract();
+            return this.contractService.getContract(id);
+            // return this.contractService.getAllContract();
         }catch(ContractNotFoundException e) {
             logger.info(e.getMessage());
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"ContractRequest Not Found",e);
