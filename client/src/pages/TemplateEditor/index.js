@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Col, Drawer, message, Row, Timeline } from 'antd';
+import { Button, Col, Drawer, message, Row, Timeline, Typography } from 'antd';
 // 引入富文本编辑器组件
 import BraftEditor from 'braft-editor';
 import Table from 'braft-extensions/dist/table';
@@ -13,8 +13,10 @@ import 'json-schema-editor-visual/dist/main.css';
 import { connect } from 'dva';
 // import BasicLayout from '@/layouts/BasicLayout';
 import styles from './index.css';
+import CustomInput from '@/components/Perish/CustomInput';
 
-var format = require('date-format');
+let format = require('date-format');
+const { Paragraph, Title } = Typography;
 const option = {};
 const SchemaEditor = schemaEditor(option);
 // 初始化表格扩展
@@ -74,6 +76,14 @@ class TemplateEditor extends React.Component {
     });
   };
 
+  onChange = str => {
+    console.log(str);
+    this.props.dispatch({
+      type: 'template/updateName',
+      payload: str,
+    })
+  };
+
   submitContent = () => {
     // 在编辑器获得焦点时按下ctrl+s会执行此方法
     // 编辑器内容可直接调用editorState.toHTML()来获取HTML格式的内容
@@ -107,7 +117,7 @@ class TemplateEditor extends React.Component {
 
   dateParser = text => {
     const date = format.parse(format.ISO8601_FORMAT, text)
-    const formatDate = format("yyyy-MM-dd hh:mm:ss", date)
+    const formatDate = format('yyyy-MM-dd hh:mm:ss', date)
     return formatDate
   }
 
@@ -132,6 +142,12 @@ class TemplateEditor extends React.Component {
     return (
       <div className={styles.editorContainer}>
         <Row>
+        <Title editable={{ onChange: this.onChange }} level={4} >{this.props.template.name}</Title>
+          {/* <CustomInput record={this.props.template} defaultValue={this.props.template.name}
+          onChange={(id, content) => this.updateHandler(id, content)}
+          /> */}
+        </Row>
+        <Row>
           <BraftEditor
             value={template.editorState}
             onChange={editorState => {
@@ -139,6 +155,8 @@ class TemplateEditor extends React.Component {
             }}
             onSave={this.submitContent}
           />
+          </Row>
+          <Row>
           <Drawer
             title="Edition Version"
             placement="left"
