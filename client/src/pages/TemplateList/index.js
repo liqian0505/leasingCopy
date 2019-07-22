@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'dva';
-import { Button, Icon, Row, Col, List, Card, message } from 'antd';
+import { Button, Icon, Row, Col, List, Card } from 'antd';
 // import { symbol } from 'prop-types';
 import BasicLayout from '@/layouts/BasicLayout';
 import Cookies from 'js-cookie';
@@ -127,16 +127,17 @@ class TemplateList extends React.Component {
     return (
       <div className={styles.container} >
         <List grid={{
-          gutter: 16,
-          xs: 1,
-          sm: 2,
-          md: 3,
-          lg: 3,
-          xl: 4,
-          xxl: 6,
-        }}>
-          {ItemList}
-        </List>
+            gutter: 16,
+            xs: 1,
+            sm: 2,
+            md: 3,
+            lg: 3,
+            xl: 4,
+            xxl: 6,
+          }}
+          dataSource={ItemList}
+          renderItem={item => item}
+        />
       </div >
     )
   }
