@@ -1,7 +1,8 @@
-import router from 'umi/router'
+import router from 'umi/router';
 import BraftEditor from 'braft-editor';
 import { template } from '@babel/core';
 import request from '../utils/request';
+import { message } from 'antd';
 
 export default {
   namespace: 'template',
@@ -75,9 +76,6 @@ export default {
         editorContent: item.content.editorContent,
         schema: item.content.schema,
       }))
-
-      proList.push({ id: 'default' });
-      proList.reverse();
       yield put({
         type: 'templateList/updateTemplateList',
         newList: proList,
@@ -100,7 +98,7 @@ export default {
     },
     *updateTemplate({ targetID, content }, { call, put }) {
       const templateRequest = { id: targetID, content }
-      const respone = yield call(request.put, `/api/templates/${targetID}`, { 
+      const respone = yield call(request.put, `/api/templates/${targetID}`, {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(templateRequest),
        })
@@ -108,6 +106,7 @@ export default {
         type: 'getCommitList',
         targetID,
       })
+      message.success('保存成功');
     },
     *getCommitList({ targetID }, { call, put }) {
       const response = yield call(request, `/api/templates/${targetID}/commits`)
@@ -134,6 +133,7 @@ export default {
           editorState: BraftEditor.createEditorState(editorContent),
         },
       })
+      message.success(`成功切换到版本${commitID}`)
     },
   },
 };

@@ -47,10 +47,6 @@ class TemplateEditor extends React.Component {
         type: 'template/getCommitList',
         targetID: query.id,
       })
-      // console.log(this.props.template.commitList)
-      // this.setState({
-      //   currentCommitID: this.props.template.commitList[0].commitId,
-      // })
     }
   }
 
@@ -94,7 +90,6 @@ class TemplateEditor extends React.Component {
         schema: this.props.template.schema,
       },
     })
-    message.success('保存成功');
   };
 
   getCommitContent = e => {
@@ -104,7 +99,6 @@ class TemplateEditor extends React.Component {
       targetID: this.props.template.id,
       commitID,
     })
-    message.success(`成功切换到版本${commitID}`)
   }
 
   // handleEditorChange = editorState => {
@@ -177,6 +171,7 @@ class TemplateEditor extends React.Component {
                 dispatch({ type: 'template/updateSchema', payload: JSON.parse(schema) });
               }}
             />
+            <script>{console.log(this.props.template.schema)}</script>
           </Drawer>
         </Row>
         <Row>
