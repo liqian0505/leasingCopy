@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'dva';
-import { Button, Icon, Row, Col, List, Card, message } from 'antd';
+import { Button, Icon, Row, Col, List, Card } from 'antd';
 // import { symbol } from 'prop-types';
 import BasicLayout from '@/layouts/BasicLayout';
 import Cookies from 'js-cookie';
@@ -134,7 +134,9 @@ class TemplateList extends React.Component {
             xxl: 6,
           }
         }
-        >{ItemList}</List>
+        dataSource={ItemList}
+        renderItem={item => item}
+        ></List>
       </div >
     )
   }
