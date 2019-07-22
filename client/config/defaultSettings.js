@@ -10,7 +10,7 @@ export default {
   menu: {
     locale: true,
   },
-  title: '租赁合同编辑系统',
+  title: '租赁合同管理',
   pwa: false,
   iconfontUrl: '',
 };

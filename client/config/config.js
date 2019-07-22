@@ -165,7 +165,7 @@ export default {
     chainWebpack: webpackPlugin,
     proxy: {
         '/api': {
-            target: 'http://192.168.1.105:8000',
+            target: 'http://192.168.80.130:8000',
             changeOrigin: true,
         },
     }
