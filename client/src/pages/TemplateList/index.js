@@ -10,7 +10,6 @@ import CustomIcon from '@/components/Perish/CustomIcon';
 import CustomInput from '@/components/Perish/CustomInput';
 
 class TemplateList extends React.Component {
-<<<<<<< HEAD
   render() {
     const { templateList } = this.props;
     return (
@@ -92,8 +91,6 @@ class TemplateList extends React.Component {
     ]
   }
 
-=======
->>>>>>> 45f406c6ef6f057e02a493ff6894aba7e632617d
   componentDidMount() {
     this.props.dispatch({
       type: 'templateList/getTemplateList',
