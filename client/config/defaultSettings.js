@@ -4,13 +4,14 @@ export default {
   layout: 'sidemenu',
   contentWidth: 'Fluid',
   fixedHeader: false,
+  leasingDebug: process.env.NODE_ENV==="development",
   autoHideHeader: false,
   fixSiderbar: false,
   colorWeak: false,
   menu: {
     locale: true,
   },
-  title: '租赁合同编辑系统',
+  title: '租赁合同管理',
   pwa: false,
   iconfontUrl: '',
 };

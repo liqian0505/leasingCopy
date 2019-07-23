@@ -1,67 +1,57 @@
 import React from 'react';
-import jp from 'jsonpath';
 import { connect } from 'dva';
 import BraftEditor from 'braft-editor';
 import BasicLayout from '@/layouts/BasicLayout';
-import { Button, Col, Drawer, Row, Icon } from 'antd';
+import { Button, Col, Drawer, Row, Icon, Timeline, message, Spin } from 'antd';
 import Form from 'react-jsonschema-form';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import styles from './index.css';
 
-const getDefaultData = schema => {
-  const data = {};
-  const { properties } = schema;
-  Object.keys(properties).forEach(item => {
-    switch (properties[item].type) {
-      case 'string':
-        data[item] = '';
-        break;
-      case 'number':
-        data[item] = 0;
-        break;
-      case 'array':
-        data[item] = [];
-        break;
-      case 'boolean':
-        data[item] = false;
-        break;
-      case 'integer':
-        data[item] = 0;
-        break;
-      case 'object':
-        data[item] = getDefaultData(properties[item]);
-        break;
-      default:
-        console.log(properties[item].type);
-        break;
-    }
-  });
-  return data;
-};
+var format = require('date-format');
 
 class ContractEditor extends React.Component {
 
   render() {
-    const { contract } = this.props
-    console.log(contract)
-    debugger
 
-    const form = <Form className={styles.form} schema={contract.schema} formData={contract.formData} onSubmit={this.submitHandler} onError={e => alert(e)} />
+    const { id, content, editorState, commitVersionList, currentCommitID } = this.props.contract
+
+    const form = content.schema === null ? <Spin /> : <Form className={styles.form} schema={content.schema} formData={content.formData} onSubmit={this.submitHandler} onError={e => alert(e)} />
 
     const editorDrawer = (
       <Drawer title="合同填写" placement="right" width="50%" closable={false} visible={this.state.drawerVisible} onClose={e => this.setState({ drawerVisible: false })}>
-        <BraftEditor className={styles.editor} value={contract.editorState} controls={[]} readOnly />
+        <BraftEditor className={styles.editor} value={editorState} controls={[]} readOnly />
+      </Drawer>
+    )
+
+    const commitDrawer = (
+      <Drawer title="历史版本" placement="left" width="30%" closable={false} visible={this.state.commitVisible} onClose={e => this.setState({ commitVisible: false })}>
+        <Timeline>
+          {
+            commitVersionList.map(commit => (
+              <Timeline.Item key={commit.commitId} color={commit.commitId === Number(currentCommitID) ? 'green' : 'blue'}>
+                <div data-commitid={commit.commitId} onClick={e => this.commitHandler(e.target.dataset.commitid)} >
+                  {this.dateParser(commit.commitDate)}
+                </div>
+              </Timeline.Item>
+            ))
+          }
+        </Timeline>
       </Drawer>
     )
 
     const drawerSwitch = <div className={styles.drawerSwitch} onClick={e => this.setState({ drawerVisible: true })} />
+    const commitSwitch = <div className={styles.commitSwitch} onClick={e => this.setState({ commitVisible: true })} />
+    const submitSwitch = <div className={styles.submitSwitch} onClick={this.submitHandler} />
 
     return (
       <div>
         {form}
         {editorDrawer}
+        {commitDrawer}
         {drawerSwitch}
+        {submitSwitch}
+        {commitSwitch}
       </div>
     )
   }
@@ -69,37 +59,49 @@ class ContractEditor extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      drawerVisible: false
+      drawerVisible: false,
+      commitVisible: false
     }
   }
 
   componentDidMount() {
     this.query = this.getCurrentHerfQuery()
-    this.props.dispatch({
-      type: "contract/getContract",
-      targetID: this.query.id
-    })
+    if (this.query.id !== undefined) {
+      this.props.dispatch({
+        type: "contract/getContract",
+        targetID: this.query.id
+      })
+    }
   }
 
   submitHandler = ({ formData }, e) => {
-    const { id, name, editorContent, templateID } = this.props.contract
+    const { id, content } = this.props.contract
 
-    var copyContent = JSON.parse(JSON.stringify(editorContent))
-
-    const data = formData
-    jp.apply(copyContent, '$..text', value => eval('`' + value + '`'))
-    // console.log(jp.query(copyContent,'$..text'))
-    // debugger
     this.props.dispatch({
       type: "contract/updateContract",
       targetID: id,
       content: {
-        name,
-        formData,
-        templateID
-      },
-      newEditorState: BraftEditor.createEditorState(copyContent)
+        ...content,
+        formData
+      }
     })
+  }
+
+  commitHandler = commitID => {
+    const { id } = this.props.contract
+
+    this.props.dispatch({
+      type: "contract/rollbackContract",
+      targetID: id,
+      commitID,
+    })
+    message.success(`成功切换到版本${commitID}`)
+  }
+
+  dateParser = text => {
+    const date = format.parse(format.ISO8601_FORMAT, text)
+    const formatDate = format("yyyy-MM-dd hh:mm:ss", date)
+    return formatDate
   }
 
   getCurrentHerfQuery = () => {

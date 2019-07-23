@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 
 @Data
-@Document(collection = "Template")
+@Document(collection = "TemplateRequest")
 public class Template {
 
     @Id
@@ -19,7 +19,7 @@ public class Template {
     public JSONObject content;
 
 
-    public ArrayList<String> contractIdList = new ArrayList<>();
+//    public ArrayList<String> contractIdList = new ArrayList<>();
 
     public Template() {
     }
@@ -30,7 +30,7 @@ public class Template {
 
     @Override
     public String toString() {
-        return String.format("Template[id=%s,content='%s']", id, content);
+        return String.format("TemplateRequest[id=%s,content='%s']", id, content);
     }
 
     public String getId() {
@@ -49,9 +49,9 @@ public class Template {
         this.content = content;
     }
 
-    public ArrayList<String> getContractIdList() {
-        return contractIdList;
-    }
+//    public ArrayList<String> getContractIdList() {
+//        return contractIdList;
+//    }
 
 
 }

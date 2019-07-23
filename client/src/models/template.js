@@ -1,5 +1,7 @@
-import router from 'umi/router'
+import router from 'umi/router';
 import BraftEditor from 'braft-editor';
+import { template } from '@babel/core';
+import { message } from 'antd';
 import request from '../utils/request';
 
 export default {
@@ -9,52 +11,70 @@ export default {
     editorState: null, // BraftEditor的快照
     schema: {
       type: 'object',
-      title: 'empty object',
+      title: 'Unnamed Object',
       properties: {},
     }, // SchemaEditor的JSON
     id: null, // TemplateID
     name: '未命名模板', // 模板名称
+    commitList: [],
+    commitID: '',
   },
   reducers: {
     updateState(state, { payload }) {
-      return payload;
+      return {
+        ...state,
+        editorContent: payload.editorContent,
+        editorState: payload.editorState,
+        schema: payload.schema,
+        id: payload.id,
+        name: payload.name,
+      }
     },
+    // onChange更新EditorState
     updateEditorState(state, { payload }) {
       return {
         ...state,
         editorState: payload,
       }
     },
+    // onChange更新Schema
     updateSchema(state, { payload }) {
       return {
         ...state,
         schema: payload,
       }
     },
+    // DidMount和onSubmit更新CommitList
+    updateCommitList(state, { payload }) {
+      return {
+        ...state,
+        commitList: payload,
+        commitID: payload[0].commitId,
+      }
+    },
+    updateCommitID(state, { payload }) {
+      return {
+        ...state,
+        commitID: payload,
+      }
+    },
+    updateName(state, { payload }) {
+      return {
+        ...state,
+        name: payload,
+      }
+    },
   },
   effects: {
-    *getTemplate({ targetID }, { call, put }) {
-      // const { name, editorContent, schema, id } = yield call(request.get, `/api/templates/${targetID}`)
-      const { id, content } = yield call(request.get, `/api/templates/${targetID}`)
-      const { name, editorContent, schema } = content
-      console.log(id, name, editorContent, schema)
-      yield put({
-        type: 'updateState',
-        payload: {
-          name,
-          editorContent,
-          schema,
-          id,
-          editorState: BraftEditor.createEditorState(editorContent),
-        },
-      })
-      router.push(`/TemplateEditor?id=${targetID}`)
-    },
-    *updateTemplate({ targetID, content }, { call }) {
-      const response = yield call(request.put, `/api/templates/${targetID}`, { data: content })
-    },
     *createTemplate({ defaultContent }, { call, put }) {
-      const response = yield call(request.post, '/api/templates/new', { data: defaultContent });
+      const templateRequest = { id: null, content: defaultContent }
+
+      const response = yield call(request.post, '/api/templates/new', {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(templateRequest),
+      });
       const proList = response.map(item => ({
         id: item.id,
         name: item.content.name,
@@ -65,6 +85,62 @@ export default {
         type: 'templateList/updateTemplateList',
         newList: proList,
       });
+      message.success('成功创建新模板')
+    },
+    *getTemplate({ targetID, jump }, { call, put }) {
+      const { id, content } = yield call(request.get, `/api/templates/${targetID}`)
+      const { name, editorContent, schema } = content
+      yield put({
+        type: 'updateState',
+        payload: {
+          name,
+          editorContent,
+          schema,
+          id,
+          editorState: BraftEditor.createEditorState(editorContent),
+        },
+      })
+      message.success("成功获取模板内容")
+      if (jump !== undefined) router.push(`/TemplateEditor?id=${targetID}`)
+    },
+    *updateTemplate({ targetID, content }, { call, put }) {
+      const templateRequest = { id: targetID, content }
+      const respone = yield call(request.put, `/api/templates/${targetID}`, {
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(templateRequest),
+       })
+      yield put({
+        type: 'getCommitList',
+        targetID,
+      })
+      message.success('保存成功');
+    },
+    *getCommitList({ targetID }, { call, put }) {
+      const response = yield call(request, `/api/templates/${targetID}/commits`)
+      yield put({
+        type: 'updateCommitList',
+        payload: response,
+      })
+    },
+    *getCommit({ targetID, commitID }, { call, put }) {
+      const response = yield call(request, `/api/templates/${targetID}/commits?commitId=${commitID}`);
+      const { id, content } = response[0];
+      const { name, editorContent, schema } = content;
+      yield put({
+        type: 'updateCommitID',
+        payload: commitID,
+      })
+      yield put({
+        type: 'updateState',
+        payload: {
+          name,
+          editorContent,
+          schema,
+          id,
+          editorState: BraftEditor.createEditorState(editorContent),
+        },
+      })
+      message.success(`成功切换到版本${commitID}`)
     },
   },
 };
